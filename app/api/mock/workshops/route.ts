@@ -1,0 +1,104 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
+
+// GET - List all workshops
+export async function GET(request: NextRequest) {
+  try {
+    const searchParams = request.nextUrl.searchParams
+    const village = searchParams.get('village')
+
+    const where: any = {}
+    if (village) where.village = village
+
+    const workshops = await prisma.workshop.findMany({
+      where,
+      orderBy: { date: 'asc' },
+    })
+
+    return NextResponse.json({
+      success: true,
+      data: workshops,
+      count: workshops.length,
+    })
+  } catch (error) {
+    console.error('Error fetching workshops:', error)
+    return NextResponse.json(
+      { success: false, error: 'Failed to fetch workshops' },
+      { status: 500 }
+    )
+  }
+}
+
+// POST - Create a new workshop
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json()
+    const { title, village, date, description } = body
+
+    if (!title || !village || !date || !description) {
+      return NextResponse.json(
+        { success: false, error: 'Missing required fields' },
+        { status: 400 }
+      )
+    }
+
+    const workshop = await prisma.workshop.create({
+      data: {
+        title,
+        village,
+        date: new Date(date),
+        description,
+      },
+    })
+
+    return NextResponse.json({
+      success: true,
+      data: workshop,
+    }, { status: 201 })
+  } catch (error) {
+    console.error('Error creating workshop:', error)
+    return NextResponse.json(
+      { success: false, error: 'Failed to create workshop' },
+      { status: 500 }
+    )
+  }
+}
+
+// PATCH - Update a workshop
+export async function PATCH(request: NextRequest) {
+  try {
+    const body = await request.json()
+    const { id, ...updateData } = body
+
+    if (!id) {
+      return NextResponse.json(
+        { success: false, error: 'Workshop ID is required' },
+        { status: 400 }
+      )
+    }
+
+    // Convert date to Date if provided
+    if (updateData.date) {
+      updateData.date = new Date(updateData.date)
+    }
+
+    const workshop = await prisma.workshop.update({
+      where: { id: parseInt(id) },
+      data: updateData,
+    })
+
+    return NextResponse.json({
+      success: true,
+      data: workshop,
+    })
+  } catch (error) {
+    console.error('Error updating workshop:', error)
+    return NextResponse.json(
+      { success: false, error: 'Failed to update workshop' },
+      { status: 500 }
+    )
+  }
+}
+

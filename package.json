@@ -1,0 +1,46 @@
+{
+  "name": "empowerher",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "prisma:seed": "npx tsx prisma/seed.ts",
+    "test": "jest",
+    "verify": "node -e \"(async()=>{const cp=require('child_process');const tryPorts=async(ports)=>{for(const p of ports){const code=await new Promise(res=>{const child=cp.spawn('npx', ['tsx','scripts/verify.ts'],{stdio:'inherit',shell:true,env:{...process.env,BASE_URL:`http://localhost:${p}`}});child.on('exit',res)});if(code===0)return 0;}return 1;};const srv=cp.spawn('npm',['run','dev'],{stdio:'inherit',shell:true});setTimeout(async()=>{const code=await tryPorts([3000,3001,3002,3003]);srv.kill();process.exit(code);},5000);})()\""
+  },
+  "dependencies": {
+    "@prisma/client": "^6.18.0",
+    "framer-motion": "^10.16.0",
+    "localforage": "^1.10.0",
+    "lottie-react": "^2.4.0",
+    "next": "^14.0.0",
+    "next-auth": "^4.24.0",
+    "react": "^18.2.0",
+    "react-countup": "^6.5.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.12.0",
+    "recharts": "^2.10.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@types/uuid": "^9.0.0",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.55.0",
+    "eslint-config-next": "^14.0.0",
+    "jest": "^29.7.0",
+    "postcss": "^8.4.32",
+    "prisma": "^6.18.0",
+    "tailwindcss": "^3.4.0",
+    "ts-jest": "^29.4.5",
+    "ts-node": "^10.9.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0"
+  }
+}
