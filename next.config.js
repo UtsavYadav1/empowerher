@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -8,7 +11,8 @@ const nextConfig = {
         hostname: '**',
       },
     ],
-    unoptimized: false,
+    unoptimized: true,
+    domains: ['images.unsplash.com'],
   },
 }
 

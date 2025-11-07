@@ -114,38 +114,60 @@ export default function CheckoutPage() {
       const data = await response.json()
 
       if (data.success) {
-        // Create order object
-        const order = {
-          id: orderId,
-          customerId: user?.id || 1,
-          items: cart.map(item => ({
-            productId: item.id,
-            productName: item.name,
-            quantity: item.quantity,
-            price: item.price,
-          })),
-          total: grandTotal,
-          subtotal: total,
-          shipping: shipping,
-          status: 'pending',
-          paymentMethod: selectedMethod,
-          paymentStatus: 'completed',
-          transactionId: data.transactionId || `TXN${Date.now()}`,
-          createdAt: new Date().toISOString(),
-          trackingNumber: `TRK${Date.now()}`,
-          estimatedDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days from now
+        // Save order to database via API
+        const orderResponse = await fetch('/api/mock/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            customerId: user?.id || 1,
+            items: cart.map(item => ({
+              productId: item.id,
+              productName: item.name,
+              quantity: item.quantity,
+              price: item.price,
+            })),
+            total: grandTotal,
+            status: 'pending',
+          }),
+        })
+
+        const orderData = await orderResponse.json()
+
+        if (orderData.success) {
+          // Also save to localStorage for immediate access
+          const order = {
+            id: orderId,
+            customerId: user?.id || 1,
+            items: cart.map(item => ({
+              productId: item.id,
+              productName: item.name,
+              quantity: item.quantity,
+              price: item.price,
+            })),
+            total: grandTotal,
+            subtotal: total,
+            shipping: shipping,
+            status: 'pending',
+            paymentMethod: selectedMethod,
+            paymentStatus: 'completed',
+            transactionId: data.transactionId || `TXN${Date.now()}`,
+            createdAt: new Date().toISOString(),
+            trackingNumber: `TRK${Date.now()}`,
+            estimatedDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+          }
+
+          const orders = JSON.parse(localStorage.getItem('customerOrders') || '[]')
+          orders.unshift(order)
+          localStorage.setItem('customerOrders', JSON.stringify(orders))
+
+          // Clear cart
+          localStorage.removeItem('cart')
+
+          // Redirect to orders page
+          router.push(`/customer/orders?success=true&txn=${order.transactionId}&orderId=${order.id}`)
+        } else {
+          throw new Error('Failed to save order')
         }
-
-        // Save order to localStorage (in real app, this would be saved to database)
-        const orders = JSON.parse(localStorage.getItem('customerOrders') || '[]')
-        orders.unshift(order) // Add to beginning
-        localStorage.setItem('customerOrders', JSON.stringify(orders))
-
-        // Clear cart
-        localStorage.removeItem('cart')
-
-        // Redirect to orders page with success message
-        router.push(`/customer/orders?success=true&txn=${order.transactionId}&orderId=${order.id}`)
       } else {
         setError(data.error || 'Payment failed. Please try again.')
         setProcessing(false)

@@ -35,66 +35,54 @@ const carouselItems = [
 ]
 
 const stats = [
-  { icon: FaUsers, label: 'Women Empowered', value: 1250, suffix: '+' },
-  { icon: FaGraduationCap, label: 'Girls Educated', value: 3200, suffix: '+' },
-  { icon: FaHandHoldingHeart, label: 'Workshops Conducted', value: 150, suffix: '+' },
-  { icon: FaChartLine, label: 'Communities Reached', value: 85, suffix: '+' },
+  { icon: FaUsers, label: 'Women Empowered', value: 75, suffix: '+' },
+  { icon: FaGraduationCap, label: 'Girls Educated', value: 120, suffix: '+' },
+  { icon: FaHandHoldingHeart, label: 'Workshops Conducted', value: 25, suffix: '+' },
+  { icon: FaChartLine, label: 'Communities Reached', value: 8, suffix: '+' },
 ]
 
 const timeline = [
   {
-    year: '2020',
-    title: 'Foundation',
-    description: 'EmpowerHer was founded with a vision to bridge the gap in opportunities for women and girls in rural India.',
-    icon: FaRocket,
-  },
-  {
-    year: '2021',
-    title: 'First Programs',
-    description: 'Launched our first educational programs and workshops, reaching over 500 girls and women.',
-    icon: FaGraduationCap,
-  },
-  {
-    year: '2022',
-    title: 'Digital Platform',
-    description: 'Launched our comprehensive digital platform, making resources accessible to thousands more.',
-    icon: FaRocket,
-  },
-  {
     year: '2023',
-    title: 'Business Support',
-    description: 'Expanded to include business tools and marketplace features, helping women entrepreneurs thrive.',
-    icon: FaLightbulb,
+    title: 'Grassroots Beginning',
+    description: 'Started our journey by physically visiting rural communities, helping poor girls and women learn essential skills through direct community engagement.',
+    icon: FaHandHoldingHeart,
   },
   {
     year: '2024',
-    title: 'Continued Growth',
-    description: 'Reaching new milestones with over 3000+ girls educated and 1200+ women empowered.',
-    icon: FaChartLine,
+    title: 'Community Outreach',
+    description: 'Continued our on-ground work, reaching more villages and building strong relationships with local communities across Uttar Pradesh.',
+    icon: FaUsers,
+  },
+  {
+    year: '2025',
+    title: 'Digital Platform Launch',
+    description: 'Launched our comprehensive online platform to scale our impact, bringing educational resources, business tools, and opportunities to women and girls digitally.',
+    icon: FaRocket,
   },
 ]
 
 const teamMembers = [
   {
-    name: 'Priya Sharma',
+    name: 'Bhoomi Sharma',
     role: 'Founder & CEO',
     image: '/images/team.jpg',
     description: 'Passionate about women empowerment with 15+ years of experience in social impact.',
   },
   {
-    name: 'Anjali Patel',
+    name: 'Utsav Yadav',
     role: 'Education Director',
     image: '/images/hero.jpg',
     description: 'Expert in curriculum development and mentorship programs for young girls.',
   },
   {
-    name: 'Meera Singh',
+    name: 'Mansi Singh',
     role: 'Business Development',
     image: '/images/workshop.jpg',
     description: 'Dedicated to helping women entrepreneurs build and grow their businesses.',
   },
   {
-    name: 'Kavita Verma',
+    name: 'Sameer Singh',
     role: 'Community Outreach',
     image: '/images/community.jpg',
     description: 'Connecting with rural communities and organizing impactful workshops.',

@@ -8,8 +8,9 @@ const prisma = new PrismaClient()
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { name, phone, password, village } = body
+    const { name, email, phone, password, village, role } = body
 
+    // Validate required fields
     if (!name || !phone || !password) {
       return NextResponse.json(
         { success: false, error: 'Missing required fields (name, phone, password)' },
@@ -17,15 +18,46 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Validate email format if provided
+    if (email && !/\S+@\S+\.\S+/.test(email)) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid email format' },
+        { status: 400 }
+      )
+    }
+
     // Check if phone already exists
-    const existingUser = await prisma.user.findFirst({
+    const existingPhone = await prisma.user.findFirst({
       where: { phone },
     })
 
-    if (existingUser) {
+    if (existingPhone) {
       return NextResponse.json(
         { success: false, error: 'Phone number already registered' },
         { status: 409 }
+      )
+    }
+
+    // Check if email already exists (if provided)
+    if (email) {
+      const existingEmail = await prisma.user.findFirst({
+        where: { email },
+      })
+
+      if (existingEmail) {
+        return NextResponse.json(
+          { success: false, error: 'Email already registered' },
+          { status: 409 }
+        )
+      }
+    }
+
+    // Validate role if provided
+    const validRoles = ['girl', 'customer', 'women', 'agent', 'fieldagent', 'admin']
+    if (role && !validRoles.includes(role)) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid role' },
+        { status: 400 }
       )
     }
 
@@ -33,15 +65,17 @@ export async function POST(request: NextRequest) {
     const user = await prisma.user.create({
       data: {
         name,
+        email: email || null,
         phone,
-        password, // In production, hash this password
+        password, // In production, hash this password with bcrypt
         village: village || null,
-        role: null,
-        verified: false,
+        role: role || null,
+        verified: email ? false : false, // Will be true after email verification
       },
       select: {
         id: true,
         name: true,
+        email: true,
         phone: true,
         village: true,
         role: true,
@@ -53,6 +87,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       data: user,
+      message: 'Registration successful! Please login to continue.',
     }, { status: 201 })
   } catch (error) {
     console.error('Error registering user:', error)

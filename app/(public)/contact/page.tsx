@@ -33,7 +33,7 @@ const faqs: FAQItem[] = [
   },
   {
     question: 'Can I contact a representative directly?',
-    answer: 'Yes! You can call us at +91 9876543210, WhatsApp us at +91 9876543210, or fill out the contact form above. We typically respond within 24 hours.',
+    answer: 'Yes! You can call us at +91 9305376745, WhatsApp us at +91 9305376745, or fill out the contact form above. We typically respond within 24 hours.',
   },
 ]
 
@@ -168,11 +168,11 @@ export default function ContactPage() {
           transition={{ duration: 0.5 }}
           whileHover={{ scale: 1.05, y: -5 }}
           className="card bg-gradient-to-br from-primary-500 to-pink-500 text-white hover:shadow-2xl transition-all cursor-pointer group"
-          onClick={() => window.open('mailto:contact@empowerher.com', '_blank')}
+          onClick={() => window.open('mailto:dsav2613@gmail.com', '_blank')}
         >
           <FaEnvelope className="text-5xl mb-4 group-hover:scale-110 transition-transform" />
           <h3 className="text-2xl font-bold mb-2">Email Us</h3>
-          <p className="text-lg opacity-90">contact@empowerher.com</p>
+          <p className="text-lg opacity-90">dsav2613@gmail.com</p>
           <p className="text-sm opacity-75 mt-2">We reply within 24 hours</p>
         </motion.div>
 
@@ -183,11 +183,11 @@ export default function ContactPage() {
           transition={{ duration: 0.5, delay: 0.1 }}
           whileHover={{ scale: 1.05, y: -5 }}
           className="card bg-gradient-to-br from-green-500 to-emerald-500 text-white hover:shadow-2xl transition-all cursor-pointer group"
-          onClick={() => window.open('tel:+919876543210', '_blank')}
+          onClick={() => window.open('tel:+919305376745', '_blank')}
         >
           <FaPhone className="text-5xl mb-4 group-hover:scale-110 transition-transform" />
           <h3 className="text-2xl font-bold mb-2">Call Us</h3>
-          <p className="text-lg opacity-90">+91 9876543210</p>
+          <p className="text-lg opacity-90">+91 9305376745</p>
           <p className="text-sm opacity-75 mt-2">Mon-Sat, 9 AM - 6 PM</p>
         </motion.div>
 
@@ -198,11 +198,11 @@ export default function ContactPage() {
           transition={{ duration: 0.5, delay: 0.2 }}
           whileHover={{ scale: 1.05, y: -5 }}
           className="card bg-gradient-to-br from-blue-500 to-cyan-500 text-white hover:shadow-2xl transition-all cursor-pointer group"
-          onClick={() => window.open('https://wa.me/919876543210', '_blank')}
+          onClick={() => window.open('https://wa.me/919305376745', '_blank')}
         >
           <FaWhatsapp className="text-5xl mb-4 group-hover:scale-110 transition-transform" />
           <h3 className="text-2xl font-bold mb-2">WhatsApp</h3>
-          <p className="text-lg opacity-90">+91 9876543210</p>
+          <p className="text-lg opacity-90">+91 9305376745</p>
           <p className="text-sm opacity-75 mt-2">Quick responses</p>
         </motion.div>
 
@@ -216,7 +216,7 @@ export default function ContactPage() {
         >
           <FaMapMarkerAlt className="text-5xl mb-4" />
           <h3 className="text-2xl font-bold mb-2">Visit Us</h3>
-          <p className="text-lg opacity-90">Rampur, UP</p>
+          <p className="text-lg opacity-90">Muradnagar, Ghaziabad</p>
           <p className="text-sm opacity-75 mt-2">Uttar Pradesh, India</p>
         </motion.div>
       </div>
@@ -437,7 +437,7 @@ export default function ContactPage() {
             </h2>
             <div className="relative h-64 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 rounded-lg overflow-hidden">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3559.1234567890123!2d79.12345678901234!3d28.12345678901234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjjCsDA3JzI0LjQiTiA3OcKwMDcnMjQuNCJF!5e0!3m2!1sen!2sin!4v1234567890123!5m2!1sen!2sin"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3500.4747885868686!2d77.4965!3d28.7742!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cf40a1b5b1b65%3A0xb5b1b65b1b65b1b6!2sMuradnagar%2C%20Ghaziabad%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1635000000000!5m2!1sen!2sin"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -449,7 +449,7 @@ export default function ContactPage() {
               />
             </div>
             <p className="mt-4 text-gray-600 dark:text-gray-300">
-              <strong>Address:</strong> Rampur, Uttar Pradesh, India
+              <strong>Address:</strong> Muradnagar, Ghaziabad, Uttar Pradesh, India
             </p>
             <p className="text-gray-600 dark:text-gray-300">
               <strong>Office Hours:</strong> Monday - Saturday, 9:00 AM - 6:00 PM IST
@@ -508,7 +508,7 @@ export default function ContactPage() {
                 <FaLinkedin />
               </motion.a>
               <motion.a
-                href="https://wa.me/919876543210"
+                href="https://wa.me/919305376745"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1, y: -5 }}

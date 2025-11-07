@@ -4,12 +4,14 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import { CardSkeleton } from '@/components/LoadingSkeleton'
+import { getCurrentUser } from '@/utils/auth'
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
-import { FaChartLine, FaRupeeSign, FaBox, FaUsers, FaTrendingUp, FaTrendingDown } from 'react-icons/fa'
+import { FaChartLine, FaRupeeSign, FaBox, FaUsers, FaArrowUp, FaArrowDown } from 'react-icons/fa'
 
 const COLORS = ['#ec4899', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6']
 
 export default function AnalyticsPage() {
+  const user = getCurrentUser()
   const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState({
     totalRevenue: 0,
@@ -30,45 +32,58 @@ export default function AnalyticsPage() {
 
   const fetchAnalytics = async () => {
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      if (!user?.id) {
+        setLoading(false)
+        return
+      }
 
-      // Mock data
-      setStats({
-        totalRevenue: 45250,
-        totalOrders: 89,
-        totalProducts: 24,
-        totalCustomers: 156,
-        revenueChange: 12.5,
-        ordersChange: 8.3,
-      })
+      // Fetch real-time stats
+      const statsResponse = await fetch(`/api/women/stats?sellerId=${user.id}`)
+      const statsData = await statsResponse.json()
+      
+      if (statsData.success) {
+        setStats({
+          totalRevenue: statsData.data.revenue,
+          totalOrders: statsData.data.orders,
+          totalProducts: statsData.data.products,
+          totalCustomers: statsData.data.customers,
+          revenueChange: statsData.data.revenueGrowth,
+          ordersChange: statsData.data.ordersGrowth,
+        })
+      }
 
-      setRevenueData([
-        { month: 'Jan', revenue: 8500 },
-        { month: 'Feb', revenue: 9200 },
-        { month: 'Mar', revenue: 10800 },
-        { month: 'Apr', revenue: 12000 },
-        { month: 'May', revenue: 13500 },
-        { month: 'Jun', revenue: 15250 },
-      ])
+      // Fetch real analytics data
+      const analyticsResponse = await fetch(`/api/women/analytics?sellerId=${user.id}`)
+      const analyticsData = await analyticsResponse.json()
+      
+      if (analyticsData.success) {
+        // Use real data from database
+        setRevenueData(analyticsData.data.revenueByMonth.length > 0 
+          ? analyticsData.data.revenueByMonth 
+          : [{ month: 'No Data', revenue: 0 }]
+        )
 
-      setSalesData([
-        { product: 'Pickles', sales: 45 },
-        { product: 'Diyas', sales: 32 },
-        { product: 'Handmade', sales: 28 },
-        { product: 'Food', sales: 19 },
-        { product: 'Textiles', sales: 15 },
-      ])
+        setSalesData(analyticsData.data.salesByProduct.length > 0 
+          ? analyticsData.data.salesByProduct 
+          : [{ product: 'No Sales Yet', sales: 0 }]
+        )
 
-      setCategoryData([
-        { name: 'Pickles', value: 35 },
-        { name: 'Diyas', value: 25 },
-        { name: 'Handmade', value: 20 },
-        { name: 'Food', value: 12 },
-        { name: 'Others', value: 8 },
-      ])
+        setCategoryData(analyticsData.data.salesByCategory.length > 0 
+          ? analyticsData.data.salesByCategory 
+          : [{ name: 'No Data', value: 1 }]
+        )
+      } else {
+        // Fallback to empty data if no analytics yet
+        setRevenueData([{ month: 'No Data', revenue: 0 }])
+        setSalesData([{ product: 'No Sales Yet', sales: 0 }])
+        setCategoryData([{ name: 'No Data', value: 1 }])
+      }
     } catch (error) {
       console.error('Error fetching analytics:', error)
+      // Show empty state on error
+      setRevenueData([{ month: 'Error', revenue: 0 }])
+      setSalesData([{ product: 'Error Loading', sales: 0 }])
+      setCategoryData([{ name: 'Error', value: 1 }])
     } finally {
       setLoading(false)
     }
@@ -76,7 +91,7 @@ export default function AnalyticsPage() {
 
   if (loading) {
     return (
-      <ProtectedRoute requireRole={true}>
+      <ProtectedRoute requireRole={true} allowedRoles={['woman']}>
         <div className="min-h-screen py-20 container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-6">
             {[1, 2, 3, 4].map(i => <CardSkeleton key={i} />)}
@@ -111,9 +126,9 @@ export default function AnalyticsPage() {
               <div className="flex items-center justify-between mb-3">
                 <FaRupeeSign className="text-3xl opacity-90" />
                 {stats.revenueChange > 0 ? (
-                  <FaTrendingUp className="text-green-300" />
+                  <FaArrowUp className="text-green-300" />
                 ) : (
-                  <FaTrendingDown className="text-red-300" />
+                  <FaArrowDown className="text-red-300" />
                 )}
               </div>
               <h3 className="text-lg font-semibold mb-2 opacity-90">Total Revenue</h3>
@@ -132,9 +147,9 @@ export default function AnalyticsPage() {
               <div className="flex items-center justify-between mb-3">
                 <FaBox className="text-3xl opacity-90" />
                 {stats.ordersChange > 0 ? (
-                  <FaTrendingUp className="text-green-300" />
+                  <FaArrowUp className="text-green-300" />
                 ) : (
-                  <FaTrendingDown className="text-red-300" />
+                  <FaArrowDown className="text-red-300" />
                 )}
               </div>
               <h3 className="text-lg font-semibold mb-2 opacity-90">Total Orders</h3>

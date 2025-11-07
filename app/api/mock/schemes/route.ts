@@ -96,3 +96,33 @@ export async function PATCH(request: NextRequest) {
   }
 }
 
+// DELETE - Delete a scheme
+export async function DELETE(request: NextRequest) {
+  try {
+    const searchParams = request.nextUrl.searchParams
+    const id = searchParams.get('id')
+
+    if (!id) {
+      return NextResponse.json(
+        { success: false, error: 'Scheme ID is required' },
+        { status: 400 }
+      )
+    }
+
+    await prisma.scheme.delete({
+      where: { id: parseInt(id) },
+    })
+
+    return NextResponse.json({
+      success: true,
+      message: 'Scheme deleted successfully',
+    })
+  } catch (error) {
+    console.error('Error deleting scheme:', error)
+    return NextResponse.json(
+      { success: false, error: 'Failed to delete scheme' },
+      { status: 500 }
+    )
+  }
+}
+

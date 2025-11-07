@@ -39,11 +39,38 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { title, description, category, images, price, stock, sellerId, village } = body
 
-    if (!title || !description || !category || !price || !stock || !sellerId || !village) {
+    console.log('Received product data:', { title, description, category, price, stock, sellerId, village, imagesCount: images?.length })
+
+    // Validate required fields
+    const missingFields = []
+    if (!title) missingFields.push('title')
+    if (!description) missingFields.push('description')
+    if (!category) missingFields.push('category')
+    if (!price) missingFields.push('price')
+    if (!stock) missingFields.push('stock')
+    if (!sellerId) missingFields.push('sellerId')
+    if (!village) missingFields.push('village')
+
+    if (missingFields.length > 0) {
+      console.error('Missing fields:', missingFields)
       return NextResponse.json(
-        { success: false, error: 'Missing required fields' },
+        { success: false, error: `Missing required fields: ${missingFields.join(', ')}` },
         { status: 400 }
       )
+    }
+
+    // Process images - ensure it's an array
+    let imageArray = []
+    if (images) {
+      if (typeof images === 'string') {
+        try {
+          imageArray = JSON.parse(images)
+        } catch (e) {
+          imageArray = [images]
+        }
+      } else if (Array.isArray(images)) {
+        imageArray = images
+      }
     }
 
     const product = await prisma.product.create({
@@ -51,7 +78,7 @@ export async function POST(request: NextRequest) {
         title,
         description,
         category,
-        images: typeof images === 'string' ? JSON.parse(images) : images,
+        images: imageArray,
         price: parseFloat(price),
         stock: parseInt(stock),
         sellerId: parseInt(sellerId),
@@ -59,14 +86,21 @@ export async function POST(request: NextRequest) {
       },
     })
 
+    console.log('Product created successfully:', product.id)
+
     return NextResponse.json({
       success: true,
       data: product,
+      message: 'Product listed successfully!',
     }, { status: 201 })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error creating product:', error)
     return NextResponse.json(
-      { success: false, error: 'Failed to create product' },
+      { 
+        success: false, 
+        error: error.message || 'Failed to create product',
+        details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      },
       { status: 500 }
     )
   }
@@ -103,11 +137,42 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({
       success: true,
       data: product,
+      message: 'Product updated successfully!',
     })
   } catch (error) {
     console.error('Error updating product:', error)
     return NextResponse.json(
       { success: false, error: 'Failed to update product' },
+      { status: 500 }
+    )
+  }
+}
+
+// DELETE - Delete a product
+export async function DELETE(request: NextRequest) {
+  try {
+    const searchParams = request.nextUrl.searchParams
+    const id = searchParams.get('id')
+
+    if (!id) {
+      return NextResponse.json(
+        { success: false, error: 'Product ID is required' },
+        { status: 400 }
+      )
+    }
+
+    await prisma.product.delete({
+      where: { id: parseInt(id) },
+    })
+
+    return NextResponse.json({
+      success: true,
+      message: 'Product deleted successfully!',
+    })
+  } catch (error) {
+    console.error('Error deleting product:', error)
+    return NextResponse.json(
+      { success: false, error: 'Failed to delete product' },
       { status: 500 }
     )
   }

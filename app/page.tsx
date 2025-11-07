@@ -191,7 +191,7 @@ export default function Home() {
               <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">Women Empowered</h3>
               {isVisible && (
                 <p className="text-5xl font-bold text-primary-600 dark:text-primary-400">
-                  <CountUp end={1250} duration={2.5} separator="," />+
+                  <CountUp end={75} duration={2.5} separator="," />+
                 </p>
               )}
             </motion.div>
@@ -206,7 +206,7 @@ export default function Home() {
               <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">Girls Educated</h3>
               {isVisible && (
                 <p className="text-5xl font-bold text-primary-600 dark:text-primary-400">
-                  <CountUp end={3200} duration={2.5} separator="," />+
+                  <CountUp end={120} duration={2.5} separator="," />+
                 </p>
               )}
             </motion.div>
@@ -221,7 +221,7 @@ export default function Home() {
               <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">Workshops</h3>
               {isVisible && (
                 <p className="text-5xl font-bold text-primary-600 dark:text-primary-400">
-                  <CountUp end={150} duration={2.5} separator="," />+
+                  <CountUp end={25} duration={2.5} separator="," />+
                 </p>
               )}
             </motion.div>
@@ -236,7 +236,7 @@ export default function Home() {
               <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">Communities</h3>
               {isVisible && (
                 <p className="text-5xl font-bold text-primary-600 dark:text-primary-400">
-                  <CountUp end={85} duration={2.5} separator="," />+
+                  <CountUp end={8} duration={2.5} separator="," />+
                 </p>
               )}
             </motion.div>

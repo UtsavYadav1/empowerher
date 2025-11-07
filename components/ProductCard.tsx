@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion'
 import { useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { FaShoppingCart, FaBolt, FaCheckCircle } from 'react-icons/fa'
@@ -21,10 +20,14 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, showAddToCart = true, showBuyNow = true }: ProductCardProps) {
   const [added, setAdded] = useState(false)
+  const [imgError, setImgError] = useState(false)
   const router = useRouter()
 
   // Generate placeholder image URL based on product ID if no image provided
-  const imageUrl = product.imageUrl || `https://images.unsplash.com/photo-${1500000000000 + product.id}?w=400&h=400&fit=crop&q=80`
+  const imageUrl = product.imageUrl || `https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop&q=80`
+  
+  // Fallback image if primary image fails
+  const fallbackImage = 'https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=400&h=400&fit=crop&q=80'
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -80,17 +83,18 @@ export default function ProductCard({ product, showAddToCart = true, showBuyNow 
       <Link href={`/customer/products/${product.id}`} className="block">
         {/* Product Image */}
         <div className="relative h-64 w-full overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800">
-          <Image
-            src={imageUrl}
+          <img
+            src={imgError ? fallbackImage : imageUrl}
             alt={product.name}
-            fill
-            className="object-cover group-hover:scale-110 transition-transform duration-300"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
             onError={(e) => {
-              // Fallback to placeholder if image fails to load
-              const target = e.target as HTMLImageElement
-              target.src = `https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=400&h=400&fit=crop&q=80`
+              if (!imgError) {
+                setImgError(true)
+                const target = e.target as HTMLImageElement
+                target.src = fallbackImage
+              }
             }}
+            loading="lazy"
           />
           {/* Overlay on hover */}
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />

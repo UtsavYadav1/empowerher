@@ -60,15 +60,47 @@ export default function OrdersPage() {
 
   const fetchOrders = async () => {
     try {
-      // Fetch orders from localStorage (in real app, this would be from API)
-      const ordersStr = localStorage.getItem('customerOrders')
-      if (ordersStr) {
-        const parsedOrders = JSON.parse(ordersStr)
-        setOrders(parsedOrders)
-      } else {
-        // Fallback to mock data if no orders exist
-        setOrders([])
+      let allOrders: Order[] = []
+      
+      // Fetch orders from database if user is logged in
+      if (user?.id) {
+        try {
+          const response = await fetch(`/api/mock/orders?customerId=${user.id}`)
+          const data = await response.json()
+          if (data.success && Array.isArray(data.data)) {
+            // Parse items if they're stored as string
+            allOrders = data.data.map((order: any) => ({
+              ...order,
+              items: typeof order.items === 'string' ? JSON.parse(order.items) : order.items,
+            }))
+          }
+        } catch (dbError) {
+          console.error('Error fetching orders from database:', dbError)
+        }
       }
+      
+      // Also check localStorage for any pending orders not yet synced
+      try {
+        const ordersStr = localStorage.getItem('customerOrders')
+        if (ordersStr) {
+          const localOrders = JSON.parse(ordersStr)
+          if (Array.isArray(localOrders) && localOrders.length > 0) {
+            // Merge with database orders (avoid duplicates by id)
+            const dbOrderIds = new Set(allOrders.map(o => o.id))
+            const uniqueLocalOrders = localOrders.filter((o: Order) => !dbOrderIds.has(o.id))
+            allOrders = [...allOrders, ...uniqueLocalOrders]
+          }
+        }
+      } catch (localError) {
+        console.error('Error reading localStorage:', localError)
+      }
+      
+      // Sort by creation date (most recent first)
+      allOrders.sort((a, b) => 
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+      
+      setOrders(allOrders)
     } catch (error) {
       console.error('Error fetching orders:', error)
       setOrders([])
@@ -206,7 +238,7 @@ export default function OrdersPage() {
                       <div>
                         <div className="flex items-center gap-3 mb-2">
                           <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                            Order #{order.id.slice(-8)}
+                            Order #{String(order.id).slice(-8)}
                           </h3>
                           <span className={`px-3 py-1 rounded-full text-sm font-semibold border-2 flex items-center gap-2 ${getStatusColor(order.status)}`}>
                             {getStatusIcon(order.status)}
@@ -273,20 +305,24 @@ export default function OrdersPage() {
                     {/* Order Summary */}
                     <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-4">
                       <div className="space-y-2">
-                        <div className="flex justify-between text-gray-700 dark:text-gray-300">
-                          <span>Subtotal:</span>
-                          <span className="font-semibold">₹{order.subtotal.toLocaleString()}</span>
-                        </div>
-                        <div className="flex justify-between text-gray-700 dark:text-gray-300">
-                          <span>Shipping:</span>
-                          <span className="font-semibold">
-                            {order.shipping === 0 ? (
-                              <span className="text-green-600 dark:text-green-400">FREE</span>
-                            ) : (
-                              `₹${order.shipping}`
-                            )}
-                          </span>
-                        </div>
+                        {order.subtotal !== undefined && (
+                          <div className="flex justify-between text-gray-700 dark:text-gray-300">
+                            <span>Subtotal:</span>
+                            <span className="font-semibold">₹{order.subtotal.toLocaleString()}</span>
+                          </div>
+                        )}
+                        {order.shipping !== undefined && (
+                          <div className="flex justify-between text-gray-700 dark:text-gray-300">
+                            <span>Shipping:</span>
+                            <span className="font-semibold">
+                              {order.shipping === 0 ? (
+                                <span className="text-green-600 dark:text-green-400">FREE</span>
+                              ) : (
+                                `₹${order.shipping}`
+                              )}
+                            </span>
+                          </div>
+                        )}
                         <div className="border-t border-gray-300 dark:border-gray-600 pt-2 flex justify-between font-bold text-xl text-gray-900 dark:text-white">
                           <span>Total Amount:</span>
                           <span className="text-primary-600 dark:text-primary-400">₹{order.total.toLocaleString()}</span>
@@ -296,14 +332,18 @@ export default function OrdersPage() {
 
                     {/* Payment Info */}
                     <div className="flex flex-wrap gap-4 text-sm">
-                      <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-                        <FaCreditCard className="text-primary-600 dark:text-primary-400" />
-                        <span>Payment: {order.paymentMethod.charAt(0).toUpperCase() + order.paymentMethod.slice(1)}</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-                        <FaTruck className="text-primary-600 dark:text-primary-400" />
-                        <span>Tracking: {order.trackingNumber}</span>
-                      </div>
+                      {order.paymentMethod && (
+                        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                          <FaCreditCard className="text-primary-600 dark:text-primary-400" />
+                          <span>Payment: {order.paymentMethod.charAt(0).toUpperCase() + order.paymentMethod.slice(1)}</span>
+                        </div>
+                      )}
+                      {order.trackingNumber && (
+                        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                          <FaTruck className="text-primary-600 dark:text-primary-400" />
+                          <span>Tracking: {order.trackingNumber}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </motion.div>

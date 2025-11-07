@@ -3,6 +3,7 @@
 export interface User {
   id: number
   name: string
+  email?: string
   phone: string
   role: string | null
   village: string | null
@@ -92,9 +93,12 @@ export function getDashboardPath(role: string | null): string {
 
   const roleMap: Record<string, string> = {
     girl: '/girls/dashboard',
-    woman: '/women/dashboard',
+    girls: '/girls/dashboard',
+    woman: '/girls/dashboard', // Women also use girls dashboard for training/schemes
+    women: '/women/dashboard', // Women entrepreneurs dashboard
     customer: '/customer/dashboard',
     admin: '/admin/dashboard',
+    agent: '/admin/dashboard',
     fieldagent: '/fieldagent/dashboard',
   }
 

@@ -34,21 +34,32 @@ export default function SellPage() {
     setSubmitting(true)
 
     try {
+      console.log('Submitting product:', {
+        ...formData,
+        sellerId: user?.id,
+      })
+
       const response = await fetch('/api/mock/products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...formData,
-          price: parseFloat(formData.price),
-          stock: parseInt(formData.stock),
+          title: formData.title,
+          description: formData.description,
+          category: formData.category,
+          price: formData.price,
+          stock: formData.stock,
           sellerId: user?.id || 1,
-          images: formData.images.length > 0 ? formData.images : ['/images/default.jpg'],
+          village: formData.village,
+          images: formData.images.length > 0 ? formData.images : [],
         }),
       })
 
       const data = await response.json()
-      if (data.success) {
+      console.log('Server response:', data)
+
+      if (response.ok && data.success) {
         setSuccess(true)
+        alert('Product listed successfully! 🎉')
         setFormData({
           title: '',
           description: '',
@@ -59,10 +70,12 @@ export default function SellPage() {
           village: user?.village || '',
         })
         setTimeout(() => setSuccess(false), 3000)
+      } else {
+        throw new Error(data.error || 'Failed to list product')
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating product:', error)
-      alert('Failed to create product. Please try again.')
+      alert(`Failed to create product: ${error.message}. Please check the console and try again.`)
     } finally {
       setSubmitting(false)
     }

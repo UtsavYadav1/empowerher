@@ -9,23 +9,24 @@ const prisma = new PrismaClient()
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { phone, password } = body
+    const { phone, email, password } = body
 
-    if (!phone || !password) {
+    // Check if at least one identifier (phone or email) and password are provided
+    if ((!phone && !email) || !password) {
       return NextResponse.json(
-        { success: false, error: 'Phone and password are required' },
+        { success: false, error: 'Email/Phone and password are required' },
         { status: 400 }
       )
     }
 
-    // Find user by phone
+    // Find user by phone or email
     const user = await prisma.user.findFirst({
-      where: { phone },
+      where: email ? { email } : { phone },
     })
 
     if (!user) {
       return NextResponse.json(
-        { success: false, error: 'Invalid phone or password' },
+        { success: false, error: 'Invalid credentials' },
         { status: 401 }
       )
     }
@@ -33,7 +34,7 @@ export async function POST(request: NextRequest) {
     // Check password (in production, use bcrypt to compare hashed passwords)
     if (user.password !== password) {
       return NextResponse.json(
-        { success: false, error: 'Invalid phone or password' },
+        { success: false, error: 'Invalid credentials' },
         { status: 401 }
       )
     }
@@ -52,6 +53,7 @@ export async function POST(request: NextRequest) {
         user: {
           id: user.id,
           name: user.name,
+          email: user.email,
           phone: user.phone,
           role: user.role,
           village: user.village,

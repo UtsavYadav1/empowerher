@@ -24,11 +24,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Simulate payment processing delay
-    await new Promise(resolve => setTimeout(resolve, 1500))
+    // Simulate payment processing delay (shorter for better UX)
+    await new Promise(resolve => setTimeout(resolve, 800))
 
-    // Random success/failure (50/50)
-    const isSuccess = Math.random() > 0.5
+    // COD and Agent payments always succeed (no actual payment needed)
+    // UPI has higher success rate (95%)
+    let isSuccess = true
+    if (normalizedMethod === 'upi') {
+      isSuccess = Math.random() > 0.05 // 95% success rate for UPI
+    }
 
     if (isSuccess) {
       // Generate mock transaction ID
@@ -36,6 +40,7 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json({
         success: true,
+        transactionId, // Add at root level for easier access
         data: {
           transactionId,
           amount,

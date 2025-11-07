@@ -4,8 +4,10 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { motion, useScroll, useSpring } from 'framer-motion'
 import { FiMenu, FiX, FiSun, FiMoon, FiGlobe } from 'react-icons/fi'
+import { FaHandHoldingHeart, FaStar } from 'react-icons/fa'
 import { useRouter, usePathname } from 'next/navigation'
 import { isAuthenticated, getCurrentUser, logout, getDashboardPath } from '@/utils/auth'
+import UserProfile from './UserProfile'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -39,6 +41,12 @@ export default function Navbar() {
     setDarkMode(isDark)
     if (isDark) {
       document.documentElement.classList.add('dark')
+    }
+
+    // Check for language preference
+    const savedLang = localStorage.getItem('language') as 'en' | 'hin' | null
+    if (savedLang) {
+      setLanguage(savedLang)
     }
 
     return () => clearInterval(interval)
@@ -111,10 +119,16 @@ export default function Navbar() {
           <div className="flex justify-between items-center h-16">
             <Link 
               href="/" 
-              className="text-2xl font-bold text-primary-600 dark:text-primary-400 transition-colors"
+              className="flex items-center gap-2 group"
               aria-label="EmpowerHer Home"
             >
-              EmpowerHer
+              <div className="relative">
+                <FaHandHoldingHeart className="text-3xl text-primary-600 dark:text-primary-400 group-hover:scale-110 transition-transform" />
+                <FaStar className="text-xs text-yellow-500 absolute -top-1 -right-1 animate-pulse" />
+              </div>
+              <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-pink-600 dark:from-primary-400 dark:to-pink-400 bg-clip-text text-transparent">
+                EmpowerHer
+              </span>
             </Link>
             
             {/* Desktop Menu */}
@@ -155,15 +169,25 @@ export default function Navbar() {
                 {t.contact}
               </Link>
 
-              {/* Language Toggle */}
-              <button
-                onClick={() => setLanguage(language === 'en' ? 'hin' : 'en')}
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              {/* Language Toggle - Enhanced */}
+              <motion.button
+                onClick={() => {
+                  const newLang = language === 'en' ? 'hin' : 'en'
+                  setLanguage(newLang)
+                  localStorage.setItem('language', newLang)
+                  // You can add translation logic here
+                }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-primary-500 to-pink-500 text-white hover:from-primary-600 hover:to-pink-600 transition-all shadow-md hover:shadow-lg"
                 aria-label={`Switch to ${language === 'en' ? 'Hindi' : 'English'}`}
-                title={`Switch to ${language === 'en' ? 'Hindi' : 'English'}`}
+                title={`Current: ${language === 'en' ? 'English' : 'हिंदी'} - Click to switch`}
               >
-                <FiGlobe className="text-xl text-gray-700 dark:text-gray-300" />
-              </button>
+                <FiGlobe className="text-lg" />
+                <span className="font-semibold text-sm">
+                  {language === 'en' ? 'EN' : 'हिं'}
+                </span>
+              </motion.button>
 
               {/* Dark Mode Toggle */}
               <button
@@ -180,24 +204,7 @@ export default function Navbar() {
               </button>
 
               {isLoggedIn ? (
-                <>
-                  {dashboardLink && (
-                    <Link 
-                      href={dashboardLink} 
-                      className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors text-lg"
-                      aria-label={t.dashboard}
-                    >
-                      {t.dashboard}
-                    </Link>
-                  )}
-                  <button
-                    onClick={handleLogout}
-                    className="btn-primary text-sm px-4 py-2"
-                    aria-label={t.logout}
-                  >
-                    {t.logout}
-                  </button>
-                </>
+                <UserProfile />
               ) : (
                 <Link 
                   href="/login" 
@@ -264,12 +271,20 @@ export default function Navbar() {
                 {t.contact}
               </Link>
               <div className="flex gap-2 pt-2">
-                <button
-                  onClick={() => setLanguage(language === 'en' ? 'hin' : 'en')}
-                  className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                <motion.button
+                  onClick={() => {
+                    const newLang = language === 'en' ? 'hin' : 'en'
+                    setLanguage(newLang)
+                    localStorage.setItem('language', newLang)
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-primary-500 to-pink-500 text-white hover:from-primary-600 hover:to-pink-600 transition-all shadow-md"
                 >
-                  <FiGlobe className="text-xl" />
-                </button>
+                  <FiGlobe className="text-lg" />
+                  <span className="font-semibold text-sm">
+                    {language === 'en' ? 'English' : 'हिंदी'}
+                  </span>
+                </motion.button>
                 <button
                   onClick={() => setDarkMode(!darkMode)}
                   className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"

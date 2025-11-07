@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import { CardSkeleton } from '@/components/LoadingSkeleton'
-import { FaSync, FaWifi, FaWifiOff, FaCheckCircle, FaExclamationTriangle } from 'react-icons/fa'
+import { FaSync, FaWifi, FaCheckCircle, FaExclamationTriangle, FaSignal, FaUserPlus, FaClock } from 'react-icons/fa'
 import localforage from 'localforage'
 
 interface OfflineUser {
@@ -190,52 +190,62 @@ export default function AgentPage() {
 
   return (
     <ProtectedRoute requireRole={true}>
-      <div className="min-h-screen py-20 container mx-auto px-4" role="main">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="max-w-4xl mx-auto"
-        >
-          <div className="flex justify-between items-center mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
-              Offline Agent Portal
-            </h1>
-            <div className="flex items-center gap-4">
-              {/* Online/Offline Status */}
-              <div className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
-                isOnline
-                  ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300'
-                  : 'bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300'
-              }`}>
-                {isOnline ? <FaWifi /> : <FaWifiOff />}
-                <span className="font-semibold">{isOnline ? 'Online' : 'Offline'}</span>
+      <div className="min-h-screen py-20 bg-gradient-to-br from-gray-50 via-green-50/30 to-emerald-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900" role="main">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-6xl mx-auto"
+          >
+            {/* Header */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+              <div>
+                <h1 className="text-5xl font-bold bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2">
+                  Offline Registration Portal
+                </h1>
+                <p className="text-gray-600 dark:text-gray-400">Register users even without internet connection</p>
               </div>
+              <div className="flex items-center gap-3">
+                {/* Online/Offline Status */}
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold shadow-md ${
+                    isOnline
+                      ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white'
+                      : 'bg-gradient-to-r from-red-500 to-rose-600 text-white'
+                  }`}
+                >
+                  {isOnline ? <FaWifi className="text-lg" /> : <FaExclamationTriangle className="text-lg" />}
+                  <span>{isOnline ? 'Online' : 'Offline'}</span>
+                </motion.div>
 
-              {/* Sync Button */}
-              <button
-                onClick={syncPendingUsers}
-                disabled={!isOnline || syncStatus === 'syncing' || pendingUsers.length === 0}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${
-                  syncStatus === 'syncing'
-                    ? 'bg-blue-500 text-white'
-                    : syncStatus === 'success'
-                    ? 'bg-green-500 text-white'
-                    : syncStatus === 'error'
-                    ? 'bg-red-500 text-white'
-                    : isOnline && pendingUsers.length > 0
-                    ? 'bg-primary-600 text-white hover:bg-primary-700'
-                    : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
-                }`}
-                aria-label="Sync pending registrations"
-              >
-                <FaSync className={syncStatus === 'syncing' ? 'animate-spin' : ''} />
-                {syncStatus === 'syncing' ? 'Syncing...' : 
-                 syncStatus === 'success' ? 'Synced!' :
-                 syncStatus === 'error' ? 'Error' :
-                 `Sync (${pendingUsers.length})`}
-              </button>
+                {/* Sync Button */}
+                <motion.button
+                  whileHover={{ scale: pendingUsers.length > 0 && isOnline ? 1.05 : 1 }}
+                  whileTap={{ scale: pendingUsers.length > 0 && isOnline ? 0.95 : 1 }}
+                  onClick={syncPendingUsers}
+                  disabled={!isOnline || syncStatus === 'syncing' || pendingUsers.length === 0}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all shadow-md ${
+                    syncStatus === 'syncing'
+                      ? 'bg-gradient-to-r from-blue-500 to-cyan-600 text-white'
+                      : syncStatus === 'success'
+                      ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white'
+                      : syncStatus === 'error'
+                      ? 'bg-gradient-to-r from-red-500 to-rose-600 text-white'
+                      : isOnline && pendingUsers.length > 0
+                      ? 'bg-gradient-to-r from-purple-500 to-pink-600 text-white hover:shadow-lg'
+                      : 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                  }`}
+                  aria-label="Sync pending registrations"
+                >
+                  <FaSync className={syncStatus === 'syncing' ? 'animate-spin' : ''} />
+                  {syncStatus === 'syncing' ? 'Syncing...' : 
+                   syncStatus === 'success' ? 'Synced!' :
+                   syncStatus === 'error' ? 'Error' :
+                   `Sync (${pendingUsers.length})`}
+                </motion.button>
+              </div>
             </div>
-          </div>
 
           {/* Sync Status Indicator */}
           {syncStatus === 'success' && (
@@ -376,6 +386,7 @@ export default function AgentPage() {
             </div>
           </div>
         </motion.div>
+        </div>
       </div>
     </ProtectedRoute>
   )
