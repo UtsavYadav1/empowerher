@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { FaUser, FaEnvelope, FaPhone, FaLock, FaMapMarkerAlt, FaUserShield, FaCheckCircle, FaEye, FaEyeSlash, FaArrowRight, FaArrowLeft, FaShieldAlt } from 'react-icons/fa'
+import { FaUser, FaEnvelope, FaPhone, FaLock, FaMapMarkerAlt, FaUserShield, FaCheckCircle, FaEye, FaEyeSlash, FaArrowRight, FaArrowLeft, FaShieldAlt, FaUserTie, FaShoppingCart, FaUserCheck } from 'react-icons/fa'
 
 export default function RegisterPage() {
   const [step, setStep] = useState(1)
@@ -14,7 +14,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [village, setVillage] = useState('')
-  const [role, setRole] = useState<'girl' | 'customer' | ''>('')
+  const [role, setRole] = useState<'girl' | 'woman' | 'customer' | 'admin' | 'fieldagent' | ''>('')
   const [emailOTP, setEmailOTP] = useState('')
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
@@ -511,8 +511,8 @@ export default function RegisterPage() {
                       <FaUserShield className="text-primary-600" /> Select Your Role *
                     </label>
                     
-                    <div className="grid md:grid-cols-2 gap-4">
-                      {/* Girl/Woman Option */}
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {/* Girl Option */}
                       <motion.button
                         type="button"
                         whileHover={{ scale: 1.03 }}
@@ -520,24 +520,54 @@ export default function RegisterPage() {
                         onClick={() => setRole('girl')}
                         className={`p-6 rounded-xl border-3 transition-all ${
                           role === 'girl'
-                            ? 'border-primary-600 bg-primary-50 dark:bg-primary-900/20 shadow-lg'
-                            : 'border-gray-300 dark:border-gray-600 hover:border-primary-400'
+                            ? 'border-pink-600 bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20 shadow-lg'
+                            : 'border-gray-300 dark:border-gray-600 hover:border-pink-400'
                         }`}
                       >
                         <div className="flex flex-col items-center text-center">
                           <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 ${
                             role === 'girl'
-                              ? 'bg-primary-600 text-white'
+                              ? 'bg-gradient-to-br from-pink-500 to-rose-500 text-white'
                               : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
                           }`}>
                             <FaUser className="text-2xl" />
                           </div>
-                          <h3 className="text-lg font-bold mb-1 text-gray-900 dark:text-white">Girl / Woman</h3>
+                          <h3 className="text-lg font-bold mb-1 text-gray-900 dark:text-white">Girl</h3>
                           <p className="text-sm text-gray-600 dark:text-gray-400">
-                            Access training, schemes, career guidance, and community support
+                            Access educational resources and courses
                           </p>
                           {role === 'girl' && (
-                            <FaCheckCircle className="text-primary-600 text-xl mt-3" />
+                            <FaCheckCircle className="text-pink-600 text-xl mt-3" />
+                          )}
+                        </div>
+                      </motion.button>
+
+                      {/* Woman Option */}
+                      <motion.button
+                        type="button"
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={() => setRole('woman')}
+                        className={`p-6 rounded-xl border-3 transition-all ${
+                          role === 'woman'
+                            ? 'border-purple-600 bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 shadow-lg'
+                            : 'border-gray-300 dark:border-gray-600 hover:border-purple-400'
+                        }`}
+                      >
+                        <div className="flex flex-col items-center text-center">
+                          <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 ${
+                            role === 'woman'
+                              ? 'bg-gradient-to-br from-purple-500 to-indigo-500 text-white'
+                              : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                          }`}>
+                            <FaUserTie className="text-2xl" />
+                          </div>
+                          <h3 className="text-lg font-bold mb-1 text-gray-900 dark:text-white">Woman</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            Business tools and professional development
+                          </p>
+                          {role === 'woman' && (
+                            <FaCheckCircle className="text-purple-600 text-xl mt-3" />
                           )}
                         </div>
                       </motion.button>
@@ -550,24 +580,84 @@ export default function RegisterPage() {
                         onClick={() => setRole('customer')}
                         className={`p-6 rounded-xl border-3 transition-all ${
                           role === 'customer'
-                            ? 'border-primary-600 bg-primary-50 dark:bg-primary-900/20 shadow-lg'
-                            : 'border-gray-300 dark:border-gray-600 hover:border-primary-400'
+                            ? 'border-green-600 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 shadow-lg'
+                            : 'border-gray-300 dark:border-gray-600 hover:border-green-400'
                         }`}
                       >
                         <div className="flex flex-col items-center text-center">
                           <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 ${
                             role === 'customer'
-                              ? 'bg-primary-600 text-white'
+                              ? 'bg-gradient-to-br from-green-500 to-emerald-500 text-white'
+                              : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                          }`}>
+                            <FaShoppingCart className="text-2xl" />
+                          </div>
+                          <h3 className="text-lg font-bold mb-1 text-gray-900 dark:text-white">Customer</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            Support women-owned businesses
+                          </p>
+                          {role === 'customer' && (
+                            <FaCheckCircle className="text-green-600 text-xl mt-3" />
+                          )}
+                        </div>
+                      </motion.button>
+
+                      {/* Admin Option */}
+                      <motion.button
+                        type="button"
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={() => setRole('admin')}
+                        className={`p-6 rounded-xl border-3 transition-all ${
+                          role === 'admin'
+                            ? 'border-gray-700 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700/20 dark:to-gray-800/20 shadow-lg'
+                            : 'border-gray-300 dark:border-gray-600 hover:border-gray-500'
+                        }`}
+                      >
+                        <div className="flex flex-col items-center text-center">
+                          <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 ${
+                            role === 'admin'
+                              ? 'bg-gradient-to-br from-gray-600 to-gray-800 text-white'
                               : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
                           }`}>
                             <FaUserShield className="text-2xl" />
                           </div>
-                          <h3 className="text-lg font-bold mb-1 text-gray-900 dark:text-white">Customer / Supporter</h3>
+                          <h3 className="text-lg font-bold mb-1 text-gray-900 dark:text-white">Admin</h3>
                           <p className="text-sm text-gray-600 dark:text-gray-400">
-                            Purchase products, support women entrepreneurs, and make an impact
+                            Platform management and analytics
                           </p>
-                          {role === 'customer' && (
-                            <FaCheckCircle className="text-primary-600 text-xl mt-3" />
+                          {role === 'admin' && (
+                            <FaCheckCircle className="text-gray-700 text-xl mt-3" />
+                          )}
+                        </div>
+                      </motion.button>
+
+                      {/* Field Agent Option */}
+                      <motion.button
+                        type="button"
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={() => setRole('fieldagent')}
+                        className={`p-6 rounded-xl border-3 transition-all ${
+                          role === 'fieldagent'
+                            ? 'border-blue-600 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 shadow-lg'
+                            : 'border-gray-300 dark:border-gray-600 hover:border-blue-400'
+                        }`}
+                      >
+                        <div className="flex flex-col items-center text-center">
+                          <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 ${
+                            role === 'fieldagent'
+                              ? 'bg-gradient-to-br from-blue-500 to-cyan-500 text-white'
+                              : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                          }`}>
+                            <FaUserCheck className="text-2xl" />
+                          </div>
+                          <h3 className="text-lg font-bold mb-1 text-gray-900 dark:text-white">Field Agent</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            Field operations and community outreach
+                          </p>
+                          {role === 'fieldagent' && (
+                            <FaCheckCircle className="text-blue-600 text-xl mt-3" />
                           )}
                         </div>
                       </motion.button>
@@ -576,7 +666,7 @@ export default function RegisterPage() {
 
                   <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
                     <p className="text-sm text-purple-900 dark:text-purple-300">
-                      <strong>Note:</strong> You can change your role later from your profile settings if needed.
+                      <strong>Note:</strong> Choose the role that best describes you. This determines which dashboard and features you'll have access to.
                     </p>
                   </div>
                 </motion.div>

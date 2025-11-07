@@ -77,7 +77,10 @@ export default function Home() {
               sizes="100vw"
               aria-hidden="true"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-primary-900/80 via-primary-700/70 to-pink-900/80" />
+            {/* Professional overlay - clean dark gradient with vignette */}
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 via-gray-900/40 to-slate-900/50" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.3)_100%)]" />
           </div>
         </motion.div>
 
@@ -88,50 +91,67 @@ export default function Home() {
           transition={{ duration: 0.8 }}
           className="relative z-10 text-center text-white px-4 max-w-5xl mx-auto"
         >
-          <motion.h1
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            className="text-6xl md:text-8xl font-bold mb-6 text-shadow-lg bg-gradient-to-r from-white via-pink-100 to-white bg-clip-text text-transparent"
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
+            className="mb-8"
           >
-            EmpowerHer
-          </motion.h1>
+            <h1 className="text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-none">
+              <span 
+                className="inline-block bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-300 bg-clip-text text-transparent"
+                style={{
+                  textShadow: '0 0 80px rgba(251, 146, 60, 0.5)',
+                  filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4))'
+                }}
+              >
+                EmpowerHer
+              </span>
+            </h1>
+          </motion.div>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="text-2xl md:text-3xl mb-4 max-w-3xl mx-auto leading-relaxed font-light"
+            transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
+            className="text-xl md:text-2xl lg:text-3xl mb-6 max-w-4xl mx-auto leading-relaxed font-normal text-white/95"
+            style={{ textShadow: '0 2px 8px rgba(0, 0, 0, 0.8)' }}
           >
             Empowering women and girls with education, business tools, and social impact
           </motion.p>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.6 }}
-            className="text-lg md:text-xl mb-10 max-w-2xl mx-auto opacity-90"
+            transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
+            className="text-base md:text-lg lg:text-xl mb-12 max-w-3xl mx-auto text-white/85 font-light"
+            style={{ textShadow: '0 2px 6px rgba(0, 0, 0, 0.7)' }}
           >
             Join thousands of women and girls building brighter futures
           </motion.p>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
+            transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
+            className="flex flex-col sm:flex-row gap-5 justify-center items-center"
           >
             <Link 
               href="/register" 
-              className="group btn-primary bg-white text-primary-600 hover:bg-gray-100 text-lg px-10 py-5 rounded-xl font-semibold transition-all hover:scale-105 shadow-2xl hover:shadow-3xl focus:outline-none focus:ring-4 focus:ring-white/50 flex items-center justify-center gap-2"
+              className="group relative overflow-hidden bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 bg-size-200 bg-pos-0 hover:bg-pos-100 text-white text-lg px-12 py-4 rounded-full font-semibold transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-orange-500/50 focus:outline-none focus:ring-4 focus:ring-orange-400/50 flex items-center justify-center gap-3 min-w-[200px]"
+              style={{
+                backgroundSize: '200% 100%',
+                backgroundPosition: '0% 0%'
+              }}
               aria-label="Get started with EmpowerHer"
             >
-              Get Started
-              <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+              <span className="relative z-10">Get Started</span>
+              <FaArrowRight className="relative z-10 group-hover:translate-x-1 transition-transform duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-amber-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </Link>
             <Link 
               href="/about" 
-              className="group btn-secondary bg-transparent border-3 border-white text-white hover:bg-white/10 backdrop-blur-sm text-lg px-10 py-5 rounded-xl font-semibold transition-all hover:scale-105 shadow-2xl focus:outline-none focus:ring-4 focus:ring-white/50"
+              className="group relative bg-white/10 backdrop-blur-lg border-2 border-white/40 text-white hover:bg-white hover:text-gray-900 text-lg px-12 py-4 rounded-full font-semibold transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-white/30 focus:outline-none focus:ring-4 focus:ring-white/40 min-w-[200px] flex items-center justify-center"
               aria-label="Learn more about EmpowerHer"
             >
-              Learn More
+              <span className="relative z-10 transition-colors duration-500">Learn More</span>
             </Link>
           </motion.div>
         </motion.div>
@@ -159,7 +179,7 @@ export default function Home() {
       </section>
 
       {/* Impact Counters Section */}
-      <section className="py-20 bg-gradient-to-br from-primary-50 via-pink-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900" aria-label="Impact statistics">
+      <section className="py-20 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900" aria-label="Impact statistics">
         <div className="container mx-auto px-4">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -185,12 +205,14 @@ export default function Home() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="card text-center bg-white dark:bg-gray-800 hover:shadow-2xl transition-all hover:scale-105 border-2 border-primary-200 dark:border-primary-800"
+              className="card text-center bg-white dark:bg-gray-800 hover:shadow-2xl hover:shadow-orange-200 transition-all hover:scale-105 border border-orange-200 dark:border-gray-700 hover:border-orange-400 dark:hover:border-orange-500"
             >
-              <FaUsers className="text-6xl text-primary-600 dark:text-primary-400 mx-auto mb-4" />
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-orange-500 to-amber-600 rounded-2xl mb-4 shadow-lg shadow-orange-300">
+                <FaUsers className="text-4xl text-white" />
+              </div>
               <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">Women Empowered</h3>
               {isVisible && (
-                <p className="text-5xl font-bold text-primary-600 dark:text-primary-400">
+                <p className="text-5xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
                   <CountUp end={75} duration={2.5} separator="," />+
                 </p>
               )}
@@ -200,12 +222,14 @@ export default function Home() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="card text-center bg-white dark:bg-gray-800 hover:shadow-2xl transition-all hover:scale-105 border-2 border-primary-200 dark:border-primary-800"
+              className="card text-center bg-white dark:bg-gray-800 hover:shadow-2xl hover:shadow-orange-200 transition-all hover:scale-105 border border-orange-200 dark:border-gray-700 hover:border-orange-400 dark:hover:border-orange-500"
             >
-              <FaGraduationCap className="text-6xl text-primary-600 dark:text-primary-400 mx-auto mb-4" />
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl mb-4 shadow-lg shadow-blue-300">
+                <FaGraduationCap className="text-4xl text-white" />
+              </div>
               <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">Girls Educated</h3>
               {isVisible && (
-                <p className="text-5xl font-bold text-primary-600 dark:text-primary-400">
+                <p className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
                   <CountUp end={120} duration={2.5} separator="," />+
                 </p>
               )}
@@ -215,12 +239,14 @@ export default function Home() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="card text-center bg-white dark:bg-gray-800 hover:shadow-2xl transition-all hover:scale-105 border-2 border-primary-200 dark:border-primary-800"
+              className="card text-center bg-white dark:bg-gray-800 hover:shadow-2xl hover:shadow-orange-200 transition-all hover:scale-105 border border-orange-200 dark:border-gray-700 hover:border-orange-400 dark:hover:border-orange-500"
             >
-              <FaHandHoldingHeart className="text-6xl text-primary-600 dark:text-primary-400 mx-auto mb-4" />
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-pink-500 to-rose-500 rounded-2xl mb-4 shadow-lg shadow-pink-300">
+                <FaHandHoldingHeart className="text-4xl text-white" />
+              </div>
               <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">Workshops</h3>
               {isVisible && (
-                <p className="text-5xl font-bold text-primary-600 dark:text-primary-400">
+                <p className="text-5xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">
                   <CountUp end={25} duration={2.5} separator="," />+
                 </p>
               )}
@@ -230,12 +256,14 @@ export default function Home() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="card text-center bg-white dark:bg-gray-800 hover:shadow-2xl transition-all hover:scale-105 border-2 border-primary-200 dark:border-primary-800"
+              className="card text-center bg-white dark:bg-gray-800 hover:shadow-2xl hover:shadow-orange-200 transition-all hover:scale-105 border border-orange-200 dark:border-gray-700 hover:border-orange-400 dark:hover:border-orange-500"
             >
-              <FaChartLine className="text-6xl text-primary-600 dark:text-primary-400 mx-auto mb-4" />
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl mb-4 shadow-lg shadow-emerald-300">
+                <FaChartLine className="text-4xl text-white" />
+              </div>
               <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">Communities</h3>
               {isVisible && (
-                <p className="text-5xl font-bold text-primary-600 dark:text-primary-400">
+                <p className="text-5xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                   <CountUp end={8} duration={2.5} separator="," />+
                 </p>
               )}
@@ -274,9 +302,9 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="card text-center bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 hover:shadow-2xl transition-all hover:scale-105 border-2 border-gray-200 dark:border-gray-700"
+                className="card text-center bg-white dark:from-gray-800 dark:to-gray-700 hover:shadow-2xl hover:shadow-orange-200 transition-all hover:scale-105 border border-orange-200 dark:border-gray-700 hover:border-orange-400 dark:hover:border-orange-500"
               >
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-500 to-pink-500 rounded-full mb-4">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-500 to-amber-600 rounded-full mb-4 shadow-lg">
                   <Icon className="text-3xl text-white" />
                 </div>
                 <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-white">{feature.title}</h3>
@@ -293,7 +321,7 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="card text-center bg-gradient-to-br from-primary-500 to-pink-500 text-white hover:shadow-2xl transition-all hover:scale-105"
+            className="card text-center bg-gradient-to-br from-orange-500 to-amber-600 text-white hover:shadow-2xl hover:shadow-orange-400 transition-all hover:scale-105 hover:-translate-y-2"
           >
             <h3 className="text-2xl font-bold mb-4">For Girls</h3>
             <p className="text-lg mb-6 leading-relaxed opacity-90">
@@ -301,7 +329,7 @@ export default function Home() {
             </p>
             <Link
               href="/girls/dashboard"
-              className="inline-flex items-center gap-2 bg-white text-primary-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all hover:gap-4"
+              className="inline-flex items-center gap-2 bg-white text-orange-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all hover:gap-4 shadow-lg"
               aria-label="Explore Girls Section"
             >
               Explore Girls Section <FaArrowRight />
@@ -349,7 +377,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-primary-50 dark:from-gray-800 dark:to-gray-900" aria-label="Testimonials">
+      <section className="py-20 bg-white dark:from-gray-800 dark:to-gray-900" aria-label="Testimonials">
         <div className="container mx-auto px-4">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -409,8 +437,15 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-primary-600 to-pink-600 text-white" aria-label="Call to action">
-        <div className="container mx-auto px-4 text-center">
+      <section className="py-20 bg-gradient-to-br from-orange-600 via-amber-600 to-yellow-600 text-white relative overflow-hidden" aria-label="Call to action">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+            backgroundSize: '40px 40px'
+          }} />
+        </div>
+        <div className="container mx-auto px-4 text-center relative z-10">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -438,7 +473,7 @@ export default function Home() {
           >
             <Link 
               href="/register" 
-              className="group bg-white text-primary-600 hover:bg-gray-100 text-lg px-10 py-5 rounded-xl font-semibold transition-all hover:scale-105 shadow-2xl flex items-center justify-center gap-2"
+              className="group bg-white text-orange-600 hover:bg-gray-100 text-lg px-10 py-5 rounded-xl font-semibold transition-all hover:scale-105 shadow-2xl flex items-center justify-center gap-2"
               aria-label="Get started with EmpowerHer"
             >
               Create Your Account
@@ -446,7 +481,7 @@ export default function Home() {
             </Link>
             <Link 
               href="/workshops" 
-              className="bg-transparent border-3 border-white text-white hover:bg-white/10 backdrop-blur-sm text-lg px-10 py-5 rounded-xl font-semibold transition-all hover:scale-105 shadow-2xl flex items-center justify-center gap-2"
+              className="bg-white/10 backdrop-blur-md border-2 border-white/30 text-white hover:bg-white/20 text-lg px-10 py-5 rounded-xl font-semibold transition-all hover:scale-105 shadow-2xl flex items-center justify-center gap-2"
               aria-label="Browse workshops"
             >
               Browse Workshops

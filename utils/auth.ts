@@ -94,7 +94,7 @@ export function getDashboardPath(role: string | null): string {
   const roleMap: Record<string, string> = {
     girl: '/girls/dashboard',
     girls: '/girls/dashboard',
-    woman: '/girls/dashboard', // Women also use girls dashboard for training/schemes
+    woman: '/women/dashboard', // Women entrepreneurs dashboard
     women: '/women/dashboard', // Women entrepreneurs dashboard
     customer: '/customer/dashboard',
     admin: '/admin/dashboard',
