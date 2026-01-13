@@ -9,6 +9,7 @@
     "lint": "next lint",
     "prisma:seed": "npx tsx prisma/seed.ts",
     "test": "jest",
+    "postinstall": "prisma generate",
     "verify": "node -e \"(async()=>{const cp=require('child_process');const tryPorts=async(ports)=>{for(const p of ports){const code=await new Promise(res=>{const child=cp.spawn('npx', ['tsx','scripts/verify.ts'],{stdio:'inherit',shell:true,env:{...process.env,BASE_URL:`http://localhost:${p}`}});child.on('exit',res)});if(code===0)return 0;}return 1;};const srv=cp.spawn('npm',['run','dev'],{stdio:'inherit',shell:true});setTimeout(async()=>{const code=await tryPorts([3000,3001,3002,3003]);srv.kill();process.exit(code);},5000);})()\""
   },
   "dependencies": {
