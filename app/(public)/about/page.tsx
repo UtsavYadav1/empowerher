@@ -34,11 +34,11 @@ const carouselItems = [
   },
 ]
 
-const stats = [
-  { icon: FaUsers, label: 'Women Empowered', value: 75, suffix: '+' },
-  { icon: FaGraduationCap, label: 'Girls Educated', value: 120, suffix: '+' },
-  { icon: FaHandHoldingHeart, label: 'Workshops Conducted', value: 25, suffix: '+' },
-  { icon: FaChartLine, label: 'Communities Reached', value: 8, suffix: '+' },
+const initialStats = [
+  { icon: FaUsers, label: 'Women Empowered', value: 0, suffix: '+' },
+  { icon: FaGraduationCap, label: 'Girls Educated', value: 0, suffix: '+' },
+  { icon: FaHandHoldingHeart, label: 'Workshops Conducted', value: 0, suffix: '+' },
+  { icon: FaChartLine, label: 'Communities Reached', value: 0, suffix: '+' },
 ]
 
 const timeline = [
@@ -115,10 +115,29 @@ const testimonials = [
 
 export default function AboutPage() {
   const [isVisible, setIsVisible] = useState(false)
+  const [impactStats, setImpactStats] = useState(initialStats)
 
   useEffect(() => {
     setIsVisible(true)
+    fetchStats()
   }, [])
+
+  const fetchStats = async () => {
+    try {
+      const response = await fetch('/api/stats/impact')
+      const result = await response.json()
+      if (result.success) {
+        setImpactStats([
+          { icon: FaUsers, label: 'Women Empowered', value: result.data.womenEmpowered, suffix: '+' },
+          { icon: FaGraduationCap, label: 'Girls Educated', value: result.data.girlsEducated, suffix: '+' },
+          { icon: FaHandHoldingHeart, label: 'Workshops Conducted', value: result.data.workshops, suffix: '+' },
+          { icon: FaChartLine, label: 'Communities Reached', value: result.data.communities, suffix: '+' },
+        ])
+      }
+    } catch (error) {
+      console.error('Error fetching stats:', error)
+    }
+  }
 
   return (
     <div className="min-h-screen py-20 container mx-auto px-4" role="main">
@@ -151,7 +170,7 @@ export default function AboutPage() {
       {/* Statistics Section */}
       <section className="mb-16 py-12 bg-gradient-to-br from-primary-50 to-pink-50 dark:from-gray-900 dark:to-gray-800 rounded-3xl">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {stats.map((stat, index) => {
+          {impactStats.map((stat, index) => {
             const Icon = stat.icon
             return (
               <motion.div
@@ -190,7 +209,7 @@ export default function AboutPage() {
           <FaRocket className="text-5xl mb-4" />
           <h2 className="text-3xl font-bold mb-4">Our Mission</h2>
           <p className="text-lg leading-relaxed opacity-90">
-            To empower women and girls by providing accessible education, business opportunities, and a supportive community 
+            To empower women and girls by providing accessible education, business opportunities, and a supportive community
             that helps them achieve their full potential and create lasting social impact.
           </p>
         </motion.div>
@@ -205,7 +224,7 @@ export default function AboutPage() {
           <FaLightbulb className="text-5xl mb-4" />
           <h2 className="text-3xl font-bold mb-4">Our Vision</h2>
           <p className="text-lg leading-relaxed opacity-90">
-            A world where every woman and girl has equal access to education, economic opportunities, and the tools needed 
+            A world where every woman and girl has equal access to education, economic opportunities, and the tools needed
             to build a prosperous future for themselves and their communities.
           </p>
         </motion.div>
@@ -225,7 +244,7 @@ export default function AboutPage() {
         <div className="relative">
           {/* Timeline Line */}
           <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-primary-500 to-pink-500 transform md:-translate-x-1/2" />
-          
+
           <div className="space-y-12">
             {timeline.map((item, index) => {
               const Icon = item.icon
@@ -236,9 +255,8 @@ export default function AboutPage() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className={`relative flex items-center gap-6 ${
-                    index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                  }`}
+                  className={`relative flex items-center gap-6 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+                    }`}
                 >
                   {/* Timeline Dot */}
                   <div className="absolute left-8 md:left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
@@ -248,9 +266,8 @@ export default function AboutPage() {
                   </div>
 
                   {/* Content Card */}
-                  <div className={`flex-1 ml-24 md:ml-0 ${
-                    index % 2 === 0 ? 'md:mr-auto md:pr-12' : 'md:ml-auto md:pl-12'
-                  }`}>
+                  <div className={`flex-1 ml-24 md:ml-0 ${index % 2 === 0 ? 'md:mr-auto md:pr-12' : 'md:ml-auto md:pl-12'
+                    }`}>
                     <div className="card bg-white dark:bg-gray-800 hover:shadow-2xl transition-all">
                       <div className="flex items-center gap-4 mb-3">
                         <span className="text-3xl font-bold text-primary-600 dark:text-primary-400">

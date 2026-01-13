@@ -35,15 +35,15 @@ function GirlsSchemesContent() {
       const response = await fetch('/api/schemes')
       const data = await response.json()
       if (data.success) {
-        // Enrich schemes with additional data
-        const enrichedSchemes = data.data.map((scheme: any, index: number) => ({
+        // Use real data from API
+        const realSchemes = data.data.map((scheme: any) => ({
           ...scheme,
-          category: scheme.category || ['Education', 'Skill Development', 'Entrepreneurship', 'Financial Aid'][index % 4],
-          benefits: scheme.benefits || `₹${(Math.random() * 50000 + 10000).toFixed(0)} support`,
-          status: index < 2 ? 'Closing Soon' : index < 5 ? 'Active' : 'Active',
-          applicants: Math.floor(Math.random() * 1000) + 100,
+          category: scheme.category || 'General', // Fallback if not in DB
+          benefits: scheme.benefits || 'Financial Support', // Fallback
+          status: scheme.deadline && new Date(scheme.deadline) < new Date() ? 'Closed' : 'Active',
+          applicants: 0, // Real data doesn't track this yet
         }))
-        setSchemes(enrichedSchemes)
+        setSchemes(realSchemes)
       }
     } catch (e) {
       console.error('Error loading schemes', e)
@@ -56,12 +56,12 @@ function GirlsSchemesContent() {
     if (!appliedSchemes.includes(schemeId)) {
       // Add to applied schemes
       setAppliedSchemes([...appliedSchemes, schemeId])
-      
+
       // Save to localStorage for persistence
       const applied = JSON.parse(localStorage.getItem('appliedSchemes') || '[]')
       applied.push(schemeId)
       localStorage.setItem('appliedSchemes', JSON.stringify(applied))
-      
+
       // Open official application website if URL exists
       if (applyUrl) {
         window.open(applyUrl, '_blank', 'noopener,noreferrer')
@@ -69,7 +69,7 @@ function GirlsSchemesContent() {
         // Default government scheme portal
         window.open('https://www.india.gov.in/scheme-women', '_blank', 'noopener,noreferrer')
       }
-      
+
       alert('Redirecting to official application portal. Your application status will be tracked here.')
     }
   }
@@ -89,8 +89,8 @@ function GirlsSchemesContent() {
     return badges[status as keyof typeof badges] || badges['Active']
   }
 
-  const filteredSchemes = selectedCategory === 'All' 
-    ? schemes 
+  const filteredSchemes = selectedCategory === 'All'
+    ? schemes
     : schemes.filter(s => s.category === selectedCategory)
 
   return (

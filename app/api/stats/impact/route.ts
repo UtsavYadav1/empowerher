@@ -29,8 +29,8 @@ export async function GET() {
         return NextResponse.json({
             success: true,
             data: {
-                womenEmpowered: usersCount, // Total users on platform
-                girlsEducated: workshopsCount, // Direct count of workshops (or users if preferred)
+                womenEmpowered: await prisma.user.count({ where: { role: 'woman' } }),
+                girlsEducated: await prisma.user.count({ where: { role: 'girl' } }),
                 workshops: workshopsCount + eventsCount,
                 communities: postsCount, // Forum posts only
             },

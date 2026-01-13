@@ -36,186 +36,12 @@ export default function EventsPage() {
 
   const fetchEvents = async () => {
     try {
-      // Real upcoming events with actual dates and application links
-      const currentDate = new Date('2025-11-07') // Current date from context
-      
-      const allEvents: Event[] = [
-        {
-          id: 1,
-          title: 'Google Women Techmakers Scholarship 2025',
-          description: 'Google is committed to advancing equity in computing. The Women Techmakers Scholars Program provides financial support and networking opportunities for women in technology.',
-          date: '2025-12-15T10:00:00',
-          registrationDeadline: '2025-11-30T23:59:59',
-          type: 'scholarship',
-          category: 'Technology',
-          location: 'Online Application',
-          organizer: 'Google',
-          applyUrl: 'https://www.womentechmakers.com/scholars',
-          eligibility: 'Female students pursuing computer science or related field',
-          benefits: ['$10,000 scholarship', 'Mentorship program', 'Google networking events', 'Career development workshops'],
-          attendees: 1247,
-          reminderSet: false,
-          isRegistrationOpen: true
-        },
-        {
-          id: 2,
-          title: 'Digital Literacy & Cyber Safety Workshop',
-          description: 'Learn essential digital skills including internet safety, online privacy, social media awareness, and cybersecurity basics. Perfect for beginners!',
-          date: '2025-11-17T14:00:00',
-          registrationDeadline: '2025-11-15T23:59:59',
-          type: 'workshop',
-          category: 'Technology',
-          location: 'Online via Zoom',
-          organizer: 'Women in Tech India',
-          applyUrl: 'https://forms.gle/cybersafety-workshop',
-          eligibility: 'Open to all women aged 16+',
-          benefits: ['Free certificate', 'Workshop materials', 'Q&A with experts', 'Community access'],
-          attendees: 342,
-          reminderSet: false,
-          isRegistrationOpen: true
-        },
-        {
-          id: 3,
-          title: 'Career Counseling Session - IT Industry',
-          description: 'One-on-one career counseling with industry professionals from top tech companies. Get personalized advice on career paths, skill development, and job opportunities.',
-          date: '2025-11-22T15:30:00',
-          registrationDeadline: '2025-11-20T23:59:59',
-          type: 'session',
-          category: 'Career',
-          location: 'Virtual Meeting',
-          organizer: 'EmpowerHer Careers',
-          applyUrl: 'https://empowerher.com/career-counseling',
-          eligibility: 'Women seeking career guidance in technology',
-          benefits: ['30-min 1-on-1 session', 'Career roadmap', 'Resume review', 'Job referrals'],
-          attendees: 156,
-          reminderSet: false,
-          isRegistrationOpen: true
-        },
-        {
-          id: 4,
-          title: 'National Scholarship Portal - Last Date Reminder',
-          description: 'Final reminder for National Scholarship Portal applications. Multiple scholarships available including pre-matric, post-matric, and merit-based schemes.',
-          date: '2025-11-30T23:59:59',
-          registrationDeadline: '2025-11-30T23:59:59',
-          type: 'scholarship',
-          category: 'Education',
-          location: 'Online Portal',
-          organizer: 'Ministry of Education, Govt of India',
-          applyUrl: 'https://scholarships.gov.in',
-          eligibility: 'Indian students based on income and merit criteria',
-          benefits: ['Financial aid', 'No application fee', 'Multiple schemes', 'Direct bank transfer'],
-          attendees: 8934,
-          reminderSet: false,
-          isRegistrationOpen: true
-        },
-        {
-          id: 5,
-          title: 'Web Development Bootcamp - React & Next.js',
-          description: 'Intensive 4-week bootcamp covering modern web development with React, Next.js, and TypeScript. Build real-world projects and deploy them live.',
-          date: '2025-12-01T10:00:00',
-          registrationDeadline: '2025-11-25T23:59:59',
-          type: 'workshop',
-          category: 'Technology',
-          location: 'Hybrid (Online + Delhi NCR)',
-          organizer: 'Coding Ninjas for Women',
-          applyUrl: 'https://codingninjas.com/women-bootcamp',
-          eligibility: 'Basic programming knowledge required',
-          benefits: ['4-week intensive training', 'Live projects', 'Job assistance', 'Certificate', '80% women-only batch'],
-          attendees: 234,
-          reminderSet: false,
-          isRegistrationOpen: true
-        },
-        {
-          id: 6,
-          title: 'WE Hub Innovation Challenge 2025',
-          description: 'Startup competition for women entrepreneurs. Present your innovative business ideas and win funding, mentorship, and incubation support.',
-          date: '2025-12-10T09:00:00',
-          registrationDeadline: '2025-11-28T23:59:59',
-          type: 'competition',
-          category: 'Business',
-          location: 'WE Hub, Hyderabad + Online',
-          organizer: 'WE Hub - Telangana Government',
-          applyUrl: 'https://wehub.telangana.gov.in/innovation-challenge',
-          eligibility: 'Women entrepreneurs with innovative startup ideas',
-          benefits: ['₹5 Lakh prize money', 'Incubation support', 'Mentorship', 'Networking with investors'],
-          attendees: 478,
-          reminderSet: false,
-          isRegistrationOpen: true
-        },
-        {
-          id: 7,
-          title: 'Public Speaking & Confidence Building Webinar',
-          description: 'Master the art of public speaking and build unshakeable confidence. Learn techniques to overcome stage fear and communicate effectively.',
-          date: '2025-11-25T18:00:00',
-          registrationDeadline: '2025-11-24T23:59:59',
-          type: 'webinar',
-          category: 'Personal Development',
-          location: 'Online Webinar',
-          organizer: 'Lean In India',
-          applyUrl: 'https://leanin.org/india-webinar',
-          eligibility: 'Open to all women professionals and students',
-          benefits: ['Live practice sessions', 'Expert feedback', 'Certificate', 'Recording access'],
-          attendees: 892,
-          reminderSet: false,
-          isRegistrationOpen: true
-        },
-        {
-          id: 8,
-          title: 'Adobe Creative Jam - Women in Design',
-          description: '24-hour design competition exclusively for women designers. Create stunning digital designs using Adobe Creative Cloud and win prizes.',
-          date: '2025-12-05T10:00:00',
-          registrationDeadline: '2025-12-02T23:59:59',
-          type: 'competition',
-          category: 'Design',
-          location: 'Online Competition',
-          organizer: 'Adobe India',
-          applyUrl: 'https://adobe.com/creative-jam-women',
-          eligibility: 'Women designers with Adobe Creative Cloud access',
-          benefits: ['₹1 Lakh prize', 'Adobe swag', 'Portfolio feature', 'Industry exposure'],
-          attendees: 567,
-          reminderSet: false,
-          isRegistrationOpen: true
-        },
-        {
-          id: 9,
-          title: 'Financial Literacy Workshop for Women',
-          description: 'Learn money management, investment basics, tax planning, and financial independence strategies. Empower yourself with financial knowledge!',
-          date: '2025-11-20T16:00:00',
-          registrationDeadline: '2025-11-18T23:59:59',
-          type: 'workshop',
-          category: 'Finance',
-          location: 'Community Center + Online Stream',
-          organizer: 'MoneyHer Foundation',
-          applyUrl: 'https://moneyher.in/workshop',
-          eligibility: 'All women interested in financial planning',
-          benefits: ['Free financial toolkit', 'Expert guidance', 'Investment tips', 'Community support'],
-          attendees: 423,
-          reminderSet: false,
-          isRegistrationOpen: true
-        },
-        {
-          id: 10,
-          title: 'Microsoft Imagine Cup 2025 - Registration Open',
-          description: 'Global student technology competition. Build innovative tech solutions and compete for prizes, mentorship, and Microsoft Azure credits.',
-          date: '2026-01-15T00:00:00',
-          registrationDeadline: '2025-12-20T23:59:59',
-          type: 'competition',
-          category: 'Technology',
-          location: 'Global - Online Submissions',
-          organizer: 'Microsoft',
-          applyUrl: 'https://imaginecup.microsoft.com',
-          eligibility: 'Students aged 16+, team participation allowed',
-          benefits: ['$100K USD prize', 'Azure credits', 'Mentorship from Microsoft', 'Global exposure'],
-          attendees: 2341,
-          reminderSet: false,
-          isRegistrationOpen: true
-        }
-      ]
+      const response = await fetch('/api/events')
+      const result = await response.json()
 
-      // Filter events based on type
-      let filteredEvents = filter === 'all' ? allEvents : allEvents.filter(e => e.type === filter)
-      
-      setEvents(filteredEvents)
+      if (result.success) {
+        setEvents(result.data)
+      }
     } catch (error) {
       console.error('Error fetching events:', error)
     } finally {
@@ -224,10 +50,10 @@ export default function EventsPage() {
   }
 
   const handleSetReminder = (eventId: number, reminderSet: boolean) => {
-    setEvents(events.map(e => 
+    setEvents(events.map(e =>
       e.id === eventId ? { ...e, reminderSet: !reminderSet } : e
     ))
-    
+
     if (!reminderSet) {
       const event = events.find(e => e.id === eventId)
       if (event) {
@@ -240,7 +66,7 @@ export default function EventsPage() {
           setAt: new Date().toISOString()
         })
         localStorage.setItem('eventReminders', JSON.stringify(reminders))
-        
+
         alert(`✅ Reminder set! You'll be notified before "${event.title}" on ${new Date(event.date).toLocaleDateString()}`)
       }
     } else {
@@ -248,7 +74,7 @@ export default function EventsPage() {
       const reminders = JSON.parse(localStorage.getItem('eventReminders') || '[]')
       const updated = reminders.filter((r: any) => r.eventId !== eventId)
       localStorage.setItem('eventReminders', JSON.stringify(updated))
-      
+
       alert('Reminder removed.')
     }
   }
@@ -372,11 +198,10 @@ export default function EventsPage() {
                   <button
                     key={type}
                     onClick={() => setFilter(type)}
-                    className={`px-4 py-2 rounded-lg font-semibold transition-all ${
-                      filter === type
+                    className={`px-4 py-2 rounded-lg font-semibold transition-all ${filter === type
                         ? 'bg-primary-600 text-white shadow-lg scale-105'
                         : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
-                    }`}
+                      }`}
                   >
                     {type.charAt(0).toUpperCase() + type.slice(1)}
                   </button>
@@ -409,7 +234,7 @@ export default function EventsPage() {
                 {upcomingEvents.map((event, idx) => {
                   const daysUntil = getDaysUntil(event.date)
                   const deadlineDays = event.registrationDeadline ? getDaysUntil(event.registrationDeadline) : null
-                  
+
                   return (
                     <motion.div
                       key={event.id}
@@ -461,11 +286,11 @@ export default function EventsPage() {
                         <div className="flex items-center gap-2 text-sm">
                           <FaCalendar className="text-primary-600 text-lg" />
                           <span className="font-semibold text-gray-900 dark:text-white">
-                            {new Date(event.date).toLocaleDateString('en-US', { 
-                              weekday: 'long', 
-                              year: 'numeric', 
-                              month: 'long', 
-                              day: 'numeric' 
+                            {new Date(event.date).toLocaleDateString('en-US', {
+                              weekday: 'long',
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric'
                             })}
                           </span>
                         </div>
@@ -481,12 +306,11 @@ export default function EventsPage() {
                           <FaUsers className="text-purple-600 text-lg" />
                           <span><strong>{event.attendees?.toLocaleString()}</strong> people registered</span>
                         </div>
-                        
+
                         {/* Registration Deadline */}
                         {event.registrationDeadline && (
-                          <div className={`flex items-center gap-2 text-sm font-semibold ${
-                            deadlineDays !== null && deadlineDays <= 3 ? 'text-red-600' : 'text-orange-600'
-                          }`}>
+                          <div className={`flex items-center gap-2 text-sm font-semibold ${deadlineDays !== null && deadlineDays <= 3 ? 'text-red-600' : 'text-orange-600'
+                            }`}>
                             <FaInfoCircle className="text-lg" />
                             <span>
                               Registration closes: {new Date(event.registrationDeadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
@@ -547,11 +371,10 @@ export default function EventsPage() {
                         {/* Reminder Button */}
                         <button
                           onClick={() => handleSetReminder(event.id, event.reminderSet)}
-                          className={`px-4 py-3 rounded-lg transition-all font-semibold text-sm flex items-center gap-2 ${
-                            event.reminderSet
+                          className={`px-4 py-3 rounded-lg transition-all font-semibold text-sm flex items-center gap-2 ${event.reminderSet
                               ? 'bg-green-500 text-white hover:bg-green-600 shadow-md'
                               : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
-                          }`}
+                            }`}
                         >
                           <FaBell />
                           {event.reminderSet ? 'Set' : 'Remind'}
@@ -560,13 +383,12 @@ export default function EventsPage() {
 
                       {/* Days Until Event */}
                       <div className="mt-3 text-center">
-                        <p className={`text-sm font-bold ${
-                          daysUntil === 0 
-                            ? 'text-red-600 dark:text-red-400' 
-                            : daysUntil <= 7 
-                            ? 'text-orange-600 dark:text-orange-400' 
-                            : 'text-primary-600 dark:text-primary-400'
-                        }`}>
+                        <p className={`text-sm font-bold ${daysUntil === 0
+                            ? 'text-red-600 dark:text-red-400'
+                            : daysUntil <= 7
+                              ? 'text-orange-600 dark:text-orange-400'
+                              : 'text-primary-600 dark:text-primary-400'
+                          }`}>
                           {daysUntil === 0 ? '🔥 Event is TODAY!' : daysUntil === 1 ? '⚡ Event is TOMORROW!' : `📅 Event in ${daysUntil} days`}
                         </p>
                       </div>

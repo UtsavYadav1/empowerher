@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import ProtectedRoute from '@/components/ProtectedRoute'
-import { 
-  FaBriefcase, FaExternalLinkAlt, FaRocket, FaChartLine, FaUserTie, 
+import {
+  FaBriefcase, FaExternalLinkAlt, FaRocket, FaChartLine, FaUserTie,
   FaFileAlt, FaMicrophone, FaLightbulb, FaGraduationCap, FaTrophy,
   FaUsers, FaClock, FaMapMarkerAlt, FaRupeeSign, FaStar, FaBook,
   FaVideo, FaCalendarAlt, FaCheckCircle, FaArrowRight, FaSearch,
@@ -20,7 +20,7 @@ interface CareerPath {
   demand: 'High' | 'Medium' | 'Growing'
   requiredSkills: string[]
   timeToLearn: string
-  jobOpenings: number
+  jobOpenings: string
   trending: boolean
 }
 
@@ -76,7 +76,7 @@ function CareerGuidanceContent() {
       demand: 'High',
       requiredSkills: ['JavaScript', 'React', 'Python', 'Problem Solving'],
       timeToLearn: '6-12 months',
-      jobOpenings: 45000,
+      jobOpenings: 'High',
       trending: true,
     },
     {
@@ -88,7 +88,7 @@ function CareerGuidanceContent() {
       demand: 'High',
       requiredSkills: ['Python', 'Statistics', 'Machine Learning', 'SQL'],
       timeToLearn: '8-14 months',
-      jobOpenings: 32000,
+      jobOpenings: 'High',
       trending: true,
     },
     {
@@ -100,7 +100,7 @@ function CareerGuidanceContent() {
       demand: 'Growing',
       requiredSkills: ['SEO', 'Social Media', 'Content Marketing', 'Analytics'],
       timeToLearn: '4-8 months',
-      jobOpenings: 28000,
+      jobOpenings: 'Moderate',
       trending: false,
     },
     {
@@ -112,7 +112,7 @@ function CareerGuidanceContent() {
       demand: 'High',
       requiredSkills: ['Figma', 'User Research', 'Prototyping', 'Visual Design'],
       timeToLearn: '5-10 months',
-      jobOpenings: 18000,
+      jobOpenings: 'High',
       trending: true,
     },
     {
@@ -124,7 +124,7 @@ function CareerGuidanceContent() {
       demand: 'Medium',
       requiredSkills: ['Writing', 'SEO', 'Research', 'Editing'],
       timeToLearn: '3-6 months',
-      jobOpenings: 22000,
+      jobOpenings: 'Moderate',
       trending: false,
     },
     {
@@ -136,7 +136,7 @@ function CareerGuidanceContent() {
       demand: 'High',
       requiredSkills: ['Excel', 'SQL', 'Business Intelligence', 'Communication'],
       timeToLearn: '6-10 months',
-      jobOpenings: 25000,
+      jobOpenings: 'Very High',
       trending: true,
     },
   ]
@@ -195,74 +195,74 @@ function CareerGuidanceContent() {
 
   // Resources Data
   const resources: Resource[] = [
-    { 
-      id: 1, 
-      title: 'Career Aptitude Assessment', 
+    {
+      id: 1,
+      title: 'Career Aptitude Assessment',
       description: 'Discover your strengths and ideal career paths through our AI-powered assessment',
-      link: '#', 
+      link: '#',
       category: 'Assessment',
       icon: 'clipboard',
       popular: true,
     },
-    { 
-      id: 2, 
-      title: 'Resume Builder Pro', 
+    {
+      id: 2,
+      title: 'Resume Builder Pro',
       description: 'Create professional ATS-friendly resumes with our advanced builder tool',
-      link: '#', 
+      link: '#',
       category: 'Tools',
       icon: 'file',
       popular: true,
     },
-    { 
-      id: 3, 
-      title: 'Mock Interview Simulator', 
+    {
+      id: 3,
+      title: 'Mock Interview Simulator',
       description: 'Practice interviews with AI and get real-time feedback on your performance',
-      link: '#', 
+      link: '#',
       category: 'Practice',
       icon: 'microphone',
       popular: true,
     },
-    { 
-      id: 4, 
-      title: 'Skill Gap Analysis', 
+    {
+      id: 4,
+      title: 'Skill Gap Analysis',
       description: 'Identify missing skills for your dream job and get personalized learning paths',
-      link: '#', 
+      link: '#',
       category: 'Assessment',
       icon: 'chart',
       popular: false,
     },
-    { 
-      id: 5, 
-      title: 'Government Scholarships Portal', 
+    {
+      id: 5,
+      title: 'Government Scholarships Portal',
       description: 'Access 500+ scholarships and financial aid programs for women',
-      link: 'https://scholarships.gov.in/', 
+      link: 'https://scholarships.gov.in/',
       category: 'Scholarships',
       icon: 'graduation',
       popular: true,
     },
-    { 
-      id: 6, 
-      title: 'Free Coding Bootcamp', 
+    {
+      id: 6,
+      title: 'Free Coding Bootcamp',
       description: 'Learn programming from scratch with interactive lessons and projects',
-      link: 'https://www.freecodecamp.org/', 
+      link: 'https://www.freecodecamp.org/',
       category: 'Learning',
       icon: 'code',
       popular: true,
     },
-    { 
-      id: 7, 
-      title: 'Industry Expert Webinars', 
+    {
+      id: 7,
+      title: 'Industry Expert Webinars',
       description: 'Join live sessions with industry leaders sharing career insights',
-      link: '#', 
+      link: '#',
       category: 'Learning',
       icon: 'video',
       popular: false,
     },
-    { 
-      id: 8, 
-      title: 'Job Market Trends 2025', 
+    {
+      id: 8,
+      title: 'Job Market Trends 2025',
       description: 'Stay updated with latest hiring trends and in-demand skills',
-      link: '#', 
+      link: '#',
       category: 'Resources',
       icon: 'trending',
       popular: false,
@@ -300,7 +300,7 @@ function CareerGuidanceContent() {
   useEffect(() => {
     // Simulate loading
     setTimeout(() => setLoading(false), 800)
-    
+
     // Load bookmarks from localStorage
     const saved = localStorage.getItem('bookmarkedCareerPaths')
     if (saved) setBookmarkedPaths(JSON.parse(saved))
@@ -330,10 +330,10 @@ function CareerGuidanceContent() {
 
   const categories = ['All', 'Technology', 'Marketing', 'Design', 'Creative', 'Business']
 
-  const filteredPaths = careerPaths.filter(path => 
+  const filteredPaths = careerPaths.filter(path =>
     (selectedCategory === 'All' || path.category === selectedCategory) &&
-    (searchQuery === '' || path.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-     path.description.toLowerCase().includes(searchQuery.toLowerCase()))
+    (searchQuery === '' || path.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      path.description.toLowerCase().includes(searchQuery.toLowerCase()))
   )
 
   return (
@@ -413,11 +413,10 @@ function CareerGuidanceContent() {
               <button
                 key={tab}
                 onClick={() => setSelectedTab(tab)}
-                className={`px-6 py-3 rounded-lg font-semibold transition-all ${
-                  selectedTab === tab
-                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg scale-105'
-                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:shadow-md'
-                }`}
+                className={`px-6 py-3 rounded-lg font-semibold transition-all ${selectedTab === tab
+                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg scale-105'
+                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:shadow-md'
+                  }`}
               >
                 {tab.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
               </button>
@@ -586,11 +585,10 @@ function CareerGuidanceContent() {
                         </div>
                         <button
                           onClick={() => handleBookmark(path.id)}
-                          className={`p-2 rounded-full transition-all ${
-                            bookmarkedPaths.includes(path.id)
-                              ? 'text-red-500 bg-red-100 dark:bg-red-900/30'
-                              : 'text-gray-400 hover:text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700'
-                          }`}
+                          className={`p-2 rounded-full transition-all ${bookmarkedPaths.includes(path.id)
+                            ? 'text-red-500 bg-red-100 dark:bg-red-900/30'
+                            : 'text-gray-400 hover:text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700'
+                            }`}
                         >
                           <FaBookmark />
                         </button>
@@ -717,11 +715,10 @@ function CareerGuidanceContent() {
 
                       <button
                         disabled={!mentor.available}
-                        className={`w-full flex items-center justify-center gap-2 ${
-                          mentor.available
-                            ? 'btn-primary'
-                            : 'btn-secondary opacity-50 cursor-not-allowed'
-                        }`}
+                        className={`w-full flex items-center justify-center gap-2 ${mentor.available
+                          ? 'btn-primary'
+                          : 'btn-secondary opacity-50 cursor-not-allowed'
+                          }`}
                       >
                         <FaCalendarAlt /> {mentor.available ? 'Book Session' : 'Not Available'}
                       </button>
@@ -747,13 +744,13 @@ function CareerGuidanceContent() {
                 <div className="grid md:grid-cols-3 gap-6">
                   {resources.map((resource, idx) => {
                     const IconComponent = resource.icon === 'clipboard' ? FaFileAlt :
-                                        resource.icon === 'file' ? FaFileAlt :
-                                        resource.icon === 'microphone' ? FaMicrophone :
-                                        resource.icon === 'chart' ? FaChartLine :
-                                        resource.icon === 'graduation' ? FaGraduationCap :
-                                        resource.icon === 'code' ? FaBook :
-                                        resource.icon === 'video' ? FaVideo :
-                                        FaLightbulb
+                      resource.icon === 'file' ? FaFileAlt :
+                        resource.icon === 'microphone' ? FaMicrophone :
+                          resource.icon === 'chart' ? FaChartLine :
+                            resource.icon === 'graduation' ? FaGraduationCap :
+                              resource.icon === 'code' ? FaBook :
+                                resource.icon === 'video' ? FaVideo :
+                                  FaLightbulb
 
                     return (
                       <motion.div
@@ -769,7 +766,7 @@ function CareerGuidanceContent() {
                             <FaStar /> Popular
                           </span>
                         )}
-                        
+
                         <div className="mb-4">
                           <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-4">
                             <IconComponent className="text-3xl text-white" />
@@ -879,7 +876,7 @@ function CareerGuidanceContent() {
               >
                 <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">{selectedAssessment.title}</h2>
                 <p className="text-gray-600 dark:text-gray-400 mb-6">{selectedAssessment.description}</p>
-                
+
                 <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-4 rounded-lg mb-6">
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
