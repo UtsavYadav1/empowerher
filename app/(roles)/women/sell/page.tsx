@@ -39,7 +39,7 @@ export default function SellPage() {
         sellerId: user?.id,
       })
 
-      const response = await fetch('/api/mock/products', {
+      const response = await fetch('/api/products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -254,4 +254,5 @@ export default function SellPage() {
     </ProtectedRoute>
   )
 }
+
 

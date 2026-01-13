@@ -113,7 +113,7 @@ export default function ProductsPage() {
   const fetchProducts = async () => {
     try {
       setLoading(true)
-      const url = filter !== 'all' ? `/api/mock/products?category=${filter}` : '/api/mock/products'
+      const url = filter !== 'all' ? `/api/products?category=${filter}` : '/api/products'
       const response = await fetch(url)
       const data = await response.json()
       if (data.success) {
@@ -301,3 +301,4 @@ export default function ProductsPage() {
     </ProtectedRoute>
   )
 }
+

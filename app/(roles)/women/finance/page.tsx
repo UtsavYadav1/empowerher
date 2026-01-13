@@ -29,7 +29,7 @@ export default function FinancePage() {
 
   const fetchSchemes = async () => {
     try {
-      const response = await fetch('/api/mock/finance')
+      const response = await fetch('/api/finance')
       const data = await response.json()
       if (data.success) {
         let filtered = data.data
@@ -189,3 +189,4 @@ export default function FinancePage() {
     </ProtectedRoute>
   )
 }
+

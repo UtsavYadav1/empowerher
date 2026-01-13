@@ -28,7 +28,7 @@ export default function TutorialsPage() {
 
   const fetchTutorials = async () => {
     try {
-      const url = filter !== 'all' ? `/api/mock/tutorials?category=${filter}` : '/api/mock/tutorials'
+      const url = filter !== 'all' ? `/api/tutorials?category=${filter}` : '/api/tutorials'
       const response = await fetch(url)
       const data = await response.json()
       if (data.success) {
@@ -43,7 +43,7 @@ export default function TutorialsPage() {
 
   const handleMarkWatched = async (tutorialId: number, watched: boolean) => {
     try {
-      const response = await fetch('/api/mock/tutorials', {
+      const response = await fetch('/api/tutorials', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tutorialId, watched: !watched }),
@@ -285,3 +285,4 @@ export default function TutorialsPage() {
     </ProtectedRoute>
   )
 }
+

@@ -99,7 +99,7 @@ export default function CheckoutPage() {
       const orderId = `ORD${Date.now()}`
 
       // Process payment
-      const response = await fetch('/api/mock/payments', {
+      const response = await fetch('/api/payments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -115,7 +115,7 @@ export default function CheckoutPage() {
 
       if (data.success) {
         // Save order to database via API
-        const orderResponse = await fetch('/api/mock/orders', {
+        const orderResponse = await fetch('/api/orders', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -428,3 +428,4 @@ export default function CheckoutPage() {
     </ProtectedRoute>
   )
 }
+

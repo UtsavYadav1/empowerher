@@ -30,7 +30,7 @@ function ManageSchemesContent() {
 
   const fetchSchemes = async () => {
     try {
-      const response = await fetch('/api/mock/schemes')
+      const response = await fetch('/api/schemes')
       const result = await response.json()
       
       if (result.success) {
@@ -47,7 +47,7 @@ function ManageSchemesContent() {
     if (!confirm('Are you sure you want to delete this scheme?')) return
 
     try {
-      const response = await fetch(`/api/mock/schemes?id=${schemeId}`, {
+      const response = await fetch(`/api/schemes?id=${schemeId}`, {
         method: 'DELETE',
       })
 
@@ -297,3 +297,4 @@ export default function ManageSchemesPage() {
     </ProtectedRoute>
   )
 }
+

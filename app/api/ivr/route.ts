@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
         Welcome to EmpowerHer. Press 1 for Girls programs. Press 2 for Women programs. 
         Press 3 for Scheme information. Press 4 to speak with a representative.
     </Say>
-    <Gather numDigits="1" timeout="10" action="/api/mock/ivr" method="POST">
+    <Gather numDigits="1" timeout="10" action="/api/ivr" method="POST">
         <Pause length="5"/>
     </Gather>
     <Say voice="alice" language="en-IN">
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
         educational courses, and mentorship. Press 1 to register. Press 2 to hear more. 
         Press 9 to go back.
     </Say>
-    <Gather numDigits="1" timeout="10" action="/api/mock/ivr" method="POST">
+    <Gather numDigits="1" timeout="10" action="/api/ivr" method="POST">
         <Pause length="5"/>
     </Gather>
     <Say voice="alice" language="en-IN">
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
         micro-finance guidance, and skill development workshops. Press 1 to register. 
         Press 2 to hear more. Press 9 to go back.
     </Say>
-    <Gather numDigits="1" timeout="10" action="/api/mock/ivr" method="POST">
+    <Gather numDigits="1" timeout="10" action="/api/ivr" method="POST">
         <Pause length="5"/>
     </Gather>
     <Say voice="alice" language="en-IN">
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
         We offer multiple schemes including Beti Bachao Beti Padhao, Sukanya Samriddhi Yojana, 
         and many more. Visit our website or press 1 to receive scheme information via SMS.
     </Say>
-    <Gather numDigits="1" timeout="10" action="/api/mock/ivr" method="POST">
+    <Gather numDigits="1" timeout="10" action="/api/ivr" method="POST">
         <Pause length="5"/>
     </Gather>
     <Say voice="alice" language="en-IN">
@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
         case '9':
           response = `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Redirect>/api/mock/ivr</Redirect>
+    <Redirect>/api/ivr</Redirect>
 </Response>`
           break
         default:
@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
     <Say voice="alice" language="en-IN">
         Invalid selection. Please try again.
     </Say>
-    <Redirect>/api/mock/ivr</Redirect>
+    <Redirect>/api/ivr</Redirect>
 </Response>`
       }
     }
@@ -144,4 +144,5 @@ export async function GET() {
     },
   })
 }
+
 

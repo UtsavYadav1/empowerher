@@ -30,7 +30,7 @@ function ManageUsersContent() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('/api/mock/users')
+      const response = await fetch('/api/users')
       const result = await response.json()
       
       if (result.success) {
@@ -47,7 +47,7 @@ function ManageUsersContent() {
     if (!confirm('Are you sure you want to delete this user?')) return
 
     try {
-      const response = await fetch(`/api/mock/users`, {
+      const response = await fetch(`/api/users`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId }),
@@ -76,7 +76,7 @@ function ManageUsersContent() {
     if (!editingUser) return
 
     try {
-      const response = await fetch(`/api/mock/users`, {
+      const response = await fetch(`/api/users`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editingUser),
@@ -99,7 +99,7 @@ function ManageUsersContent() {
 
   const handleVerifyUser = async (userId: number, verified: boolean) => {
     try {
-      const response = await fetch(`/api/mock/users`, {
+      const response = await fetch(`/api/users`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: userId, verified }),
@@ -403,3 +403,4 @@ export default function ManageUsersPage() {
     </ProtectedRoute>
   )
 }
+

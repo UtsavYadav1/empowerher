@@ -16,13 +16,13 @@ interface Workshop {
 }
 
 // Separate component that uses hooks - this is the correct way
-function WorkshopCardWrapper({ 
-  workshop, 
-  index, 
-  onRegister, 
-  isRegistered, 
-  isRegistering 
-}: { 
+function WorkshopCardWrapper({
+  workshop,
+  index,
+  onRegister,
+  isRegistered,
+  isRegistering
+}: {
   workshop: Workshop
   index: number
   onRegister: () => void
@@ -37,8 +37,8 @@ function WorkshopCardWrapper({
       transition={{ duration: 0.6, delay: index * 0.1 }}
       role="listitem"
     >
-      <WorkshopCard 
-        workshop={workshop} 
+      <WorkshopCard
+        workshop={workshop}
         onRegister={onRegister}
         isRegistered={isRegistered}
         isRegistering={isRegistering}
@@ -58,10 +58,10 @@ export default function WorkshopsPage() {
     // Get current user for registration
     const currentUser = getCurrentUser()
     setUser(currentUser)
-    
+
     // Fetch workshops from API
     fetchWorkshops()
-    
+
     // Check existing registrations
     checkRegistrations()
   }, [])
@@ -84,9 +84,9 @@ export default function WorkshopsPage() {
 
   const fetchWorkshops = async () => {
     try {
-      const response = await fetch('/api/mock/workshops')
+      const response = await fetch('/api/workshops')
       const data = await response.json()
-      
+
       if (data.success) {
         // Transform API data to match our interface
         const transformedWorkshops = data.data.map((w: any) => ({
@@ -280,7 +280,7 @@ export default function WorkshopsPage() {
         // Add to registered list
         const newRegistered = [...registered, workshopId]
         setRegistered(newRegistered)
-        
+
         // Save to localStorage
         localStorage.setItem('workshopRegistrations', JSON.stringify(newRegistered))
 

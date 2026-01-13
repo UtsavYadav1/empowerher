@@ -52,12 +52,32 @@ export default function Home() {
 
   useEffect(() => {
     setIsVisible(true)
+    fetchStats()
   }, [])
+
+  const [stats, setStats] = useState({
+    womenEmpowered: 75,
+    girlsEducated: 120,
+    workshops: 25,
+    communities: 8
+  })
+
+  const fetchStats = async () => {
+    try {
+      const response = await fetch('/api/stats/impact')
+      const data = await response.json()
+      if (data.success) {
+        setStats(data.data)
+      }
+    } catch (error) {
+      console.error('Failed to fetch stats:', error)
+    }
+  }
 
   return (
     <div className="min-h-screen" role="main">
       {/* Hero Section */}
-      <section 
+      <section
         ref={heroRef}
         className="relative min-h-screen flex items-center justify-center overflow-hidden"
         aria-label="Hero section"
@@ -98,7 +118,7 @@ export default function Home() {
             className="mb-8"
           >
             <h1 className="text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-none">
-              <span 
+              <span
                 className="inline-block bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-300 bg-clip-text text-transparent"
                 style={{
                   textShadow: '0 0 80px rgba(251, 146, 60, 0.5)',
@@ -133,8 +153,8 @@ export default function Home() {
             transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
             className="flex flex-col sm:flex-row gap-5 justify-center items-center"
           >
-            <Link 
-              href="/register" 
+            <Link
+              href="/register"
               className="group relative overflow-hidden bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 bg-size-200 bg-pos-0 hover:bg-pos-100 text-white text-lg px-12 py-4 rounded-full font-semibold transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-orange-500/50 focus:outline-none focus:ring-4 focus:ring-orange-400/50 flex items-center justify-center gap-3 min-w-[200px]"
               style={{
                 backgroundSize: '200% 100%',
@@ -146,8 +166,8 @@ export default function Home() {
               <FaArrowRight className="relative z-10 group-hover:translate-x-1 transition-transform duration-300" />
               <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-amber-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </Link>
-            <Link 
-              href="/about" 
+            <Link
+              href="/about"
               className="group relative bg-white/10 backdrop-blur-lg border-2 border-white/40 text-white hover:bg-white hover:text-gray-900 text-lg px-12 py-4 rounded-full font-semibold transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-white/30 focus:outline-none focus:ring-4 focus:ring-white/40 min-w-[200px] flex items-center justify-center"
               aria-label="Learn more about EmpowerHer"
             >
@@ -213,7 +233,7 @@ export default function Home() {
               <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">Women Empowered</h3>
               {isVisible && (
                 <p className="text-5xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
-                  <CountUp end={75} duration={2.5} separator="," />+
+                  <CountUp end={stats.womenEmpowered} duration={2.5} separator="," />+
                 </p>
               )}
             </motion.div>
@@ -230,7 +250,7 @@ export default function Home() {
               <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">Girls Educated</h3>
               {isVisible && (
                 <p className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-                  <CountUp end={120} duration={2.5} separator="," />+
+                  <CountUp end={stats.girlsEducated} duration={2.5} separator="," />+
                 </p>
               )}
             </motion.div>
@@ -247,7 +267,7 @@ export default function Home() {
               <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">Workshops</h3>
               {isVisible && (
                 <p className="text-5xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">
-                  <CountUp end={25} duration={2.5} separator="," />+
+                  <CountUp end={stats.workshops} duration={2.5} separator="," />+
                 </p>
               )}
             </motion.div>
@@ -264,7 +284,7 @@ export default function Home() {
               <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">Communities</h3>
               {isVisible && (
                 <p className="text-5xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                  <CountUp end={8} duration={2.5} separator="," />+
+                  <CountUp end={stats.communities} duration={2.5} separator="," />+
                 </p>
               )}
             </motion.div>
@@ -471,16 +491,16 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <Link 
-              href="/register" 
+            <Link
+              href="/register"
               className="group bg-white text-orange-600 hover:bg-gray-100 text-lg px-10 py-5 rounded-xl font-semibold transition-all hover:scale-105 shadow-2xl flex items-center justify-center gap-2"
               aria-label="Get started with EmpowerHer"
             >
               Create Your Account
               <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
             </Link>
-            <Link 
-              href="/workshops" 
+            <Link
+              href="/workshops"
               className="bg-white/10 backdrop-blur-md border-2 border-white/30 text-white hover:bg-white/20 text-lg px-10 py-5 rounded-xl font-semibold transition-all hover:scale-105 shadow-2xl flex items-center justify-center gap-2"
               aria-label="Browse workshops"
             >
@@ -493,3 +513,4 @@ export default function Home() {
     </div>
   )
 }
+

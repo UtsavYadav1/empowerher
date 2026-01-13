@@ -32,7 +32,7 @@ export default function FeedbackPage() {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch('/api/mock/orders')
+      const response = await fetch('/api/orders')
       const data = await response.json()
       if (data.success) {
         const ordersWithFeedback = data.data.map((order: Order, index: number) => ({
@@ -58,7 +58,7 @@ export default function FeedbackPage() {
     }
 
     try {
-      const response = await fetch(`/api/mock/orders/${orderId}`, {
+      const response = await fetch(`/api/orders/${orderId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -331,3 +331,4 @@ export default function FeedbackPage() {
     </ProtectedRoute>
   )
 }
+

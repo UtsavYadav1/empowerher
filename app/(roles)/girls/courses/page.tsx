@@ -34,7 +34,7 @@ function FreeLearningCoursesContent() {
 
   const fetchCourses = async () => {
     try {
-      const response = await fetch('/api/mock/courses')
+      const response = await fetch('/api/courses')
       const result = await response.json()
       
       if (result.success) {
@@ -278,3 +278,4 @@ export default function FreeLearningCoursesPage() {
     </ProtectedRoute>
   )
 }
+

@@ -47,7 +47,7 @@ function ProductCollectionContent() {
         images: [],
       }
 
-      const response = await fetch('/api/mock/products', {
+      const response = await fetch('/api/products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(productData),
@@ -329,3 +329,4 @@ export default function ProductCollectionPage() {
     </ProtectedRoute>
   )
 }
+

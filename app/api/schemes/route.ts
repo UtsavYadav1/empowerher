@@ -5,70 +5,64 @@ export const dynamic = 'force-dynamic'
 
 const prisma = new PrismaClient()
 
-// GET - List all workshops
+// GET - List all schemes
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams
-    const village = searchParams.get('village')
-
-    const where: any = {}
-    if (village) where.village = village
-
-    const workshops = await prisma.workshop.findMany({
-      where,
-      orderBy: { date: 'asc' },
+    const schemes = await prisma.scheme.findMany({
+      orderBy: { title: 'asc' },
     })
 
     return NextResponse.json({
       success: true,
-      data: workshops,
-      count: workshops.length,
+      data: schemes,
+      count: schemes.length,
     })
   } catch (error) {
-    console.error('Error fetching workshops:', error)
+    console.error('Error fetching schemes:', error)
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch workshops' },
+      { success: false, error: 'Failed to fetch schemes' },
       { status: 500 }
     )
   }
 }
 
-// POST - Create a new workshop
+// POST - Create a new scheme
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { title, village, date, description } = body
+    const { title, description, eligibility, applyUrl, deadline } = body
 
-    if (!title || !village || !date || !description) {
+    if (!title || !description || !eligibility || !applyUrl) {
       return NextResponse.json(
         { success: false, error: 'Missing required fields' },
         { status: 400 }
       )
     }
 
-    const workshop = await prisma.workshop.create({
+    const scheme = await prisma.scheme.create({
       data: {
         title,
-        village,
-        date: new Date(date),
         description,
+        eligibility,
+        applyUrl,
+        deadline: deadline ? new Date(deadline) : null,
       },
     })
 
     return NextResponse.json({
       success: true,
-      data: workshop,
+      data: scheme,
     }, { status: 201 })
   } catch (error) {
-    console.error('Error creating workshop:', error)
+    console.error('Error creating scheme:', error)
     return NextResponse.json(
-      { success: false, error: 'Failed to create workshop' },
+      { success: false, error: 'Failed to create scheme' },
       { status: 500 }
     )
   }
 }
 
-// PATCH - Update a workshop
+// PATCH - Update a scheme
 export async function PATCH(request: NextRequest) {
   try {
     const body = await request.json()
@@ -76,35 +70,35 @@ export async function PATCH(request: NextRequest) {
 
     if (!id) {
       return NextResponse.json(
-        { success: false, error: 'Workshop ID is required' },
+        { success: false, error: 'Scheme ID is required' },
         { status: 400 }
       )
     }
 
-    // Convert date to Date if provided
-    if (updateData.date) {
-      updateData.date = new Date(updateData.date)
+    // Convert deadline to Date if provided
+    if (updateData.deadline) {
+      updateData.deadline = new Date(updateData.deadline)
     }
 
-    const workshop = await prisma.workshop.update({
+    const scheme = await prisma.scheme.update({
       where: { id: parseInt(id) },
       data: updateData,
     })
 
     return NextResponse.json({
       success: true,
-      data: workshop,
+      data: scheme,
     })
   } catch (error) {
-    console.error('Error updating workshop:', error)
+    console.error('Error updating scheme:', error)
     return NextResponse.json(
-      { success: false, error: 'Failed to update workshop' },
+      { success: false, error: 'Failed to update scheme' },
       { status: 500 }
     )
   }
 }
 
-// DELETE - Delete a workshop
+// DELETE - Delete a scheme
 export async function DELETE(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
@@ -112,25 +106,26 @@ export async function DELETE(request: NextRequest) {
 
     if (!id) {
       return NextResponse.json(
-        { success: false, error: 'Workshop ID is required' },
+        { success: false, error: 'Scheme ID is required' },
         { status: 400 }
       )
     }
 
-    await prisma.workshop.delete({
+    await prisma.scheme.delete({
       where: { id: parseInt(id) },
     })
 
     return NextResponse.json({
       success: true,
-      message: 'Workshop deleted successfully',
+      message: 'Scheme deleted successfully',
     })
   } catch (error) {
-    console.error('Error deleting workshop:', error)
+    console.error('Error deleting scheme:', error)
     return NextResponse.json(
-      { success: false, error: 'Failed to delete workshop' },
+      { success: false, error: 'Failed to delete scheme' },
       { status: 500 }
     )
   }
 }
+
 

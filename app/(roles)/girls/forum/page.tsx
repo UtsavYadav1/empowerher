@@ -39,7 +39,7 @@ export default function ForumPage() {
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch('/api/mock/forum')
+      const response = await fetch('/api/forum')
       const data = await response.json()
       if (data.success) {
         const postsWithLikes = data.data.map((p: ForumPost) => ({ ...p, likes: Math.floor(Math.random() * 50) }))
@@ -55,7 +55,7 @@ export default function ForumPage() {
   const handleCreatePost = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const response = await fetch('/api/mock/forum', {
+      const response = await fetch('/api/forum', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -77,7 +77,7 @@ export default function ForumPage() {
   const handleAddComment = async (postId: number) => {
     if (!comment.trim()) return
     try {
-      const response = await fetch('/api/mock/forum', {
+      const response = await fetch('/api/forum', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -329,3 +329,4 @@ export default function ForumPage() {
     </ProtectedRoute>
   )
 }
+

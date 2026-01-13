@@ -22,7 +22,7 @@ function ScheduleWorkshopContent() {
     setLoading(true)
 
     try {
-      const response = await fetch('/api/mock/workshops', {
+      const response = await fetch('/api/workshops', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -235,3 +235,4 @@ export default function ScheduleWorkshopPage() {
     </ProtectedRoute>
   )
 }
+

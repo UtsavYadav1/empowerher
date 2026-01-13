@@ -125,7 +125,7 @@ function CustomerDashboardContent() {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('/api/mock/products?limit=6')
+      const response = await fetch('/api/products?limit=6')
       const data = await response.json()
       if (data.success && Array.isArray(data.data)) {
         setProducts(data.data.slice(0, 6))
@@ -144,7 +144,7 @@ function CustomerDashboardContent() {
       // Fetch orders from database if user is logged in
       if (user?.id) {
         try {
-          const response = await fetch(`/api/mock/orders?customerId=${user.id}`)
+          const response = await fetch(`/api/orders?customerId=${user.id}`)
           const data = await response.json()
           if (data.success && Array.isArray(data.data)) {
             allOrders = data.data
@@ -412,3 +412,4 @@ export default function CustomerDashboardPage() {
     </ProtectedRoute>
   )
 }
+

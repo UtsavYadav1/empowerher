@@ -26,7 +26,7 @@ export default function OrdersPage() {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch('/api/mock/orders')
+      const response = await fetch('/api/orders')
       const data = await response.json()
       if (data.success) {
         let filtered = data.data
@@ -196,4 +196,5 @@ export default function OrdersPage() {
     </ProtectedRoute>
   )
 }
+
 

@@ -32,7 +32,7 @@ function GirlsSchemesContent() {
   const fetchSchemes = async () => {
     setLoading(true)
     try {
-      const response = await fetch('/api/mock/schemes')
+      const response = await fetch('/api/schemes')
       const data = await response.json()
       if (data.success) {
         // Enrich schemes with additional data
@@ -258,5 +258,6 @@ export default function GirlsSchemesPage() {
     </ProtectedRoute>
   )
 }
+
 
 

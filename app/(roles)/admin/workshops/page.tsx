@@ -35,7 +35,7 @@ function ManageWorkshopsContent() {
 
   const fetchWorkshops = async () => {
     try {
-      const response = await fetch('/api/mock/workshops')
+      const response = await fetch('/api/workshops')
       const result = await response.json()
       
       if (result.success) {
@@ -52,7 +52,7 @@ function ManageWorkshopsContent() {
     if (!confirm('Are you sure you want to delete this workshop?')) return
 
     try {
-      const response = await fetch(`/api/mock/workshops?id=${workshopId}`, {
+      const response = await fetch(`/api/workshops?id=${workshopId}`, {
         method: 'DELETE',
       })
 
@@ -352,3 +352,4 @@ export default function ManageWorkshopsPage() {
     </ProtectedRoute>
   )
 }
+

@@ -65,7 +65,7 @@ function OrdersContent() {
       // Fetch orders from database if user is logged in
       if (user?.id) {
         try {
-          const response = await fetch(`/api/mock/orders?customerId=${user.id}`)
+          const response = await fetch(`/api/orders?customerId=${user.id}`)
           const data = await response.json()
           if (data.success && Array.isArray(data.data)) {
             // Parse items if they're stored as string
@@ -464,3 +464,4 @@ export default function OrdersPage() {
     </Suspense>
   )
 }
+

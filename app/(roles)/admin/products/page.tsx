@@ -33,7 +33,7 @@ function ManageProductsContent() {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('/api/mock/products')
+      const response = await fetch('/api/products')
       const result = await response.json()
       
       if (result.success) {
@@ -50,7 +50,7 @@ function ManageProductsContent() {
     if (!confirm('Are you sure you want to delete this product?')) return
 
     try {
-      const response = await fetch(`/api/mock/products?id=${productId}`, {
+      const response = await fetch(`/api/products?id=${productId}`, {
         method: 'DELETE',
       })
 
@@ -335,3 +335,4 @@ export default function ManageProductsPage() {
     </ProtectedRoute>
   )
 }
+

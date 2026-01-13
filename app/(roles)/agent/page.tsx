@@ -90,7 +90,7 @@ export default function AgentPage() {
       // Sync each user
       for (const user of unsynced) {
         try {
-          const response = await fetch('/api/mock/users', {
+          const response = await fetch('/api/users', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -138,7 +138,7 @@ export default function AgentPage() {
     if (isOnline) {
       // Try to sync immediately
       try {
-        const response = await fetch('/api/mock/users', {
+        const response = await fetch('/api/users', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -391,4 +391,5 @@ export default function AgentPage() {
     </ProtectedRoute>
   )
 }
+
 

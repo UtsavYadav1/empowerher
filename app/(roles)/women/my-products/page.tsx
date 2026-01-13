@@ -41,7 +41,7 @@ export default function MyProductsPage() {
 
   const fetchMyProducts = async () => {
     try {
-      const response = await fetch('/api/mock/products')
+      const response = await fetch('/api/products')
       const data = await response.json()
       if (data.success) {
         // Filter products by current user's sellerId
@@ -59,7 +59,7 @@ export default function MyProductsPage() {
     if (!confirm('Are you sure you want to delete this product? This action cannot be undone.')) return
 
     try {
-      const response = await fetch(`/api/mock/products?id=${productId}`, {
+      const response = await fetch(`/api/products?id=${productId}`, {
         method: 'DELETE',
       })
 
@@ -100,7 +100,7 @@ export default function MyProductsPage() {
 
     setSaving(true)
     try {
-      const response = await fetch('/api/mock/products', {
+      const response = await fetch('/api/products', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -454,3 +454,4 @@ export default function MyProductsPage() {
     </ProtectedRoute>
   )
 }
+
