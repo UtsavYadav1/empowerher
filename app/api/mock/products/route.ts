@@ -41,27 +41,15 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { title, description, category, images, price, stock, sellerId, village } = body
 
-    console.log('Received product data:', { title, description, category, price, stock, sellerId, village, imagesCount: images?.length })
-
     // Validate required fields
-    const missingFields = []
-    if (!title) missingFields.push('title')
-    if (!description) missingFields.push('description')
-    if (!category) missingFields.push('category')
-    if (!price) missingFields.push('price')
-    if (!stock) missingFields.push('stock')
-    if (!sellerId) missingFields.push('sellerId')
-    if (!village) missingFields.push('village')
-
-    if (missingFields.length > 0) {
-      console.error('Missing fields:', missingFields)
+    if (!title || !description || !category || !price || !stock || !sellerId || !village) {
       return NextResponse.json(
-        { success: false, error: `Missing required fields: ${missingFields.join(', ')}` },
+        { success: false, error: 'Missing required fields' },
         { status: 400 }
       )
     }
 
-    // Process images - ensure it's an array
+    // Process images to ensure JSON array format
     let imageArray = []
     if (images) {
       if (typeof images === 'string') {
@@ -80,15 +68,13 @@ export async function POST(request: NextRequest) {
         title,
         description,
         category,
-        images: imageArray,
+        images: imageArray, // Prisma handles Json type
         price: parseFloat(price),
         stock: parseInt(stock),
         sellerId: parseInt(sellerId),
         village,
       },
     })
-
-    console.log('Product created successfully:', product.id)
 
     return NextResponse.json({
       success: true,
@@ -101,7 +87,6 @@ export async function POST(request: NextRequest) {
       {
         success: false,
         error: error.message || 'Failed to create product',
-        details: process.env.NODE_ENV === 'development' ? error.stack : undefined
       },
       { status: 500 }
     )
@@ -121,12 +106,18 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    // Ensure images is in correct format for Json type
-    if (updateData.images && typeof updateData.images === 'string') {
-      updateData.images = JSON.parse(updateData.images)
+    // Handle images update
+    if (updateData.images) {
+      if (typeof updateData.images === 'string') {
+        try {
+          updateData.images = JSON.parse(updateData.images)
+        } catch (e) {
+          updateData.images = [updateData.images]
+        }
+      }
     }
 
-    // Convert numeric fields
+    // Convert numeric fields if present strings
     if (updateData.price) updateData.price = parseFloat(updateData.price)
     if (updateData.stock) updateData.stock = parseInt(updateData.stock)
     if (updateData.sellerId) updateData.sellerId = parseInt(updateData.sellerId)
