@@ -384,10 +384,10 @@ function OrdersContent() {
                     return (
                       <div key={step.id} className="flex items-start gap-4">
                         <div className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center ${step.completed
-                            ? 'bg-green-500 text-white'
-                            : step.current
-                              ? 'bg-primary-500 text-white'
-                              : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400'
+                          ? 'bg-green-500 text-white'
+                          : step.current
+                            ? 'bg-primary-500 text-white'
+                            : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400'
                           }`}>
                           <Icon className="text-xl" />
                         </div>
@@ -454,5 +454,13 @@ function OrdersContent() {
         </motion.div>
       </div>
     </ProtectedRoute>
+  )
+}
+
+export default function OrdersPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen py-20 container mx-auto px-4"><TableSkeleton /></div>}>
+      <OrdersContent />
+    </Suspense>
   )
 }

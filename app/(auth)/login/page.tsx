@@ -131,8 +131,8 @@ function LoginContent() {
             type="button"
             onClick={() => setLoginMethod('phone')}
             className={`flex-1 py-2 px-4 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 ${loginMethod === 'phone'
-                ? 'bg-white dark:bg-gray-800 text-primary-600 shadow-md'
-                : 'text-gray-600 dark:text-gray-400'
+              ? 'bg-white dark:bg-gray-800 text-primary-600 shadow-md'
+              : 'text-gray-600 dark:text-gray-400'
               }`}
           >
             <FaPhone /> Phone
@@ -141,8 +141,8 @@ function LoginContent() {
             type="button"
             onClick={() => setLoginMethod('email')}
             className={`flex-1 py-2 px-4 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 ${loginMethod === 'email'
-                ? 'bg-white dark:bg-gray-800 text-primary-600 shadow-md'
-                : 'text-gray-600 dark:text-gray-400'
+              ? 'bg-white dark:bg-gray-800 text-primary-600 shadow-md'
+              : 'text-gray-600 dark:text-gray-400'
               }`}
           >
             <FaEnvelope /> Email
@@ -257,5 +257,13 @@ function LoginContent() {
         </p>
       </motion.div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div></div>}>
+      <LoginContent />
+    </Suspense>
   )
 }
