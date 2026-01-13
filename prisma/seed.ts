@@ -52,18 +52,21 @@ async function main() {
   const seedData: SeedData = JSON.parse(fs.readFileSync(seedDataPath, 'utf-8'))
 
   // Clear existing data
-  console.log('Clearing existing data...')
+  // Clear existing data
+  console.log('Clearing existing data (except Users)...')
   await prisma.order.deleteMany()
   await prisma.workshop.deleteMany()
   await prisma.scheme.deleteMany()
   await prisma.product.deleteMany()
-  await prisma.user.deleteMany()
+  // await prisma.user.deleteMany() // Preserving users
 
   // Seed Users
   console.log('Seeding users...')
   for (const userData of seedData.users) {
-    await prisma.user.create({
-      data: {
+    await prisma.user.upsert({
+      where: { phone: userData.phone },
+      update: {}, // Don't overwrite existing user data
+      create: {
         name: userData.name,
         phone: userData.phone,
         password: userData.password,
