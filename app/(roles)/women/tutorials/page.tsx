@@ -121,11 +121,10 @@ export default function TutorialsPage() {
               <button
                 key={cat}
                 onClick={() => setFilter(cat)}
-                className={`px-4 py-2 rounded-lg font-semibold transition-all ${
-                  filter === cat
+                className={`px-4 py-2 rounded-lg font-semibold transition-all ${filter === cat
                     ? 'bg-primary-600 text-white shadow-lg scale-105'
                     : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-                }`}
+                  }`}
               >
                 {cat.charAt(0).toUpperCase() + cat.slice(1)}
               </button>
@@ -169,11 +168,10 @@ export default function TutorialsPage() {
                     </div>
                     <button
                       onClick={() => handleMarkWatched(selectedTutorial.id, selectedTutorial.watched)}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
-                        selectedTutorial.watched
+                      className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${selectedTutorial.watched
                           ? 'bg-green-500 text-white hover:bg-green-600 shadow-lg'
                           : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
-                      }`}
+                        }`}
                     >
                       {selectedTutorial.watched ? (
                         <>
@@ -195,7 +193,10 @@ export default function TutorialsPage() {
                     animate={{ opacity: 1, y: 0 }}
                     whileHover={{ scale: 1.02, y: -5 }}
                     className="card bg-white dark:bg-gray-800 cursor-pointer hover:shadow-2xl transition-all"
-                    onClick={() => setSelectedTutorial(tutorial)}
+                    onClick={() => {
+                      setSelectedTutorial(tutorial)
+                      window.scrollTo({ top: 0, behavior: 'smooth' })
+                    }}
                   >
                     <div className="flex items-start gap-4">
                       <div className="flex-shrink-0 relative">

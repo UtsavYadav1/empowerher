@@ -30,9 +30,9 @@ export async function GET() {
             success: true,
             data: {
                 womenEmpowered: usersCount, // Total users on platform
-                girlsEducated: (workshopsCount * 30) + 120, // Creating a realistic number (avg 30 per workshop) + base
+                girlsEducated: workshopsCount, // Direct count of workshops (or users if preferred)
                 workshops: workshopsCount + eventsCount,
-                communities: postsCount + 6, // Forum posts + base groups
+                communities: postsCount, // Forum posts only
             },
         })
     } catch (error) {

@@ -83,21 +83,21 @@ async function main() {
   }
 
   // Seed Products
-  console.log('Seeding products...')
-  for (const productData of seedData.products) {
-    await prisma.product.create({
-      data: {
-        title: productData.title,
-        description: productData.description,
-        category: productData.category,
-        images: typeof productData.images === 'string' ? JSON.parse(productData.images) : productData.images,
-        price: productData.price,
-        stock: productData.stock,
-        sellerId: productData.sellerId,
-        village: productData.village,
-      },
-    })
-  }
+  console.log('Skipping products seed (Clean Start)...')
+  // for (const productData of seedData.products) {
+  //   await prisma.product.create({
+  //     data: {
+  //       title: productData.title,
+  //       description: productData.description,
+  //       category: productData.category,
+  //       images: typeof productData.images === 'string' ? JSON.parse(productData.images) : productData.images,
+  //       price: productData.price,
+  //       stock: productData.stock,
+  //       sellerId: productData.sellerId,
+  //       village: productData.village,
+  //     },
+  //   })
+  // }
 
   // Seed Schemes
   console.log('Seeding government schemes...')
@@ -114,17 +114,17 @@ async function main() {
   }
 
   // Seed Workshops
-  console.log('Seeding workshops...')
-  for (const workshopData of seedData.workshops) {
-    await prisma.workshop.create({
-      data: {
-        title: workshopData.title,
-        village: workshopData.village,
-        date: new Date(workshopData.date),
-        description: workshopData.description,
-      },
-    })
-  }
+  console.log('Skipping workshops seed (Clean Start)...')
+  // for (const workshopData of seedData.workshops) {
+  //   await prisma.workshop.create({
+  //     data: {
+  //       title: workshopData.title,
+  //       village: workshopData.village,
+  //       date: new Date(workshopData.date),
+  //       description: workshopData.description,
+  //     },
+  //   })
+  // }
 
   // Seed Orders
   console.log('Skipping orders seed (Clean Start)...')
@@ -186,33 +186,33 @@ async function main() {
   }
 
   // Seed Events
-  console.log('Seeding events...')
-  const events = [
-    {
-      title: 'Scholarship Application Deadline',
-      description: 'Beti Bachao Beti Padhao Scholarship deadline approaching',
-      date: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // +5 days
-      type: 'scholarship',
-      category: 'education',
-    },
-    {
-      title: 'Digital Literacy Workshop',
-      description: 'Learn basic computer skills and internet usage',
-      date: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000), // +10 days
-      type: 'workshop',
-      category: 'skills',
-    },
-    {
-      title: 'Career Guidance Session',
-      description: 'One-on-one career counseling session',
-      date: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000), // +15 days
-      type: 'session',
-      category: 'career',
-    }
-  ]
-  for (const event of events) {
-    await prisma.event.create({ data: event })
-  }
+  console.log('Skipping events seed (Clean Start)...')
+  // const events = [
+  //   {
+  //     title: 'Scholarship Application Deadline',
+  //     description: 'Beti Bachao Beti Padhao Scholarship deadline approaching',
+  //     date: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // +5 days
+  //     type: 'scholarship',
+  //     category: 'education',
+  //   },
+  //   {
+  //     title: 'Digital Literacy Workshop',
+  //     description: 'Learn basic computer skills and internet usage',
+  //     date: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000), // +10 days
+  //     type: 'workshop',
+  //     category: 'skills',
+  //   },
+  //   {
+  //     title: 'Career Guidance Session',
+  //     description: 'One-on-one career counseling session',
+  //     date: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000), // +15 days
+  //     type: 'session',
+  //     category: 'career',
+  //   }
+  // ]
+  // for (const event of events) {
+  //   await prisma.event.create({ data: event })
+  // }
 
   // Seed Tutorials
   console.log('Seeding tutorials...')

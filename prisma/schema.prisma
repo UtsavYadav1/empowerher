@@ -62,6 +62,13 @@ model Order {
   createdAt  DateTime @default(now())
 }
 
+model WorkshopRegistration {
+  id         Int      @id @default(autoincrement())
+  workshopId Int
+  userId     Int
+  createdAt  DateTime @default(now())
+}
+
 model FinanceScheme {
   id           Int       @id @default(autoincrement())
   title        String

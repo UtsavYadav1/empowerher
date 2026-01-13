@@ -100,123 +100,12 @@ export default function WorkshopsPage() {
         }))
         setWorkshops(transformedWorkshops)
       } else {
-        // Fallback to hardcoded workshops if API fails
-        setWorkshops([
-          {
-            id: 1,
-            title: 'Leadership Skills for Young Women',
-            description: 'Learn essential leadership skills and build confidence',
-            date: '2024-03-15',
-            location: 'Online',
-            capacity: 50,
-            enrolled: 32,
-          },
-          {
-            id: 2,
-            title: 'Entrepreneurship Basics',
-            description: 'Introduction to starting your own business',
-            date: '2024-03-20',
-            location: 'Conference Center',
-            capacity: 30,
-            enrolled: 15,
-          },
-          {
-            id: 3,
-            title: 'Digital Marketing Masterclass',
-            description: 'Master social media and digital marketing strategies',
-            date: '2024-03-25',
-            location: 'Online',
-            capacity: 100,
-            enrolled: 67,
-          },
-          {
-            id: 4,
-            title: 'Financial Literacy Workshop',
-            description: 'Understanding money management and investments',
-            date: '2024-04-01',
-            location: 'Community Center',
-            capacity: 40,
-            enrolled: 28,
-          },
-          {
-            id: 5,
-            title: 'Handicraft Training',
-            description: 'Learn traditional crafts and business skills',
-            date: '2024-04-05',
-            location: 'Workshop Hall',
-            capacity: 25,
-            enrolled: 20,
-          },
-          {
-            id: 6,
-            title: 'Self-Defense Training',
-            description: 'Basic self-defense techniques for safety',
-            date: '2024-04-10',
-            location: 'Sports Complex',
-            capacity: 35,
-            enrolled: 30,
-          },
-        ])
+        // No fallback, just empty array
+        setWorkshops([])
       }
     } catch (error) {
       console.error('Error fetching workshops:', error)
-      // Use fallback data
-      setWorkshops([
-        {
-          id: 1,
-          title: 'Leadership Skills for Young Women',
-          description: 'Learn essential leadership skills and build confidence',
-          date: '2024-03-15',
-          location: 'Online',
-          capacity: 50,
-          enrolled: 32,
-        },
-        {
-          id: 2,
-          title: 'Entrepreneurship Basics',
-          description: 'Introduction to starting your own business',
-          date: '2024-03-20',
-          location: 'Conference Center',
-          capacity: 30,
-          enrolled: 15,
-        },
-        {
-          id: 3,
-          title: 'Digital Marketing Masterclass',
-          description: 'Master social media and digital marketing strategies',
-          date: '2024-03-25',
-          location: 'Online',
-          capacity: 100,
-          enrolled: 67,
-        },
-        {
-          id: 4,
-          title: 'Financial Literacy Workshop',
-          description: 'Understanding money management and investments',
-          date: '2024-04-01',
-          location: 'Community Center',
-          capacity: 40,
-          enrolled: 28,
-        },
-        {
-          id: 5,
-          title: 'Handicraft Training',
-          description: 'Learn traditional crafts and business skills',
-          date: '2024-04-05',
-          location: 'Workshop Hall',
-          capacity: 25,
-          enrolled: 20,
-        },
-        {
-          id: 6,
-          title: 'Self-Defense Training',
-          description: 'Basic self-defense techniques for safety',
-          date: '2024-04-10',
-          location: 'Sports Complex',
-          capacity: 35,
-          enrolled: 30,
-        },
-      ])
+      setWorkshops([])
     } finally {
       setLoading(false)
     }
@@ -260,7 +149,7 @@ export default function WorkshopsPage() {
       const email = user.email || ''
 
       // Call registration API
-      const response = await fetch('/api/mock/workshops/register', {
+      const response = await fetch('/api/workshops/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
