@@ -127,17 +127,17 @@ async function main() {
   }
 
   // Seed Orders
-  console.log('Seeding orders...')
-  for (const orderData of seedData.orders) {
-    await prisma.order.create({
-      data: {
-        customerId: orderData.customerId,
-        items: typeof orderData.items === 'string' ? JSON.parse(orderData.items) : orderData.items,
-        total: orderData.total,
-        status: orderData.status,
-      },
-    })
-  }
+  console.log('Skipping orders seed (Clean Start)...')
+  // for (const orderData of seedData.orders) {
+  //   await prisma.order.create({
+  //     data: {
+  //       customerId: orderData.customerId,
+  //       items: typeof orderData.items === 'string' ? JSON.parse(orderData.items) : orderData.items,
+  //       total: orderData.total,
+  //       status: orderData.status,
+  //     },
+  //   })
+  // }
 
   // --- NEW FEATURES ---
 
@@ -261,21 +261,23 @@ async function main() {
       replies: []
     }
   ]
-  for (const post of forumPosts) {
-    await prisma.forumPost.create({
-      data: {
-        title: post.title,
-        author: post.author,
-        content: post.content,
-        replies: {
-          create: post.replies.map(reply => ({
-            author: reply.author,
-            content: reply.content
-          }))
-        }
-      }
-    })
-  }
+  // Seed Forum
+  console.log('Skipping forum seed (Clean Start)...')
+  // for (const post of forumPosts) {
+  //   await prisma.forumPost.create({
+  //     data: {
+  //       title: post.title,
+  //       author: post.author,
+  //       content: post.content,
+  //       replies: {
+  //         create: post.replies.map(reply => ({
+  //           author: reply.author,
+  //           content: reply.content
+  //         }))
+  //       }
+  //     }
+  //   })
+  // }
 
   console.log('Seed completed successfully!')
 }

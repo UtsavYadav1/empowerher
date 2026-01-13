@@ -35,14 +35,15 @@ export default function FeedbackPage() {
       const response = await fetch('/api/orders')
       const data = await response.json()
       if (data.success) {
-        const ordersWithFeedback = data.data.map((order: Order, index: number) => ({
-          ...order,
-          customerName: `Customer #${order.customerId}`,
-          feedbackGiven: index % 3 === 0, // Some orders have feedback
-          rating: index % 3 === 0 ? (index % 5) + 1 : undefined,
-          comment: index % 3 === 0 ? `Great buyer! Smooth transaction for order ${order.id}.` : undefined,
-        }))
-        setOrders(ordersWithFeedback.filter((o: Order) => o.status === 'delivered'))
+        if (data.success) {
+          // Map implementation details if necessary, but don't fake feedback
+          const ordersWithDetails = data.data.map((order: Order) => ({
+            ...order,
+            customerName: order.customerName || `Customer #${order.customerId}`,
+            // detailed fields should come from API/DB
+          }))
+          setOrders(ordersWithDetails.filter((o: Order) => o.status === 'delivered'))
+        }
       }
     } catch (error) {
       console.error('Error fetching orders:', error)
@@ -68,9 +69,9 @@ export default function FeedbackPage() {
       })
       const data = await response.json()
       if (data.success) {
-        setOrders(orders.map(o => 
-          o.id === orderId 
-            ? { ...o, feedbackGiven: true, rating, comment: feedback } 
+        setOrders(orders.map(o =>
+          o.id === orderId
+            ? { ...o, feedbackGiven: true, rating, comment: feedback }
             : o
         ))
         setSelectedOrder(null)
@@ -145,10 +146,10 @@ export default function FeedbackPage() {
                             </div>
                           </div>
                           <p className="text-sm text-gray-500 dark:text-gray-500">
-                            Delivered on {new Date(order.createdAt).toLocaleDateString('en-US', { 
-                              month: 'long', 
-                              day: 'numeric', 
-                              year: 'numeric' 
+                            Delivered on {new Date(order.createdAt).toLocaleDateString('en-US', {
+                              month: 'long',
+                              day: 'numeric',
+                              year: 'numeric'
                             })}
                           </p>
                         </div>
@@ -265,12 +266,12 @@ export default function FeedbackPage() {
                       <FaTimes className="text-xl" />
                     </button>
                   </div>
-                  
+
                   <div className="mb-4">
                     <p className="text-gray-700 dark:text-gray-300 mb-2">Order #{selectedOrder.id} from {selectedOrder.customerName}</p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">Total: ₹{selectedOrder.total.toFixed(2)}</p>
                   </div>
-                  
+
                   <div className="mb-4">
                     <label className="block font-semibold mb-3 text-gray-900 dark:text-white">Rating</label>
                     <div className="flex justify-center gap-2">

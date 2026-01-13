@@ -82,9 +82,10 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    // Calculate growth (mock for now - would need historical data)
-    const revenueGrowth = totalRevenue > 0 ? Math.random() * 20 : 0
-    const ordersGrowth = totalOrders > 0 ? Math.random() * 15 : 0
+    // Calculate growth (real logic: compare with previous month)
+    // For now, defaulting to 0 as we don't have historical snapshots in this simple schema
+    const revenueGrowth = 0
+    const ordersGrowth = 0
 
     return NextResponse.json({
       success: true,
@@ -93,8 +94,8 @@ export async function GET(request: NextRequest) {
         orders: totalOrders,
         products: products.length,
         customers: customerIds.size,
-        revenueGrowth: parseFloat(revenueGrowth.toFixed(1)),
-        ordersGrowth: parseFloat(ordersGrowth.toFixed(1)),
+        revenueGrowth: 0,
+        ordersGrowth: 0,
       },
     })
   } catch (error) {
