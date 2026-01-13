@@ -1,35 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { PrismaClient } from '@prisma/client'
 
-// Mock events data
-let events = [
-  {
-    id: 1,
-    title: 'Scholarship Application Deadline',
-    description: 'Beti Bachao Beti Padhao Scholarship deadline approaching',
-    date: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
-    type: 'scholarship',
-    category: 'education',
-    reminderSet: false,
-  },
-  {
-    id: 2,
-    title: 'Digital Literacy Workshop',
-    description: 'Learn basic computer skills and internet usage',
-    date: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString(),
-    type: 'workshop',
-    category: 'skills',
-    reminderSet: false,
-  },
-  {
-    id: 3,
-    title: 'Career Guidance Session',
-    description: 'One-on-one career counseling session',
-    date: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString(),
-    type: 'session',
-    category: 'career',
-    reminderSet: false,
-  },
-]
+export const dynamic = 'force-dynamic'
+
+const prisma = new PrismaClient()
 
 // GET - List all events
 export async function GET(request: NextRequest) {
@@ -38,16 +12,22 @@ export async function GET(request: NextRequest) {
     const type = searchParams.get('type')
     const category = searchParams.get('category')
 
-    let filteredEvents = events
-    if (type) filteredEvents = filteredEvents.filter(e => e.type === type)
-    if (category) filteredEvents = filteredEvents.filter(e => e.category === category)
+    const where: any = {}
+    if (type) where.type = type
+    if (category) where.category = category
+
+    const events = await prisma.event.findMany({
+      where,
+      orderBy: { date: 'asc' },
+    })
 
     return NextResponse.json({
       success: true,
-      data: filteredEvents,
-      count: filteredEvents.length,
+      data: events,
+      count: events.length,
     })
   } catch (error) {
+    console.error('Error fetching events:', error)
     return NextResponse.json(
       { success: false, error: 'Failed to fetch events' },
       { status: 500 }
@@ -68,23 +48,23 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const newEvent = {
-      id: events.length + 1,
-      title,
-      description: description || '',
-      date,
-      type,
-      category: category || 'general',
-      reminderSet: false,
-    }
-
-    events.push(newEvent)
+    const newEvent = await prisma.event.create({
+      data: {
+        title,
+        description: description || '',
+        date: new Date(date),
+        type,
+        category: category || 'general',
+        reminderSet: false,
+      },
+    })
 
     return NextResponse.json({
       success: true,
       data: newEvent,
     }, { status: 201 })
   } catch (error) {
+    console.error('Error creating event:', error)
     return NextResponse.json(
       { success: false, error: 'Failed to create event' },
       { status: 500 }
@@ -105,21 +85,17 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    const event = events.find(e => e.id === parseInt(eventId))
-    if (!event) {
-      return NextResponse.json(
-        { success: false, error: 'Event not found' },
-        { status: 404 }
-      )
-    }
-
-    event.reminderSet = reminderSet
+    const event = await prisma.event.update({
+      where: { id: parseInt(eventId) },
+      data: { reminderSet },
+    })
 
     return NextResponse.json({
       success: true,
       data: event,
     })
   } catch (error) {
+    console.error('Error updating event:', error)
     return NextResponse.json(
       { success: false, error: 'Failed to update event' },
       { status: 500 }

@@ -62,3 +62,52 @@ model Order {
   createdAt  DateTime @default(now())
 }
 
+model FinanceScheme {
+  id           Int       @id @default(autoincrement())
+  title        String
+  description  String
+  amount       String
+  interestRate String
+  eligibility  String
+  applyUrl     String
+  deadline     DateTime?
+  category     String
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  date        DateTime
+  type        String
+  category    String
+  reminderSet Boolean  @default(false)
+}
+
+model Tutorial {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String
+  youtubeId   String
+  duration    String
+  category    String
+  watched     Boolean @default(false)
+}
+
+model ForumPost {
+  id        Int          @id @default(autoincrement())
+  title     String
+  content   String
+  author    String
+  createdAt DateTime     @default(now())
+  replies   ForumReply[]
+}
+
+model ForumReply {
+  id        Int       @id @default(autoincrement())
+  content   String
+  author    String
+  createdAt DateTime  @default(now())
+  postId    Int
+  post      ForumPost @relation(fields: [postId], references: [id])
+}

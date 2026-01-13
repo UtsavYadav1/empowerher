@@ -1,36 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { PrismaClient } from '@prisma/client'
 
-// Mock forum data
-let forumPosts = [
-  {
-    id: 1,
-    title: 'How to prepare for scholarship exams?',
-    author: 'Priya S.',
-    content: 'I am preparing for scholarship exams and need some guidance...',
-    replies: [
-      { id: 1, author: 'Anjali P.', content: 'Focus on practicing previous year papers...', createdAt: new Date().toISOString() },
-    ],
-    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-  },
-  {
-    id: 2,
-    title: 'Best courses for career guidance',
-    author: 'Kavita S.',
-    content: 'Can anyone suggest good online courses for career guidance?',
-    replies: [],
-    createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-  },
-]
+export const dynamic = 'force-dynamic'
+
+const prisma = new PrismaClient()
 
 // GET - List all forum posts
 export async function GET(request: NextRequest) {
   try {
+    const posts = await prisma.forumPost.findMany({
+      include: {
+        replies: true,
+      },
+      orderBy: { createdAt: 'desc' },
+    })
+
     return NextResponse.json({
       success: true,
-      data: forumPosts,
-      count: forumPosts.length,
+      data: posts,
+      count: posts.length,
     })
   } catch (error) {
+    console.error('Error fetching forum posts:', error)
     return NextResponse.json(
       { success: false, error: 'Failed to fetch forum posts' },
       { status: 500 }
@@ -38,7 +29,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST - Create a new forum post (title optional for compatibility with existing UI)
+// POST - Create a new forum post
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
@@ -51,22 +42,23 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const newPost = {
-      id: forumPosts.length + 1,
-      title: title || 'Community Post',
-      author,
-      content,
-      replies: [],
-      createdAt: new Date().toISOString(),
-    }
-
-    forumPosts.push(newPost)
+    const newPost = await prisma.forumPost.create({
+      data: {
+        title: title || 'Community Post',
+        content,
+        author,
+      },
+      include: {
+        replies: true, // Return empty replies array to match frontend expectation
+      }
+    })
 
     return NextResponse.json({
       success: true,
       data: newPost,
     }, { status: 201 })
   } catch (error) {
+    console.error('Error creating post:', error)
     return NextResponse.json(
       { success: false, error: 'Failed to create post' },
       { status: 500 }
@@ -87,28 +79,36 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    const post = forumPosts.find(p => p.id === parseInt(postId))
-    if (!post) {
+    // create reply
+    await prisma.forumReply.create({
+      data: {
+        postId: parseInt(postId),
+        author,
+        content,
+      }
+    })
+
+    // Fetch updated post with all replies
+    const updatedPost = await prisma.forumPost.findUnique({
+      where: { id: parseInt(postId) },
+      include: {
+        replies: true,
+      },
+    })
+
+    if (!updatedPost) {
       return NextResponse.json(
         { success: false, error: 'Post not found' },
         { status: 404 }
       )
     }
 
-    const newReply = {
-      id: post.replies.length + 1,
-      author,
-      content,
-      createdAt: new Date().toISOString(),
-    }
-
-    post.replies.push(newReply)
-
     return NextResponse.json({
       success: true,
-      data: post,
+      data: updatedPost,
     })
   } catch (error) {
+    console.error('Error adding comment:', error)
     return NextResponse.json(
       { success: false, error: 'Failed to add comment' },
       { status: 500 }
