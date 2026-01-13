@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 
+export const dynamic = 'force-dynamic'
+
 const prisma = new PrismaClient()
 
 // GET - Get stats for a specific woman entrepreneur
@@ -34,12 +36,12 @@ export async function GET(request: NextRequest) {
     // Filter orders that contain products from this seller
     orders.forEach((order) => {
       try {
-        const items = typeof order.items === 'string' 
-          ? JSON.parse(order.items) 
+        const items = typeof order.items === 'string'
+          ? JSON.parse(order.items)
           : order.items
 
         if (Array.isArray(items)) {
-          const hasSellerProducts = items.some((item: any) => 
+          const hasSellerProducts = items.some((item: any) =>
             productIds.includes(item.productId)
           )
 
@@ -62,12 +64,12 @@ export async function GET(request: NextRequest) {
     const customerIds = new Set<number>()
     orders.forEach((order) => {
       try {
-        const items = typeof order.items === 'string' 
-          ? JSON.parse(order.items) 
+        const items = typeof order.items === 'string'
+          ? JSON.parse(order.items)
           : order.items
 
         if (Array.isArray(items)) {
-          const hasSellerProducts = items.some((item: any) => 
+          const hasSellerProducts = items.some((item: any) =>
             productIds.includes(item.productId)
           )
 

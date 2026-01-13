@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 
+export const dynamic = 'force-dynamic'
+
 const prisma = new PrismaClient()
 
 export async function GET(request: NextRequest) {
@@ -42,7 +44,7 @@ export async function GET(request: NextRequest) {
     const relevantOrders = allOrders.filter(order => {
       try {
         const items = typeof order.items === 'string' ? JSON.parse(order.items) : order.items
-        return Array.isArray(items) && items.some((item: any) => 
+        return Array.isArray(items) && items.some((item: any) =>
           productIds.includes(parseInt(item.productId))
         )
       } catch {
@@ -54,18 +56,18 @@ export async function GET(request: NextRequest) {
     const revenueByMonth = []
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     const now = new Date()
-    
+
     for (let i = 5; i >= 0; i--) {
       const date = new Date(now.getFullYear(), now.getMonth() - i, 1)
       const monthName = months[date.getMonth()]
       const year = date.getFullYear()
-      
+
       const monthOrders = relevantOrders.filter(order => {
         const orderDate = new Date(order.createdAt)
-        return orderDate.getMonth() === date.getMonth() && 
-               orderDate.getFullYear() === date.getFullYear()
+        return orderDate.getMonth() === date.getMonth() &&
+          orderDate.getFullYear() === date.getFullYear()
       })
-      
+
       const monthRevenue = monthOrders.reduce((sum, order) => {
         try {
           const items = typeof order.items === 'string' ? JSON.parse(order.items) : order.items
@@ -87,7 +89,7 @@ export async function GET(request: NextRequest) {
 
     // Sales by product (top 5)
     const productSales: { [key: string]: number } = {}
-    
+
     relevantOrders.forEach(order => {
       try {
         const items = typeof order.items === 'string' ? JSON.parse(order.items) : order.items
@@ -100,7 +102,7 @@ export async function GET(request: NextRequest) {
             }
           }
         })
-      } catch {}
+      } catch { }
     })
 
     const salesByProduct = Object.entries(productSales)
@@ -110,7 +112,7 @@ export async function GET(request: NextRequest) {
 
     // Sales by category
     const categorySales: { [key: string]: number } = {}
-    
+
     relevantOrders.forEach(order => {
       try {
         const items = typeof order.items === 'string' ? JSON.parse(order.items) : order.items
@@ -124,7 +126,7 @@ export async function GET(request: NextRequest) {
             }
           }
         })
-      } catch {}
+      } catch { }
     })
 
     const salesByCategory = Object.entries(categorySales)

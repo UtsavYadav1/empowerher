@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { setToken, setCurrentUser, getCurrentUser, hasRole, getDashboardPath } from '@/utils/auth'
 import { FaEnvelope, FaPhone, FaLock, FaEye, FaEyeSlash, FaUserCircle, FaShieldAlt } from 'react-icons/fa'
 
-export default function LoginPage() {
+function LoginContent() {
   const [loginMethod, setLoginMethod] = useState<'phone' | 'email'>('phone')
   const [identifier, setIdentifier] = useState('') // Can be phone or email
   const [password, setPassword] = useState('')
@@ -44,7 +44,7 @@ export default function LoginPage() {
     try {
       // Determine if identifier is email or phone
       const isEmail = identifier.includes('@')
-      const loginData = isEmail 
+      const loginData = isEmail
         ? { email: identifier, password }
         : { phone: identifier, password }
 
@@ -80,9 +80,9 @@ export default function LoginPage() {
         }
 
         // Get redirect path from query params or use default
-        const redirectPath = searchParams.get('redirect') || 
+        const redirectPath = searchParams.get('redirect') ||
           (data.data.user.role ? getDashboardPath(data.data.user.role) : '/role-select')
-        
+
         // Small delay to ensure localStorage is updated
         setTimeout(() => {
           router.push(redirectPath)
@@ -130,22 +130,20 @@ export default function LoginPage() {
           <button
             type="button"
             onClick={() => setLoginMethod('phone')}
-            className={`flex-1 py-2 px-4 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 ${
-              loginMethod === 'phone'
+            className={`flex-1 py-2 px-4 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 ${loginMethod === 'phone'
                 ? 'bg-white dark:bg-gray-800 text-primary-600 shadow-md'
                 : 'text-gray-600 dark:text-gray-400'
-            }`}
+              }`}
           >
             <FaPhone /> Phone
           </button>
           <button
             type="button"
             onClick={() => setLoginMethod('email')}
-            className={`flex-1 py-2 px-4 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 ${
-              loginMethod === 'email'
+            className={`flex-1 py-2 px-4 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 ${loginMethod === 'email'
                 ? 'bg-white dark:bg-gray-800 text-primary-600 shadow-md'
                 : 'text-gray-600 dark:text-gray-400'
-            }`}
+              }`}
           >
             <FaEnvelope /> Email
           </button>
@@ -221,8 +219,8 @@ export default function LoginPage() {
           </div>
 
           {/* Submit Button */}
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="btn-primary w-full py-4 font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-lg"
             disabled={loading}
           >

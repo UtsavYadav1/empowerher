@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
@@ -32,7 +32,7 @@ interface Order {
   estimatedDelivery?: string
 }
 
-export default function OrdersPage() {
+function OrdersContent() {
   const searchParams = useSearchParams()
   const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
@@ -47,21 +47,21 @@ export default function OrdersPage() {
     const success = searchParams.get('success')
     const txn = searchParams.get('txn')
     const ordId = searchParams.get('orderId')
-    
+
     if (success === 'true' && txn) {
       setShowSuccess(true)
       setTransactionId(txn)
       if (ordId) setOrderId(ordId)
       setTimeout(() => setShowSuccess(false), 5000)
     }
-    
+
     fetchOrders()
   }, [searchParams])
 
   const fetchOrders = async () => {
     try {
       let allOrders: Order[] = []
-      
+
       // Fetch orders from database if user is logged in
       if (user?.id) {
         try {
@@ -78,7 +78,7 @@ export default function OrdersPage() {
           console.error('Error fetching orders from database:', dbError)
         }
       }
-      
+
       // Also check localStorage for any pending orders not yet synced
       try {
         const ordersStr = localStorage.getItem('customerOrders')
@@ -94,12 +94,12 @@ export default function OrdersPage() {
       } catch (localError) {
         console.error('Error reading localStorage:', localError)
       }
-      
+
       // Sort by creation date (most recent first)
-      allOrders.sort((a, b) => 
+      allOrders.sort((a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       )
-      
+
       setOrders(allOrders)
     } catch (error) {
       console.error('Error fetching orders:', error)
@@ -152,7 +152,7 @@ export default function OrdersPage() {
     ]
 
     const statusIndex = steps.findIndex(s => s.id === status.toLowerCase())
-    
+
     return steps.map((step, index) => ({
       ...step,
       completed: index <= statusIndex,
@@ -383,19 +383,17 @@ export default function OrdersPage() {
                     const Icon = step.icon
                     return (
                       <div key={step.id} className="flex items-start gap-4">
-                        <div className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center ${
-                          step.completed
+                        <div className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center ${step.completed
                             ? 'bg-green-500 text-white'
                             : step.current
-                            ? 'bg-primary-500 text-white'
-                            : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400'
-                        }`}>
+                              ? 'bg-primary-500 text-white'
+                              : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400'
+                          }`}>
                           <Icon className="text-xl" />
                         </div>
                         <div className="flex-1">
-                          <h3 className={`text-lg font-bold mb-1 ${
-                            step.current ? 'text-primary-600 dark:text-primary-400' : 'text-gray-900 dark:text-white'
-                          }`}>
+                          <h3 className={`text-lg font-bold mb-1 ${step.current ? 'text-primary-600 dark:text-primary-400' : 'text-gray-900 dark:text-white'
+                            }`}>
                             {step.label}
                           </h3>
                           {step.completed && (
@@ -405,9 +403,8 @@ export default function OrdersPage() {
                           )}
                         </div>
                         {index < getTrackingSteps(selectedOrder.status).length - 1 && (
-                          <div className={`absolute left-6 mt-12 w-0.5 h-12 ${
-                            step.completed ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'
-                          }`} />
+                          <div className={`absolute left-6 mt-12 w-0.5 h-12 ${step.completed ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'
+                            }`} />
                         )}
                       </div>
                     )
