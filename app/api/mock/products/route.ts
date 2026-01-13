@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 
+export const dynamic = 'force-dynamic'
+
 const prisma = new PrismaClient()
 
 // GET - List all products
@@ -96,8 +98,8 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error('Error creating product:', error)
     return NextResponse.json(
-      { 
-        success: false, 
+      {
+        success: false,
         error: error.message || 'Failed to create product',
         details: process.env.NODE_ENV === 'development' ? error.stack : undefined
       },
