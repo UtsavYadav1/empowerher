@@ -10,9 +10,11 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
     const village = searchParams.get('village')
+    const id = searchParams.get('id')
 
     const where: any = {}
     if (village) where.village = village
+    if (id) where.id = parseInt(id)
 
     const workshops = await prisma.workshop.findMany({
       where,
@@ -37,9 +39,9 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { title, village, date, description } = body
+    const { title, village, date, description, instructor, category, capacity, fee, status, location } = body
 
-    if (!title || !village || !date || !description) {
+    if (!title || !date || !description) {
       return NextResponse.json(
         { success: false, error: 'Missing required fields' },
         { status: 400 }
@@ -49,9 +51,14 @@ export async function POST(request: NextRequest) {
     const workshop = await prisma.workshop.create({
       data: {
         title,
-        village,
+        village: village || location || 'Online', // Fallback or merge
         date: new Date(date),
         description,
+        instructor: instructor || 'TBD',
+        category: category || 'General',
+        capacity: capacity ? parseInt(capacity) : 30,
+        fee: fee ? parseFloat(fee) : 0,
+        status: status || 'upcoming',
       },
     })
 

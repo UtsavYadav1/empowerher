@@ -37,7 +37,7 @@ function ManageWorkshopsContent() {
     try {
       const response = await fetch('/api/workshops')
       const result = await response.json()
-      
+
       if (result.success) {
         setWorkshops(result.data)
       }
@@ -57,7 +57,7 @@ function ManageWorkshopsContent() {
       })
 
       const result = await response.json()
-      
+
       if (result.success) {
         alert('Workshop deleted successfully!')
         fetchWorkshops()
@@ -126,6 +126,13 @@ function ManageWorkshopsContent() {
               </h1>
               <p className="text-gray-600 dark:text-gray-400">View and manage all platform workshops</p>
             </div>
+
+            <Link
+              href="/admin/workshops/new"
+              className="btn-primary flex items-center gap-2 px-6 py-3 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all"
+            >
+              <FaEdit /> Add New Workshop
+            </Link>
           </div>
 
           {/* Search */}
@@ -200,11 +207,11 @@ function ManageWorkshopsContent() {
                   <div className="space-y-2 mb-4">
                     <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                       <FaCalendar className="text-primary-600" />
-                      <span>{new Date(workshop.date).toLocaleDateString()} • {workshop.time}</span>
+                      <span>{new Date(workshop.date).toLocaleDateString()}</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                       <FaMapMarkerAlt className="text-primary-600" />
-                      <span className="truncate">{workshop.location}</span>
+                      <span className="truncate">{workshop.location || workshop.village}</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                       <FaUsers className="text-primary-600" />
@@ -226,11 +233,17 @@ function ManageWorkshopsContent() {
                   </div>
 
                   <div className="flex gap-2">
+                    <Link
+                      href={`/admin/workshops/${workshop.id}`}
+                      className="flex-1 btn-secondary text-sm py-2 flex items-center justify-center gap-2 bg-blue-50 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/30"
+                    >
+                      <FaEdit /> Edit
+                    </Link>
                     <button
                       onClick={() => handleViewWorkshop(workshop)}
-                      className="flex-1 btn-secondary text-sm py-2 flex items-center justify-center gap-2"
+                      className="btn-secondary text-sm py-2 px-4"
                     >
-                      <FaEye /> View
+                      <FaEye />
                     </button>
                     <button
                       onClick={() => handleDeleteWorkshop(workshop.id)}

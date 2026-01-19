@@ -52,6 +52,15 @@ model Workshop {
   village     String
   date        DateTime
   description String
+  instructor  String   @default("TBD")
+  category    String   @default("General")
+  capacity    Int      @default(30)
+  registered  Int      @default(0)
+  fee         Float    @default(0)
+  status      String   @default("upcoming") // upcoming, ongoing, completed, cancelled
+  image       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Order {
