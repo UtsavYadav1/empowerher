@@ -131,15 +131,15 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
-              className="bg-white/10 backdrop-blur-xl border border-white/20 p-6 rounded-2xl shadow-2xl text-center hover:-translate-y-2 transition-all duration-300 group"
+              className="bg-white dark:bg-gray-800 border-b-4 border-orange-500 p-6 rounded-2xl shadow-2xl text-center hover:-translate-y-2 transition-all duration-300 group z-30 relative"
             >
-              <div className="w-12 h-12 mx-auto bg-gradient-to-br from-orange-400 to-pink-500 rounded-full flex items-center justify-center text-white text-xl mb-4 shadow-lg group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 mx-auto bg-orange-100 dark:bg-orange-900/50 rounded-full flex items-center justify-center text-orange-600 dark:text-orange-400 text-xl mb-4 group-hover:scale-110 transition-transform">
                 <stat.icon />
               </div>
-              <h3 className="text-3xl md:text-4xl font-bold text-white mb-1 drop-shadow-sm">
+              <h3 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-1">
                 <CountUp end={stat.value} duration={2.5} separator="," />{stat.suffix}
               </h3>
-              <p className="text-sm font-medium text-gray-200 uppercase tracking-wider">{stat.label}</p>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider">{stat.label}</p>
             </motion.div>
           ))}
         </div>

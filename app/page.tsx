@@ -225,7 +225,7 @@ export default function Home() {
       </section>
 
       {/* Impact Stats Section - Floating Cards */}
-      <section className="relative py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+      <section className="relative py-20 bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 text-white">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
