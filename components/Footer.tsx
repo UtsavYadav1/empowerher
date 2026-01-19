@@ -59,13 +59,13 @@ export default function Footer() {
             <h4 className="text-lg font-semibold mb-4">Follow Us</h4>
             <div className="flex space-x-4" role="list">
               <a
-                href="https://youtube.com/@utsavyaduvanshi_2?si=c_AeOvWGKNgVa2KW"
+                href="https://www.linkedin.com/in/utsav-yadav01"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors p-2 hover:scale-110 transform"
-                aria-label="Follow us on YouTube"
+                aria-label="Follow us on LinkedIn"
               >
-                <FaYoutube size={24} />
+                <FaLinkedin size={24} />
               </a>
               <a
                 href="https://x.com/UtsavyadavX"
@@ -77,6 +77,15 @@ export default function Footer() {
                 <FaTwitter size={24} />
               </a>
               <a
+                href="https://youtube.com/@utsavyaduvanshi_2?si=c_AeOvWGKNgVa2KW"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors p-2 hover:scale-110 transform"
+                aria-label="Follow us on YouTube"
+              >
+                <FaYoutube size={24} />
+              </a>
+              <a
                 href="https://www.instagram.com/utsav.img/"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -84,15 +93,6 @@ export default function Footer() {
                 aria-label="Follow us on Instagram"
               >
                 <FaInstagram size={24} />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/utsav-yadav01"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors p-2 hover:scale-110 transform"
-                aria-label="Follow us on LinkedIn"
-              >
-                <FaLinkedin size={24} />
               </a>
             </div>
           </motion.div>
