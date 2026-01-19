@@ -65,15 +65,15 @@ const timeline = [
 const teamMembers = [
   {
     name: 'Utsav Yadav',
-    role: 'Education Director & Developer',
+    role: 'Founder & Developer',
     image: '/images/team/utsav.png',
     description: 'Expert in curriculum development and mentorship programs for young girls.',
   },
   {
     name: 'Bhoomi Sharma',
-    role: 'Founder, CEO & Developer',
+    role: 'Co-Founder & Developer',
     image: '/images/team/bhoomi.png',
-    description: 'Passionate about women empowerment with 15+ years of experience in social impact.',
+    description: 'Passionate about women empowerment with 5+ years of experience in social impact.',
   },
   {
     name: 'Mansi Singh',

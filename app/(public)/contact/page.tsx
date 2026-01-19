@@ -463,14 +463,14 @@ export default function ContactPage() {
             <p className="mb-6 opacity-90">Follow us on social media for updates and inspiration!</p>
             <div className="flex flex-wrap gap-4">
               <motion.a
-                href="https://youtube.com/@utsavyaduvanshi_2?si=c_AeOvWGKNgVa2KW"
+                href="https://www.linkedin.com/in/utsav-yadav01"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1, y: -5 }}
-                className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-2xl hover:bg-white/30 transition-all text-red-100" // Added lighter text style for visibility
-                aria-label="YouTube"
+                className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-2xl hover:bg-white/30 transition-all"
+                aria-label="LinkedIn"
               >
-                <FaYoutube />
+                <FaLinkedin />
               </motion.a>
               <motion.a
                 href="https://x.com/UtsavyadavX"
@@ -483,6 +483,16 @@ export default function ContactPage() {
                 <FaTwitter />
               </motion.a>
               <motion.a
+                href="https://youtube.com/@utsavyaduvanshi_2?si=c_AeOvWGKNgVa2KW"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.1, y: -5 }}
+                className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-2xl hover:bg-white/30 transition-all text-red-100"
+                aria-label="YouTube"
+              >
+                <FaYoutube />
+              </motion.a>
+              <motion.a
                 href="https://www.instagram.com/utsav.img/"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -491,16 +501,6 @@ export default function ContactPage() {
                 aria-label="Instagram"
               >
                 <FaInstagram />
-              </motion.a>
-              <motion.a
-                href="https://www.linkedin.com/in/utsav-yadav01"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1, y: -5 }}
-                className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-2xl hover:bg-white/30 transition-all"
-                aria-label="LinkedIn"
-              >
-                <FaLinkedin />
               </motion.a>
               <motion.a
                 href="https://wa.me/919305376745"
