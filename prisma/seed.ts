@@ -114,17 +114,31 @@ async function main() {
   }
 
   // Seed Workshops
-  console.log('Skipping workshops seed (Clean Start)...')
-  // for (const workshopData of seedData.workshops) {
-  //   await prisma.workshop.create({
-  //     data: {
-  //       title: workshopData.title,
-  //       village: workshopData.village,
-  //       date: new Date(workshopData.date),
-  //       description: workshopData.description,
-  //     },
-  //   })
-  // }
+  console.log('Seeding Workshops...')
+  const workshopData = [
+    {
+      title: 'Digital Literacy for Girls',
+      village: 'Adampur',
+      date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // +7 days
+      description: 'Learn how to use computers, smartphones, and the internet safely.'
+    },
+    {
+      title: 'Women Entrepreneurship Bootcamp',
+      village: 'Ranipur',
+      date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // +14 days
+      description: 'Start your own business with guidance from successful mentors.'
+    }
+  ]
+  for (const workshop of workshopData) {
+    await prisma.workshop.create({
+      data: {
+        title: workshop.title,
+        village: workshop.village,
+        date: workshop.date,
+        description: workshop.description,
+      },
+    })
+  }
 
   // Seed Orders
   console.log('Skipping orders seed (Clean Start)...')
@@ -186,33 +200,42 @@ async function main() {
   }
 
   // Seed Events
-  console.log('Skipping events seed (Clean Start)...')
-  // const events = [
-  //   {
-  //     title: 'Scholarship Application Deadline',
-  //     description: 'Beti Bachao Beti Padhao Scholarship deadline approaching',
-  //     date: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // +5 days
-  //     type: 'scholarship',
-  //     category: 'education',
-  //   },
-  //   {
-  //     title: 'Digital Literacy Workshop',
-  //     description: 'Learn basic computer skills and internet usage',
-  //     date: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000), // +10 days
-  //     type: 'workshop',
-  //     category: 'skills',
-  //   },
-  //   {
-  //     title: 'Career Guidance Session',
-  //     description: 'One-on-one career counseling session',
-  //     date: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000), // +15 days
-  //     type: 'session',
-  //     category: 'career',
-  //   }
-  // ]
-  // for (const event of events) {
-  //   await prisma.event.create({ data: event })
-  // }
+  console.log('Seeding events...')
+  const events = [
+    {
+      title: 'Global Scholarship Test 2026',
+      description: 'Annual scholarship test for merit students. 100% tuition waiver.',
+      date: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // +5 days
+      type: 'scholarship',
+      category: 'education',
+      eligibility: 'Class 10th and 12th students',
+      registrationDeadline: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+      applyUrl: '#',
+      benefits: ['Full Tuition Fee', 'Laptop', 'Mentorship']
+    },
+    {
+      title: 'Tech Skills Workshop',
+      description: 'Hands-on workshop on web development and design.',
+      date: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000), // +10 days
+      type: 'workshop',
+      category: 'skills',
+      location: 'Online via Zoom',
+      organizer: 'TechForGood',
+      benefits: ['Certificate', 'Project Experience']
+    },
+    {
+      title: 'Career Counseling Session',
+      description: 'One-on-one career counseling session with industry experts.',
+      date: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000), // +15 days
+      type: 'session',
+      category: 'career',
+      location: 'Community Hall, Sector 4',
+      organizer: 'EmpowerHer Team'
+    }
+  ]
+  for (const event of events) {
+    await prisma.event.create({ data: event })
+  }
 
   // Seed Tutorials
   console.log('Seeding tutorials...')

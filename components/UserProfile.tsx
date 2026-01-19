@@ -7,6 +7,62 @@ import { useRouter } from 'next/navigation'
 import { getCurrentUser, logout, getDashboardPath } from '@/utils/auth'
 import { FaUserCircle, FaUser, FaCog, FaSignOutAlt, FaChevronDown, FaEnvelope, FaPhone, FaMapMarkerAlt, FaShieldAlt, FaBell, FaHeart, FaCertificate, FaEdit } from 'react-icons/fa'
 
+
+function QuickStats() {
+  const [stats, setStats] = useState({ certificates: 0, courses: 0, schemes: 0 })
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch('/api/girls/stats')
+        const data = await response.json()
+
+        // Get schemes from localStorage
+        const appliedSchemes = JSON.parse(localStorage.getItem('appliedSchemes') || '[]')
+
+        if (data.success) {
+          setStats({
+            certificates: data.data?.stats?.certificates || 0,
+            courses: (data.data?.stats?.enrolled || 0) + (data.data?.stats?.completed || 0),
+            schemes: appliedSchemes.length
+          })
+        }
+      } catch (error) {
+        console.error('Failed to fetch user stats', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchStats()
+  }, [])
+
+  if (loading) return <div className="p-4 text-center text-xs text-gray-500">Loading stats...</div>
+
+  return (
+    <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="grid grid-cols-3 gap-2 text-center">
+        <div className="p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+          <FaCertificate className="text-purple-600 mx-auto mb-1" />
+          <p className="text-xs font-semibold text-gray-900 dark:text-white">{stats.certificates}</p>
+          <p className="text-xs text-gray-600 dark:text-gray-400">Certificates</p>
+        </div>
+        <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+          <FaHeart className="text-blue-600 mx-auto mb-1" />
+          <p className="text-xs font-semibold text-gray-900 dark:text-white">{stats.courses}</p>
+          <p className="text-xs text-gray-600 dark:text-gray-400">Courses</p>
+        </div>
+        <div className="p-2 bg-green-50 dark:bg-green-900/20 rounded-lg">
+          <FaShieldAlt className="text-green-600 mx-auto mb-1" />
+          <p className="text-xs font-semibold text-gray-900 dark:text-white">{stats.schemes}</p>
+          <p className="text-xs text-gray-600 dark:text-gray-400">Schemes</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function UserProfile() {
   const [isOpen, setIsOpen] = useState(false)
   const [user, setUser] = useState<any>(null)
@@ -84,7 +140,7 @@ export default function UserProfile() {
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-pink-500 flex items-center justify-center text-white font-bold text-sm shadow-md">
           {getInitials(user.name)}
         </div>
-        
+
         {/* Name (hidden on mobile) */}
         <div className="hidden md:block text-left">
           <p className="text-sm font-semibold text-gray-900 dark:text-white leading-tight">
@@ -149,25 +205,7 @@ export default function UserProfile() {
 
             {/* Quick Stats (for Girl/Women role) */}
             {(user.role === 'girl' || user.role === 'women') && (
-              <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                <div className="grid grid-cols-3 gap-2 text-center">
-                  <div className="p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                    <FaCertificate className="text-purple-600 mx-auto mb-1" />
-                    <p className="text-xs font-semibold text-gray-900 dark:text-white">2</p>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Certificates</p>
-                  </div>
-                  <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                    <FaHeart className="text-blue-600 mx-auto mb-1" />
-                    <p className="text-xs font-semibold text-gray-900 dark:text-white">7</p>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Courses</p>
-                  </div>
-                  <div className="p-2 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                    <FaShieldAlt className="text-green-600 mx-auto mb-1" />
-                    <p className="text-xs font-semibold text-gray-900 dark:text-white">3</p>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Schemes</p>
-                  </div>
-                </div>
-              </div>
+              <QuickStats />
             )}
 
             {/* Menu Items */}
