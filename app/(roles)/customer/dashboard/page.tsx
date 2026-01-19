@@ -6,22 +6,22 @@ import Link from 'next/link'
 import ProductCard from '@/components/ProductCard'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import { CardSkeleton } from '@/components/LoadingSkeleton'
-import { 
-  FaShoppingBag, 
-  FaHistory, 
-  FaShoppingCart, 
-  FaBox, 
-  FaClock, 
-  FaCheckCircle, 
-  FaArrowRight, 
-  FaChartLine 
+import {
+  FaShoppingBag,
+  FaHistory,
+  FaShoppingCart,
+  FaBox,
+  FaClock,
+  FaCheckCircle,
+  FaArrowRight,
+  FaChartLine
 } from 'react-icons/fa'
 import { getCurrentUser } from '@/utils/auth'
 
 // Helper function to get product-specific images based on category and name
 const getProductImage = (category: string, productName: string, productId: number) => {
   const name = productName.toLowerCase()
-  
+
   // Match specific product names first
   if (name.includes('mango') || name.includes('aam')) {
     return 'https://images.unsplash.com/photo-1553279768-865429fa0078?w=400&h=400&fit=crop&q=80'
@@ -38,7 +38,7 @@ const getProductImage = (category: string, productName: string, productId: numbe
   if (name.includes('garlic') || name.includes('lahsun')) {
     return 'https://images.unsplash.com/photo-1580797542185-90ce4a22e7c4?w=400&h=400&fit=crop&q=80'
   }
-  
+
   // Category-specific diverse images
   const categoryImages: { [key: string]: string[] } = {
     pickles: [
@@ -104,7 +104,7 @@ const getProductImage = (category: string, productName: string, productId: numbe
     'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop&q=80',
     'https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=400&h=400&fit=crop&q=80',
   ]
-  
+
   return images[productId % images.length]
 }
 
@@ -140,7 +140,7 @@ function CustomerDashboardContent() {
   const fetchStats = async () => {
     try {
       let allOrders: any[] = []
-      
+
       // Fetch orders from database if user is logged in
       if (user?.id) {
         try {
@@ -153,7 +153,7 @@ function CustomerDashboardContent() {
           console.error('Error fetching orders from database:', dbError)
         }
       }
-      
+
       // Also check localStorage for any pending orders not yet synced
       try {
         const ordersStr = localStorage.getItem('customerOrders')
@@ -167,11 +167,11 @@ function CustomerDashboardContent() {
       } catch (localError) {
         console.error('Error reading localStorage:', localError)
       }
-      
+
       if (Array.isArray(allOrders)) {
         setStats({
           totalOrders: allOrders.length,
-          pendingOrders: allOrders.filter((o: any) => 
+          pendingOrders: allOrders.filter((o: any) =>
             o.status === 'pending' || o.status === 'processing' || o.status === 'shipped'
           ).length,
           completedOrders: allOrders.filter((o: any) => o.status === 'delivered').length,
@@ -346,8 +346,8 @@ function CustomerDashboardContent() {
         <div className="mb-8">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Featured Products</h2>
-            <Link 
-              href="/customer/products" 
+            <Link
+              href="/customer/products"
               className="text-primary-600 dark:text-primary-400 font-semibold hover:underline flex items-center gap-2"
             >
               View All <FaArrowRight />
@@ -368,15 +368,16 @@ function CustomerDashboardContent() {
               {products
                 .filter(p => p && p.id && p.title && typeof p.price === 'number')
                 .map((product, index) => {
-                  // Get image URL - use product-specific images
-                  let imageUrl = getProductImage(product.category || 'handmade', product.title || 'Product', product.id || index)
-                  
                   // Only override if product has actual custom images
-                  if (Array.isArray(product.images) && product.images.length > 0 && product.images[0] && 
-                      typeof product.images[0] === 'string' && product.images[0].startsWith('http')) {
+                  if (Array.isArray(product.images) && product.images.length > 0 &&
+                    product.images[0] && typeof product.images[0] === 'string' &&
+                    product.images[0].trim().length > 0) {
                     imageUrl = product.images[0]
+                  } else {
+                    // Fallback to generated image
+                    imageUrl = getProductImage(product.category || 'handmade', product.title || 'Product', product.id || index)
                   }
-                  
+
                   return (
                     <motion.div
                       key={product.id || index}
@@ -385,14 +386,14 @@ function CustomerDashboardContent() {
                       viewport={{ once: true }}
                       transition={{ duration: 0.5, delay: index * 0.1 }}
                     >
-                      <ProductCard 
+                      <ProductCard
                         product={{
                           id: product.id || index,
                           name: product.title || 'Product',
                           description: product.description || '',
                           price: product.price || 0,
                           imageUrl: imageUrl,
-                        }} 
+                        }}
                       />
                     </motion.div>
                   )
