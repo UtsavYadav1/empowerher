@@ -10,6 +10,7 @@ import { FaCalendar, FaPlus, FaEdit, FaTrash, FaSearch, FaFilter, FaCheckCircle,
 interface Event {
     id: number
     title: string
+    description: string
     date: string
     type: string
     category: string

@@ -86,10 +86,16 @@ model Event {
   id          Int      @id @default(autoincrement())
   title       String
   description String
-  date        DateTime
-  type        String
-  category    String
-  reminders   EventReminder[]
+  date                 DateTime
+  type                 String
+  category             String
+  location             String?
+  organizer            String?
+  registrationDeadline DateTime?
+  applyUrl             String?
+  eligibility          String?
+  benefits             String[]
+  reminders            EventReminder[]
 }
 
 model EventReminder {
