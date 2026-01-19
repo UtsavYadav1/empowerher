@@ -24,6 +24,8 @@ interface Event {
   isRegistrationOpen?: boolean
 }
 
+import { getCurrentUser } from '@/utils/auth'
+
 export default function EventsPage() {
   const [events, setEvents] = useState<Event[]>([])
   const [loading, setLoading] = useState(true)
@@ -36,7 +38,10 @@ export default function EventsPage() {
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch('/api/events')
+      const user = getCurrentUser()
+      const userId = user?.id
+      const queryParams = userId ? `?userId=${userId}` : ''
+      const response = await fetch(`/api/events${queryParams}`)
       const result = await response.json()
 
       if (result.success) {
@@ -49,33 +54,48 @@ export default function EventsPage() {
     }
   }
 
-  const handleSetReminder = (eventId: number, reminderSet: boolean) => {
-    setEvents(events.map(e =>
-      e.id === eventId ? { ...e, reminderSet: !reminderSet } : e
-    ))
+  const handleSetReminder = async (eventId: number, reminderSet: boolean) => {
+    const user = getCurrentUser()
+    const userId = user?.id
 
-    if (!reminderSet) {
-      const event = events.find(e => e.id === eventId)
-      if (event) {
-        // Store reminder in localStorage
-        const reminders = JSON.parse(localStorage.getItem('eventReminders') || '[]')
-        reminders.push({
-          eventId: event.id,
-          eventTitle: event.title,
-          eventDate: event.date,
-          setAt: new Date().toISOString()
-        })
-        localStorage.setItem('eventReminders', JSON.stringify(reminders))
+    if (!userId) {
+      alert('Please login to set reminders')
+      return
+    }
 
-        alert(`✅ Reminder set! You'll be notified before "${event.title}" on ${new Date(event.date).toLocaleDateString()}`)
+    try {
+      // Optimistic update
+      setEvents(events.map(e =>
+        e.id === eventId ? { ...e, reminderSet: !reminderSet } : e
+      ))
+
+      const response = await fetch('/api/events', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ eventId, reminderSet: !reminderSet, userId }),
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        if (!reminderSet) {
+          alert(`✅ Reminder set!`)
+        } else {
+          alert('Reminder removed.')
+        }
+      } else {
+        // Revert on failure
+        setEvents(events.map(e =>
+          e.id === eventId ? { ...e, reminderSet: reminderSet } : e
+        ))
+        alert('Failed to update reminder')
       }
-    } else {
-      // Remove from localStorage
-      const reminders = JSON.parse(localStorage.getItem('eventReminders') || '[]')
-      const updated = reminders.filter((r: any) => r.eventId !== eventId)
-      localStorage.setItem('eventReminders', JSON.stringify(updated))
-
-      alert('Reminder removed.')
+    } catch (error) {
+      console.error('Error setting reminder:', error)
+      // Revert on error
+      setEvents(events.map(e =>
+        e.id === eventId ? { ...e, reminderSet: reminderSet } : e
+      ))
     }
   }
 
@@ -199,8 +219,8 @@ export default function EventsPage() {
                     key={type}
                     onClick={() => setFilter(type)}
                     className={`px-4 py-2 rounded-lg font-semibold transition-all ${filter === type
-                        ? 'bg-primary-600 text-white shadow-lg scale-105'
-                        : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                      ? 'bg-primary-600 text-white shadow-lg scale-105'
+                      : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
                       }`}
                   >
                     {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -372,8 +392,8 @@ export default function EventsPage() {
                         <button
                           onClick={() => handleSetReminder(event.id, event.reminderSet)}
                           className={`px-4 py-3 rounded-lg transition-all font-semibold text-sm flex items-center gap-2 ${event.reminderSet
-                              ? 'bg-green-500 text-white hover:bg-green-600 shadow-md'
-                              : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                            ? 'bg-green-500 text-white hover:bg-green-600 shadow-md'
+                            : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
                             }`}
                         >
                           <FaBell />
@@ -384,10 +404,10 @@ export default function EventsPage() {
                       {/* Days Until Event */}
                       <div className="mt-3 text-center">
                         <p className={`text-sm font-bold ${daysUntil === 0
-                            ? 'text-red-600 dark:text-red-400'
-                            : daysUntil <= 7
-                              ? 'text-orange-600 dark:text-orange-400'
-                              : 'text-primary-600 dark:text-primary-400'
+                          ? 'text-red-600 dark:text-red-400'
+                          : daysUntil <= 7
+                            ? 'text-orange-600 dark:text-orange-400'
+                            : 'text-primary-600 dark:text-primary-400'
                           }`}>
                           {daysUntil === 0 ? '🔥 Event is TODAY!' : daysUntil === 1 ? '⚡ Event is TOMORROW!' : `📅 Event in ${daysUntil} days`}
                         </p>

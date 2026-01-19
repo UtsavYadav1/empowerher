@@ -16,6 +16,8 @@ interface Tutorial {
   watched: boolean
 }
 
+import { getCurrentUser } from '@/utils/auth'
+
 export default function TutorialsPage() {
   const [tutorials, setTutorials] = useState<Tutorial[]>([])
   const [loading, setLoading] = useState(true)
@@ -28,7 +30,13 @@ export default function TutorialsPage() {
 
   const fetchTutorials = async () => {
     try {
-      const url = filter !== 'all' ? `/api/tutorials?category=${filter}` : '/api/tutorials'
+      const user = getCurrentUser()
+      const userId = user?.id
+      let url = filter !== 'all' ? `/api/tutorials?category=${filter}` : '/api/tutorials'
+      if (userId) {
+        url += (url.includes('?') ? '&' : '?') + `userId=${userId}`
+      }
+
       const response = await fetch(url)
       const data = await response.json()
       if (data.success) {
@@ -42,18 +50,29 @@ export default function TutorialsPage() {
   }
 
   const handleMarkWatched = async (tutorialId: number, watched: boolean) => {
+    const user = getCurrentUser()
+    const userId = user?.id
+
+    if (!userId) return
+
     try {
+      // Optimistic update
+      const updatedTutorials = tutorials.map(t => t.id === tutorialId ? { ...t, watched: !watched } : t)
+      setTutorials(updatedTutorials)
+      if (selectedTutorial?.id === tutorialId) {
+        setSelectedTutorial({ ...selectedTutorial, watched: !watched })
+      }
+
       const response = await fetch('/api/tutorials', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tutorialId, watched: !watched }),
+        body: JSON.stringify({ tutorialId, watched: !watched, userId }),
       })
       const data = await response.json()
-      if (data.success) {
-        setTutorials(tutorials.map(t => t.id === tutorialId ? data.data : t))
-        if (selectedTutorial?.id === tutorialId) {
-          setSelectedTutorial(data.data)
-        }
+      // If failed, we could revert, but assuming success for UI responsiveness
+      if (!data.success) {
+        console.error('Failed to update progress')
+        // Revert logic could go here
       }
     } catch (error) {
       console.error('Error marking tutorial:', error)
@@ -122,8 +141,8 @@ export default function TutorialsPage() {
                 key={cat}
                 onClick={() => setFilter(cat)}
                 className={`px-4 py-2 rounded-lg font-semibold transition-all ${filter === cat
-                    ? 'bg-primary-600 text-white shadow-lg scale-105'
-                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                  ? 'bg-primary-600 text-white shadow-lg scale-105'
+                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`}
               >
                 {cat.charAt(0).toUpperCase() + cat.slice(1)}
@@ -169,8 +188,8 @@ export default function TutorialsPage() {
                     <button
                       onClick={() => handleMarkWatched(selectedTutorial.id, selectedTutorial.watched)}
                       className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${selectedTutorial.watched
-                          ? 'bg-green-500 text-white hover:bg-green-600 shadow-lg'
-                          : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                        ? 'bg-green-500 text-white hover:bg-green-600 shadow-lg'
+                        : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
                         }`}
                     >
                       {selectedTutorial.watched ? (

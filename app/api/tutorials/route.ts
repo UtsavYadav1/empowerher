@@ -10,6 +10,7 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
     const category = searchParams.get('category')
+    const userId = searchParams.get('userId') // Optional: to check progress for this user
 
     const where: any = {}
     if (category && category !== 'all') {
@@ -19,12 +20,24 @@ export async function GET(request: NextRequest) {
     const tutorials = await prisma.tutorial.findMany({
       where,
       orderBy: { id: 'asc' },
+      include: {
+        progress: userId ? {
+          where: { userId: parseInt(userId) }
+        } : false
+      }
     })
+
+    // Map tutorials to include watched status based on user specific data
+    const enhancedTutorials = tutorials.map((tutorial: any) => ({
+      ...tutorial,
+      watched: userId ? tutorial.progress.length > 0 && tutorial.progress[0].watched : false,
+      progress: undefined // Remove internal relation data
+    }))
 
     return NextResponse.json({
       success: true,
-      data: tutorials,
-      count: tutorials.length,
+      data: enhancedTutorials,
+      count: enhancedTutorials.length,
     })
   } catch (error) {
     console.error('Error fetching tutorials:', error)
@@ -35,32 +48,44 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// PATCH - Mark tutorial as watched
+// PATCH - Mark tutorial as watched (User Specific)
 export async function PATCH(request: NextRequest) {
   try {
     const body = await request.json()
-    const { tutorialId, watched } = body
+    const { tutorialId, watched, userId } = body
 
-    if (tutorialId === undefined || watched === undefined) {
+    if (!tutorialId || !userId) {
       return NextResponse.json(
-        { success: false, error: 'Missing required fields' },
+        { success: false, error: 'Tutorial ID and User ID are required' },
         { status: 400 }
       )
     }
 
-    const tutorial = await prisma.tutorial.update({
-      where: { id: parseInt(tutorialId) },
-      data: { watched },
+    await prisma.tutorialProgress.upsert({
+      where: {
+        tutorialId_userId: {
+          tutorialId: parseInt(tutorialId),
+          userId: parseInt(userId)
+        }
+      },
+      create: {
+        tutorialId: parseInt(tutorialId),
+        userId: parseInt(userId),
+        watched: !!watched
+      },
+      update: {
+        watched: !!watched
+      }
     })
 
     return NextResponse.json({
       success: true,
-      data: tutorial,
+      message: 'Progress updated successfully'
     })
   } catch (error) {
-    console.error('Error updating tutorial:', error)
+    console.error('Error updating tutorial progress:', error)
     return NextResponse.json(
-      { success: false, error: 'Failed to update tutorial' },
+      { success: false, error: 'Failed to update tutorial progress' },
       { status: 500 }
     )
   }

@@ -20,6 +20,7 @@ model User {
   role      String?
   village   String?
   verified  Boolean  @default(false)
+  photoUrl  String?
   createdAt DateTime @default(now())
 }
 
@@ -88,17 +89,38 @@ model Event {
   date        DateTime
   type        String
   category    String
-  reminderSet Boolean  @default(false)
+  reminders   EventReminder[]
+}
+
+model EventReminder {
+  id        Int      @id @default(autoincrement())
+  eventId   Int
+  userId    Int
+  createdAt DateTime @default(now())
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId]) // Prevent duplicate reminders
 }
 
 model Tutorial {
-  id          Int     @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   title       String
   description String
   youtubeId   String
   duration    String
   category    String
-  watched     Boolean @default(false)
+  progress    TutorialProgress[]
+}
+
+model TutorialProgress {
+  id         Int      @id @default(autoincrement())
+  tutorialId Int
+  userId     Int
+  watched    Boolean  @default(false)
+  updatedAt  DateTime @updatedAt
+  tutorial   Tutorial @relation(fields: [tutorialId], references: [id], onDelete: Cascade)
+
+  @@unique([tutorialId, userId]) // One progress record per user per tutorial
 }
 
 model ForumPost {

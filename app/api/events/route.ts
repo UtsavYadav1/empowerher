@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
     const type = searchParams.get('type')
     const category = searchParams.get('category')
+    const userId = searchParams.get('userId') // Optional: to check if reminder is set for this user
 
     const where: any = {}
     if (type) where.type = type
@@ -19,12 +20,24 @@ export async function GET(request: NextRequest) {
     const events = await prisma.event.findMany({
       where,
       orderBy: { date: 'asc' },
+      include: {
+        reminders: userId ? {
+          where: { userId: parseInt(userId) }
+        } : false
+      }
     })
+
+    // Map events to include reminderSet based on user specific data
+    const enhancedEvents = events.map((event: any) => ({
+      ...event,
+      reminderSet: userId ? event.reminders.length > 0 : false, // True if user has a reminder set
+      reminders: undefined // Remove internal relation data from response
+    }))
 
     return NextResponse.json({
       success: true,
-      data: events,
-      count: events.length,
+      data: enhancedEvents,
+      count: enhancedEvents.length,
     })
   } catch (error) {
     console.error('Error fetching events:', error)
@@ -55,7 +68,7 @@ export async function POST(request: NextRequest) {
         date: new Date(date),
         type,
         category: category || 'general',
-        reminderSet: false,
+        // reminderSet removed - global state deprecated
       },
     })
 
@@ -72,32 +85,58 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// PATCH - Set reminder for event
+// PATCH - Set reminder for event (User Specific)
 export async function PATCH(request: NextRequest) {
   try {
     const body = await request.json()
-    const { eventId, reminderSet } = body
+    const { eventId, reminderSet, userId } = body
 
-    if (eventId === undefined || reminderSet === undefined) {
+    if (!eventId || !userId) {
       return NextResponse.json(
-        { success: false, error: 'Missing required fields' },
+        { success: false, error: 'Event ID and User ID are required' },
         { status: 400 }
       )
     }
 
-    const event = await prisma.event.update({
-      where: { id: parseInt(eventId) },
-      data: { reminderSet },
-    })
+    if (reminderSet) {
+      // Create reminder
+      await prisma.eventReminder.upsert({
+        where: {
+          eventId_userId: {
+            eventId: parseInt(eventId),
+            userId: parseInt(userId)
+          }
+        },
+        create: {
+          eventId: parseInt(eventId),
+          userId: parseInt(userId)
+        },
+        update: {}
+      })
+    } else {
+      // Remove reminder
+      try {
+        await prisma.eventReminder.delete({
+          where: {
+            eventId_userId: {
+              eventId: parseInt(eventId),
+              userId: parseInt(userId)
+            }
+          }
+        })
+      } catch (e) {
+        // Ignore if already deleted
+      }
+    }
 
     return NextResponse.json({
       success: true,
-      data: event,
+      message: 'Reminder updated successfully'
     })
   } catch (error) {
-    console.error('Error updating event:', error)
+    console.error('Error updating event reminder:', error)
     return NextResponse.json(
-      { success: false, error: 'Failed to update event' },
+      { success: false, error: 'Failed to update reminder' },
       { status: 500 }
     )
   }
