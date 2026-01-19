@@ -221,16 +221,23 @@ export default function WorkshopsPage() {
           </p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" role="list">
-          {workshops.map((workshop, index) => (
-            <WorkshopCardWrapper
-              key={workshop.id}
-              workshop={workshop}
-              index={index}
-              onRegister={() => handleRegister(workshop.id)}
-              isRegistered={registered.includes(workshop.id)}
-              isRegistering={registering === workshop.id}
-            />
-          ))}
+          {workshops.length > 0 ? (
+            workshops.map((workshop, index) => (
+              <WorkshopCardWrapper
+                key={workshop.id}
+                workshop={workshop}
+                index={index}
+                onRegister={() => handleRegister(workshop.id)}
+                isRegistered={registered.includes(workshop.id)}
+                isRegistering={registering === workshop.id}
+              />
+            ))
+          ) : (
+            <div className="col-span-full text-center py-20">
+              <h3 className="text-2xl font-bold text-gray-400">No workshops scheduled momentarily</h3>
+              <p className="text-gray-500 mt-2">Please check back later for upcoming sessions.</p>
+            </div>
+          )}
         </div>
       </motion.div>
     </div>
