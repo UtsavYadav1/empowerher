@@ -62,8 +62,7 @@ async function main() {
   await prisma.order.deleteMany()
   await prisma.workshop.deleteMany()
   await prisma.scheme.deleteMany()
-  await prisma.product.deleteMany()
-  // await prisma.user.deleteMany() // Preserving users if needed, or clear distinctively
+  // await prisma.product.deleteMany() // Don't wipe products to preserve manual entries
 
   // Seed Users
   console.log('Seeding users...')
@@ -83,7 +82,7 @@ async function main() {
   }
 
   // Seed Products
-  console.log('Seeding products...')
+  console.log('Seeding products (Upserting)...')
   const seller = await prisma.user.findFirst()
   const sellerId = seller?.id || 1
 
@@ -145,18 +144,34 @@ async function main() {
   ]
 
   for (const product of richProducts) {
-    await prisma.product.create({
-      data: {
-        title: product.title,
-        description: product.description,
-        category: product.category,
-        images: [product.image],
-        price: product.price,
-        stock: product.stock,
-        sellerId: sellerId,
-        village: product.village,
-      },
-    })
+    // Upsert products to avoid duplication but update fields
+    const existing = await prisma.product.findFirst({ where: { title: product.title } })
+    if (existing) {
+      await prisma.product.update({
+        where: { id: existing.id },
+        data: {
+          description: product.description,
+          category: product.category,
+          images: [product.image],
+          price: product.price,
+          stock: product.stock,
+          village: product.village,
+        }
+      })
+    } else {
+      await prisma.product.create({
+        data: {
+          title: product.title,
+          description: product.description,
+          category: product.category,
+          images: [product.image],
+          price: product.price,
+          stock: product.stock,
+          sellerId: sellerId,
+          village: product.village,
+        },
+      })
+    }
   }
 
   // Seed Schemes
