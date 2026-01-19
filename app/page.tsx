@@ -1,11 +1,44 @@
 'use client'
 
 import Link from 'next/link'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { useState, useEffect, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import CountUp from 'react-countup'
-import { FaUsers, FaGraduationCap, FaArrowRight, FaHandHoldingHeart, FaChartLine, FaRocket, FaHeart, FaAward, FaCheckCircle, FaStar } from 'react-icons/fa'
+import { FaUsers, FaGraduationCap, FaArrowRight, FaHandHoldingHeart, FaChartLine, FaRocket, FaHeart, FaAward, FaLightbulb, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+
+const slides = [
+  {
+    id: 1,
+    image: '/images/hero.jpg',
+    subtitle: 'Welcome to EmpowerHer',
+    title: 'Empowering Women,\nTransforming Lives',
+    description: 'Join a global movement dedicated to providing education, business tools, and mentorship to women and girls.',
+    ctaPrimary: { text: 'Get Started', href: '/register' },
+    ctaSecondary: { text: 'Learn More', href: '/about' },
+    color: 'from-orange-600 to-pink-600'
+  },
+  {
+    id: 2,
+    image: '/images/team.jpg',
+    subtitle: 'Community Led Growth',
+    title: 'Building Stronger\nCommunities Together',
+    description: 'We believe in the power of community. Our grassroots programs are helping thousands of women achieve financial independence.',
+    ctaPrimary: { text: 'Join Community', href: '/register' },
+    ctaSecondary: { text: 'Our Team', href: '/about' },
+    color: 'from-blue-600 to-purple-600'
+  },
+  {
+    id: 3,
+    image: '/images/workshop.jpg',
+    subtitle: 'Skill Development',
+    title: 'Learn Skills That\nShape The Future',
+    description: 'Access hundreds of workshops, courses, and resources designed to help you succeed in the digital economy.',
+    ctaPrimary: { text: 'Browse Workshops', href: '/workshops' },
+    ctaSecondary: { text: 'View Courses', href: '/girls/courses' },
+    color: 'from-green-600 to-teal-600'
+  }
+]
 
 const testimonials = [
   {
@@ -32,35 +65,33 @@ const testimonials = [
 ]
 
 const features = [
-  { icon: FaGraduationCap, title: 'Education Programs', description: 'Access to quality education and scholarship opportunities' },
-  { icon: FaRocket, title: 'Business Tools', description: 'Resources to start and grow your business' },
-  { icon: FaHandHoldingHeart, title: 'Mentorship', description: 'Connect with experienced mentors and guides' },
-  { icon: FaChartLine, title: 'Marketplace', description: 'Sell your products to a wider audience' },
-  { icon: FaUsers, title: 'Community', description: 'Join a supportive network of women and girls' },
-  { icon: FaAward, title: 'Skill Development', description: 'Workshops and training programs' },
+  { icon: FaGraduationCap, title: 'Education Programs', description: 'Access to quality education and scholarship opportunities for girls.' },
+  { icon: FaRocket, title: 'Business Tools', description: 'Resources to start, manage, and grow your own business successfully.' },
+  { icon: FaHandHoldingHeart, title: 'Mentorship', description: 'Connect with experienced mentors who guide you every step of the way.' },
+  { icon: FaChartLine, title: 'Marketplace', description: 'A dedicated platform to sell your handmade products to a wider audience.' },
+  { icon: FaUsers, title: 'Community', description: 'Join a supportive network of like-minded women and girls.' },
+  { icon: FaAward, title: 'Skill Development', description: 'Practical workshops and training programs for real-world skills.' },
 ]
 
 export default function Home() {
-  const [isVisible, setIsVisible] = useState(false)
-  const heroRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ['start start', 'end start'],
-  })
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%'])
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0])
-
-  useEffect(() => {
-    setIsVisible(true)
-    fetchStats()
-  }, [])
-
+  const [currentSlide, setCurrentSlide] = useState(0)
   const [stats, setStats] = useState({
     womenEmpowered: 75,
     girlsEducated: 120,
     workshops: 25,
     communities: 8
   })
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length)
+    }, 6000)
+    return () => clearInterval(timer)
+  }, [])
+
+  useEffect(() => {
+    fetchStats()
+  }, [])
 
   const fetchStats = async () => {
     try {
@@ -74,443 +105,303 @@ export default function Home() {
     }
   }
 
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length)
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
+
   return (
-    <div className="min-h-screen" role="main">
-      {/* Hero Section */}
-      <section
-        ref={heroRef}
-        className="relative min-h-screen flex items-center justify-center overflow-hidden"
-        aria-label="Hero section"
-      >
-        {/* Background Image with Parallax */}
-        <motion.div
-          style={{ y, opacity }}
-          className="absolute inset-0 z-0"
-        >
-          <div className="relative w-full h-full">
+    <div className="min-h-screen font-sans" role="main">
+      {/* Hero Section with Dynamic Slider */}
+      <section className="relative h-screen w-full overflow-hidden bg-gray-900">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentSlide}
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.7 }}
+            className="absolute inset-0 z-0"
+          >
             <Image
-              src="/images/hero.jpg"
-              alt="EmpowerHer team and community"
+              src={slides[currentSlide].image}
+              alt="Hero Background"
               fill
-              className="object-cover"
+              className="object-cover opacity-60"
               priority
-              sizes="100vw"
-              aria-hidden="true"
             />
-            {/* Professional overlay - clean dark gradient with vignette */}
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 via-gray-900/40 to-slate-900/50" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.3)_100%)]" />
-          </div>
-        </motion.div>
-
-        {/* Hero Content */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="relative z-10 text-center text-white px-4 max-w-5xl mx-auto"
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
-            className="mb-8"
-          >
-            <h1 className="text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-none">
-              <span
-                className="inline-block bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-300 bg-clip-text text-transparent"
-                style={{
-                  textShadow: '0 0 80px rgba(251, 146, 60, 0.5)',
-                  filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4))'
-                }}
-              >
-                EmpowerHer
-              </span>
-            </h1>
+            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
           </motion.div>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
-            className="text-xl md:text-2xl lg:text-3xl mb-6 max-w-4xl mx-auto leading-relaxed font-normal text-white/95"
-            style={{ textShadow: '0 2px 8px rgba(0, 0, 0, 0.8)' }}
-          >
-            Empowering women and girls with education, business tools, and social impact
-          </motion.p>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
-            className="text-base md:text-lg lg:text-xl mb-12 max-w-3xl mx-auto text-white/85 font-light"
-            style={{ textShadow: '0 2px 6px rgba(0, 0, 0, 0.7)' }}
-          >
-            Join thousands of women and girls building brighter futures
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
-            className="flex flex-col sm:flex-row gap-5 justify-center items-center"
-          >
-            <Link
-              href="/register"
-              className="group relative overflow-hidden bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 bg-size-200 bg-pos-0 hover:bg-pos-100 text-white text-lg px-12 py-4 rounded-full font-semibold transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-orange-500/50 focus:outline-none focus:ring-4 focus:ring-orange-400/50 flex items-center justify-center gap-3 min-w-[200px]"
-              style={{
-                backgroundSize: '200% 100%',
-                backgroundPosition: '0% 0%'
-              }}
-              aria-label="Get started with EmpowerHer"
-            >
-              <span className="relative z-10">Get Started</span>
-              <FaArrowRight className="relative z-10 group-hover:translate-x-1 transition-transform duration-300" />
-              <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-amber-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            </Link>
-            <Link
-              href="/about"
-              className="group relative bg-white/10 backdrop-blur-lg border-2 border-white/40 text-white hover:bg-white hover:text-gray-900 text-lg px-12 py-4 rounded-full font-semibold transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-white/30 focus:outline-none focus:ring-4 focus:ring-white/40 min-w-[200px] flex items-center justify-center"
-              aria-label="Learn more about EmpowerHer"
-            >
-              <span className="relative z-10 transition-colors duration-500">Learn More</span>
-            </Link>
-          </motion.div>
-        </motion.div>
+        </AnimatePresence>
 
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 1 }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10"
-        >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-            className="w-6 h-10 border-2 border-white rounded-full flex justify-center"
-            aria-hidden="true"
-          >
-            <motion.div
-              animate={{ y: [0, 12, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-              className="w-1 h-3 bg-white rounded-full mt-2"
-            />
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* Impact Counters Section */}
-      <section className="py-20 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900" aria-label="Impact statistics">
-        <div className="container mx-auto px-4">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl md:text-6xl font-bold text-center mb-4 text-gray-900 dark:text-white"
-          >
-            Our Impact
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl text-center text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto"
-          >
-            Transforming lives through education, empowerment, and opportunity
-          </motion.p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="card text-center bg-white dark:bg-gray-800 hover:shadow-2xl hover:shadow-orange-200 transition-all hover:scale-105 border border-orange-200 dark:border-gray-700 hover:border-orange-400 dark:hover:border-orange-500"
-            >
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-orange-500 to-amber-600 rounded-2xl mb-4 shadow-lg shadow-orange-300">
-                <FaUsers className="text-4xl text-white" />
-              </div>
-              <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">Women Empowered</h3>
-              {isVisible && (
-                <p className="text-5xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
-                  <CountUp end={stats.womenEmpowered} duration={2.5} separator="," />+
-                </p>
-              )}
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="card text-center bg-white dark:bg-gray-800 hover:shadow-2xl hover:shadow-orange-200 transition-all hover:scale-105 border border-orange-200 dark:border-gray-700 hover:border-orange-400 dark:hover:border-orange-500"
-            >
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl mb-4 shadow-lg shadow-blue-300">
-                <FaGraduationCap className="text-4xl text-white" />
-              </div>
-              <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">Girls Educated</h3>
-              {isVisible && (
-                <p className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-                  <CountUp end={stats.girlsEducated} duration={2.5} separator="," />+
-                </p>
-              )}
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="card text-center bg-white dark:bg-gray-800 hover:shadow-2xl hover:shadow-orange-200 transition-all hover:scale-105 border border-orange-200 dark:border-gray-700 hover:border-orange-400 dark:hover:border-orange-500"
-            >
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-pink-500 to-rose-500 rounded-2xl mb-4 shadow-lg shadow-pink-300">
-                <FaHandHoldingHeart className="text-4xl text-white" />
-              </div>
-              <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">Workshops</h3>
-              {isVisible && (
-                <p className="text-5xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">
-                  <CountUp end={stats.workshops} duration={2.5} separator="," />+
-                </p>
-              )}
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="card text-center bg-white dark:bg-gray-800 hover:shadow-2xl hover:shadow-orange-200 transition-all hover:scale-105 border border-orange-200 dark:border-gray-700 hover:border-orange-400 dark:hover:border-orange-500"
-            >
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl mb-4 shadow-lg shadow-emerald-300">
-                <FaChartLine className="text-4xl text-white" />
-              </div>
-              <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">Communities</h3>
-              {isVisible && (
-                <p className="text-5xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                  <CountUp end={stats.communities} duration={2.5} separator="," />+
-                </p>
-              )}
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-20 bg-white dark:bg-gray-900 container mx-auto px-4" aria-label="Platform features">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-4xl md:text-6xl font-bold text-center mb-4 text-gray-900 dark:text-white"
-        >
-          Our Platform
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-xl text-center text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto"
-        >
-          Everything you need to learn, grow, and succeed in one place
-        </motion.p>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
-          {features.map((feature, index) => {
-            const Icon = feature.icon
-            return (
+        {/* Content Overlay */}
+        <div className="absolute inset-0 z-10 flex items-center">
+          <div className="container mx-auto px-4 md:px-8">
+            <AnimatePresence mode="wait">
               <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="card text-center bg-white dark:from-gray-800 dark:to-gray-700 hover:shadow-2xl hover:shadow-orange-200 transition-all hover:scale-105 border border-orange-200 dark:border-gray-700 hover:border-orange-400 dark:hover:border-orange-500"
+                key={currentSlide}
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="max-w-3xl text-white"
               >
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-500 to-amber-600 rounded-full mb-4 shadow-lg">
-                  <Icon className="text-3xl text-white" />
-                </div>
-                <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-white">{feature.title}</h3>
-                <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
-                  {feature.description}
-                </p>
-              </motion.div>
-            )
-          })}
-        </div>
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="card text-center bg-gradient-to-br from-orange-500 to-amber-600 text-white hover:shadow-2xl hover:shadow-orange-400 transition-all hover:scale-105 hover:-translate-y-2"
-          >
-            <h3 className="text-2xl font-bold mb-4">For Girls</h3>
-            <p className="text-lg mb-6 leading-relaxed opacity-90">
-              Access educational resources, mentorship programs, and skill development courses designed for young minds.
-            </p>
-            <Link
-              href="/girls/dashboard"
-              className="inline-flex items-center gap-2 bg-white text-orange-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all hover:gap-4 shadow-lg"
-              aria-label="Explore Girls Section"
-            >
-              Explore Girls Section <FaArrowRight />
-            </Link>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="card text-center bg-gradient-to-br from-blue-500 to-cyan-500 text-white hover:shadow-2xl transition-all hover:scale-105"
-          >
-            <h3 className="text-2xl font-bold mb-4">For Women</h3>
-            <p className="text-lg mb-6 leading-relaxed opacity-90">
-              Business tools, networking opportunities, and professional development resources to advance your career.
-            </p>
-            <Link
-              href="/women/dashboard"
-              className="inline-flex items-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all hover:gap-4"
-              aria-label="Explore Women Section"
-            >
-              Explore Women Section <FaArrowRight />
-            </Link>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="card text-center bg-gradient-to-br from-green-500 to-emerald-500 text-white hover:shadow-2xl transition-all hover:scale-105"
-          >
-            <h3 className="text-2xl font-bold mb-4">For Customers</h3>
-            <p className="text-lg mb-6 leading-relaxed opacity-90">
-              Support women-owned businesses by purchasing products and services that make a difference.
-            </p>
-            <Link
-              href="/customer/products"
-              className="inline-flex items-center gap-2 bg-white text-green-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all hover:gap-4"
-              aria-label="Browse Products"
-            >
-              Browse Products <FaArrowRight />
-            </Link>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="py-20 bg-white dark:from-gray-800 dark:to-gray-900" aria-label="Testimonials">
-        <div className="container mx-auto px-4">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl md:text-6xl font-bold text-center mb-4 text-gray-900 dark:text-white"
-          >
-            Success Stories
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl text-center text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto"
-          >
-            Hear from women and girls whose lives have been transformed
-          </motion.p>
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="card bg-white dark:bg-gray-800 hover:shadow-2xl transition-all hover:scale-105"
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="relative w-16 h-16 rounded-full overflow-hidden">
-                    <Image
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      fill
-                      className="object-cover"
-                      sizes="64px"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-bold text-gray-900 dark:text-white">{testimonial.name}</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{testimonial.role}</p>
-                  </div>
-                </div>
-                <div className="flex gap-1 mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <FaStar key={i} className="text-yellow-400 text-sm" />
+                <motion.span
+                  className={`inline-block py-1 px-3 rounded-full bg-gradient-to-r ${slides[currentSlide].color} text-sm font-bold tracking-wide mb-4`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  {slides[currentSlide].subtitle}
+                </motion.span>
+                <motion.h1
+                  className="text-5xl md:text-7xl font-extrabold leading-tight mb-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  {slides[currentSlide].title.split('\n').map((line, i) => (
+                    <span key={i} className="block">{line}</span>
                   ))}
-                </div>
-                <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed italic">
-                  "{testimonial.quote}"
-                </p>
+                </motion.h1>
+                <motion.p
+                  className="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed max-w-2xl"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                >
+                  {slides[currentSlide].description}
+                </motion.p>
+                <motion.div
+                  className="flex flex-col sm:flex-row gap-4"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 }}
+                >
+                  <Link
+                    href={slides[currentSlide].ctaPrimary.href}
+                    className={`bg-gradient-to-r ${slides[currentSlide].color} text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-lg hover:scale-105 transition-all flex items-center justify-center gap-2`}
+                  >
+                    {slides[currentSlide].ctaPrimary.text} <FaArrowRight />
+                  </Link>
+                  <Link
+                    href={slides[currentSlide].ctaSecondary.href}
+                    className="bg-white/10 backdrop-blur-md border border-white/30 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/20 transition-all flex items-center justify-center"
+                  >
+                    {slides[currentSlide].ctaSecondary.text}
+                  </Link>
+                </motion.div>
               </motion.div>
-            ))}
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* Navigation Arrows */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white p-3 rounded-full transition-all border border-white/20 hidden md:flex"
+          aria-label="Previous Slide"
+        >
+          <FaChevronLeft size={24} />
+        </button>
+        <button
+          onClick={nextSlide}
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white p-3 rounded-full transition-all border border-white/20 hidden md:flex"
+          aria-label="Next Slide"
+        >
+          <FaChevronRight size={24} />
+        </button>
+
+        {/* Slide Indicators */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex gap-3">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`h-2 rounded-full transition-all duration-300 ${index === currentSlide ? 'w-8 bg-white' : 'w-2 bg-white/40 hover:bg-white/60'
+                }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* Impact Stats Section - Floating Cards */}
+      <section className="relative py-20 bg-gray-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="absolute -top-16 left-0 right-0 z-20 px-4"
+          >
+            <div className="max-w-6xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300">
+                <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center text-orange-600 dark:text-orange-400 mb-3 text-2xl">
+                  <FaUsers />
+                </div>
+                <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-1"><CountUp end={stats.womenEmpowered} duration={2} />+</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">Women Empowered</p>
+              </div>
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300">
+                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 mb-3 text-2xl">
+                  <FaGraduationCap />
+                </div>
+                <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-1"><CountUp end={stats.girlsEducated} duration={2} />+</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">Girls Educated</p>
+              </div>
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300">
+                <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center text-green-600 dark:text-green-400 mb-3 text-2xl">
+                  <FaRocket />
+                </div>
+                <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-1"><CountUp end={stats.workshops} duration={2} />+</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">Workshops Conducted</p>
+              </div>
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300">
+                <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center text-purple-600 dark:text-purple-400 mb-3 text-2xl">
+                  <FaHandHoldingHeart />
+                </div>
+                <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-1"><CountUp end={stats.communities} duration={2} />+</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">Communities Connected</p>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="mt-24 text-center max-w-3xl mx-auto">
+            <motion.span
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              className="text-orange-500 font-bold tracking-wider uppercase text-sm"
+            >
+              Why Choose Us
+            </motion.span>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mt-2 mb-6"
+            >
+              Building a Future of Equal Opportunity
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed"
+            >
+              We provide a comprehensive ecosystem for women and girls to thrive. From education and mentorship to business funding and digital marketplaces.
+            </motion.p>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-orange-600 via-amber-600 to-yellow-600 text-white relative overflow-hidden" aria-label="Call to action">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
-            backgroundSize: '40px 40px'
-          }} />
+      {/* Modern Features Grid */}
+      <section className="py-20 bg-white dark:bg-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature, index) => {
+              const Icon = feature.icon
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="group p-8 rounded-3xl bg-gray-50 dark:bg-gray-800 hover:bg-orange-50 dark:hover:bg-gray-700/50 transition-colors duration-300 border border-transparent hover:border-orange-100 dark:hover:border-gray-600"
+                >
+                  <div className="w-14 h-14 bg-white dark:bg-gray-700 rounded-2xl flex items-center justify-center text-orange-500 dark:text-orange-400 text-2xl shadow-sm mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <Icon />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">{feature.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
+                    {feature.description}
+                  </p>
+                  <Link href="/about" className="inline-flex items-center text-orange-600 dark:text-orange-400 font-semibold group-hover:gap-2 transition-all">
+                    Learn more <FaArrowRight className="ml-1 text-sm" />
+                  </Link>
+                </motion.div>
+              )
+            })}
+          </div>
         </div>
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl md:text-6xl font-bold mb-6"
-          >
-            Ready to Start Your Journey?
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto opacity-90"
-          >
-            Join thousands of women and girls building brighter futures. Get started today!
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-          >
+      </section>
+
+      {/* Sections for Different User Roles */}
+      <section className="py-20 bg-gray-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10 bg-[url('/images/hero.jpg')] bg-cover bg-center fixed" />
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Who We Serve</h2>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">Our platform is designed to support every stakeholder in the women empowerment ecosystem.</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <motion.div
+              whileHover={{ y: -10 }}
+              className="bg-gradient-to-br from-pink-500 to-rose-600 rounded-3xl p-8 text-center shadow-lg hover:shadow-pink-500/30 transition-all border border-pink-400/30"
+            >
+              <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm">
+                <FaGraduationCap className="text-4xl" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">For Girls</h3>
+              <p className="text-pink-100 mb-8 leading-relaxed">Access scholarships, join coding workshops, and find mentors to guide your career path.</p>
+              <Link href="/girls/dashboard" className="bg-white text-pink-600 px-6 py-3 rounded-full font-bold hover:bg-pink-50 transition-colors w-full inline-block">
+                Start Learning
+              </Link>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ y: -10 }}
+              className="bg-gradient-to-br from-purple-600 to-indigo-600 rounded-3xl p-8 text-center shadow-lg hover:shadow-purple-500/30 transition-all border border-purple-400/30"
+            >
+              <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm">
+                <FaLightbulb className="text-4xl" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">For Women</h3>
+              <p className="text-purple-100 mb-8 leading-relaxed">Get business funding, access the marketplace, and connect with other entrepreneurs.</p>
+              <Link href="/women/dashboard" className="bg-white text-purple-600 px-6 py-3 rounded-full font-bold hover:bg-purple-50 transition-colors w-full inline-block">
+                Grow Business
+              </Link>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ y: -10 }}
+              className="bg-gradient-to-br from-teal-500 to-emerald-600 rounded-3xl p-8 text-center shadow-lg hover:shadow-teal-500/30 transition-all border border-teal-400/30"
+            >
+              <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm">
+                <FaHeart className="text-4xl" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">For Customers</h3>
+              <p className="text-teal-100 mb-8 leading-relaxed">Shop authentic handmade products and support women-led businesses directly.</p>
+              <Link href="/customer/products" className="bg-white text-teal-600 px-6 py-3 rounded-full font-bold hover:bg-teal-50 transition-colors w-full inline-block">
+                Shop Now
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Quote/CTA with Parallax Feel */}
+      <section className="py-24 bg-gradient-to-r from-orange-500 to-red-500 text-white text-center relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full opacity-10">
+          <svg className="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M0 100 C 20 0 50 0 100 100 Z" fill="white" />
+          </svg>
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
+          <FaUsers className="text-6xl mx-auto mb-6 opacity-80" />
+          <h2 className="text-4xl md:text-6xl font-black mb-8 leading-tight">
+            "When women support each other,<br />incredible things happen."
+          </h2>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/register"
-              className="group bg-white text-orange-600 hover:bg-gray-100 text-lg px-10 py-5 rounded-xl font-semibold transition-all hover:scale-105 shadow-2xl flex items-center justify-center gap-2"
-              aria-label="Get started with EmpowerHer"
+              className="bg-white text-orange-600 px-10 py-4 rounded-full font-bold text-xl hover:shadow-2xl hover:scale-105 transition-transform"
             >
-              Create Your Account
-              <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+              Join the Movement
             </Link>
-            <Link
-              href="/workshops"
-              className="bg-white/10 backdrop-blur-md border-2 border-white/30 text-white hover:bg-white/20 text-lg px-10 py-5 rounded-xl font-semibold transition-all hover:scale-105 shadow-2xl flex items-center justify-center gap-2"
-              aria-label="Browse workshops"
-            >
-              Browse Workshops
-              <FaArrowRight />
-            </Link>
-          </motion.div>
+          </div>
         </div>
       </section>
     </div>
   )
 }
-
