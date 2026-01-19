@@ -29,6 +29,7 @@ export async function GET(request: NextRequest) {
                 village: true,
                 photoUrl: true,
                 verified: true,
+                createdAt: true,
             }
         })
 

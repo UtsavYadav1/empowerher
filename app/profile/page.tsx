@@ -16,6 +16,7 @@ interface UserProfile {
     village: string | null
     verified: boolean
     photoUrl: string | null
+    createdAt: string
 }
 
 export default function ProfilePage() {
