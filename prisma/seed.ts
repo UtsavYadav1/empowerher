@@ -113,6 +113,51 @@ async function main() {
     })
   }
 
+  // Additional Real Government Schemes
+  console.log('Seeding extra government schemes...')
+  const extraSchemes = [
+    {
+      title: 'Pradhan Mantri Matru Vandana Yojana',
+      description: 'Maternity benefit program providing financial assistance to pregnant and lactating women.',
+      eligibility: 'Pregnant women and lactating mothers',
+      applyUrl: 'https://wcd.nic.in/schemes/pradhan-mantri-matru-vandana-yojana',
+      deadline: null
+    },
+    {
+      title: 'Mahila Samman Savings Certificate',
+      description: 'Small savings scheme for women and girls with 7.5% interest rate.',
+      eligibility: 'Any woman or girl child',
+      applyUrl: 'https://www.indiapost.gov.in/',
+      deadline: new Date('2025-03-31')
+    },
+    {
+      title: 'Udyogini Scheme',
+      description: 'Subsidized loans for women entrepreneurs in agriculture, retail, and small business sectors.',
+      eligibility: 'Women aged 18-55, family income < 1.5 Lakh',
+      applyUrl: 'https://meity.gov.in/',
+      deadline: null
+    },
+    {
+      title: 'Vigyan Jyoti Scheme',
+      description: 'Encouraging girls to pursue higher education and careers in STEM fields.',
+      eligibility: 'Meritorious girls in Class 9-12',
+      applyUrl: 'https://dst.gov.in/',
+      deadline: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000)
+    }
+  ]
+
+  for (const schemeData of extraSchemes) {
+    await prisma.scheme.create({
+      data: {
+        title: schemeData.title,
+        description: schemeData.description,
+        eligibility: schemeData.eligibility,
+        applyUrl: schemeData.applyUrl,
+        deadline: schemeData.deadline,
+      },
+    })
+  }
+
   // Seed Workshops
   console.log('Seeding Workshops...')
   const workshopData = [
@@ -127,6 +172,30 @@ async function main() {
       village: 'Ranipur',
       date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // +14 days
       description: 'Start your own business with guidance from successful mentors.'
+    },
+    {
+      title: 'Menstrual Health & Hygiene Awareness',
+      village: 'Sultanganj',
+      date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // +3 days
+      description: 'Expert-led session on health, hygiene, and breaking taboos.'
+    },
+    {
+      title: 'Financial Literacy for Homemakers',
+      village: 'Bilaspur',
+      date: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000), // +21 days
+      description: 'Learn budgeting, saving, and basics of banking and investment.'
+    },
+    {
+      title: 'Self-Defense Training Camp',
+      village: 'Adampur',
+      date: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000), // +10 days
+      description: 'Practical self-defense techniques for safety and confidence.'
+    },
+    {
+      title: 'Organic Farming Techniques',
+      village: 'Kishanpur',
+      date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // +30 days
+      description: 'Modern organic farming methods to increase crop yield and income.'
     }
   ]
   for (const workshop of workshopData) {
@@ -231,6 +300,39 @@ async function main() {
       category: 'career',
       location: 'Community Hall, Sector 4',
       organizer: 'EmpowerHer Team'
+    },
+    {
+      title: 'National Girl Child Day Celebration',
+      description: 'Competitions, performances, and awards to celebrate the potential of girls.',
+      date: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000),
+      type: 'competition',
+      category: 'culture',
+      location: 'City Auditorium',
+      organizer: 'District Administration',
+      registrationDeadline: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+      applyUrl: '#',
+      benefits: ['Cash Prizes', 'Trophies', 'Certificates']
+    },
+    {
+      title: 'Women in STEM Webinar',
+      description: 'Inspirational talk by leading women scientists and engineers.',
+      date: new Date(Date.now() + 8 * 24 * 60 * 60 * 1000),
+      type: 'webinar',
+      category: 'education',
+      location: 'Online via Google Meet',
+      organizer: 'Science for All Foundation',
+      applyUrl: 'https://meet.google.com/',
+      benefits: ['Knowledge', 'Networking']
+    },
+    {
+      title: 'Art & Craft Exhibition',
+      description: 'Showcase your artistic talents and sell your handmade products.',
+      date: new Date(Date.now() + 25 * 24 * 60 * 60 * 1000),
+      type: 'session',
+      category: 'arts',
+      location: 'Village Square',
+      organizer: 'Local Artisans Guild',
+      benefits: ['Sales Opportunity', 'Exposure']
     }
   ]
   for (const event of events) {
