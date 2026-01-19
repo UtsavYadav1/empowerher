@@ -4,7 +4,7 @@
  Run with: npx tsx scripts/verify.ts
 */
 
-const BASE = process.env.BASE_URL || 'http://localhost:3000'
+const VERIFY_BASE = process.env.BASE_URL || 'http://localhost:3000'
 
 type Check = {
   name: string
@@ -17,7 +17,7 @@ function log(msg: string) {
 }
 
 async function safeFetch(path: string, init?: RequestInit) {
-  const res = await fetch(`${BASE}${path}`, init)
+  const res = await fetch(`${VERIFY_BASE}${path}`, init)
   let json: any = null
   try { json = await res.json() } catch { /* xml or text */ }
   return { ok: res.ok, status: res.status, json }
@@ -150,7 +150,7 @@ async function main() {
     {
       name: 'IVR – XML response',
       run: async () => {
-        const res = await fetch(`${BASE}/api/mock/ivr`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) })
+        const res = await fetch(`${VERIFY_BASE}/api/mock/ivr`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) })
         const txt = await res.text()
         return res.ok && txt.includes('<Response>')
       },
@@ -179,7 +179,7 @@ async function main() {
 
   log('--- Verification Report ---')
   details.forEach(d => log(d))
-  log(`\nSummary: ${pass} passed, ${fail} failed`) 
+  log(`\nSummary: ${pass} passed, ${fail} failed`)
 
   // Exit code for CI
   process.exit(fail === 0 ? 0 : 1)
@@ -190,4 +190,4 @@ main().catch(err => {
   process.exit(1)
 })
 
-
+export { }
