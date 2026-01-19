@@ -83,21 +83,81 @@ async function main() {
   }
 
   // Seed Products
-  console.log('Skipping products seed (Clean Start)...')
-  // for (const productData of seedData.products) {
-  //   await prisma.product.create({
-  //     data: {
-  //       title: productData.title,
-  //       description: productData.description,
-  //       category: productData.category,
-  //       images: typeof productData.images === 'string' ? JSON.parse(productData.images) : productData.images,
-  //       price: productData.price,
-  //       stock: productData.stock,
-  //       sellerId: productData.sellerId,
-  //       village: productData.village,
-  //     },
-  //   })
-  // }
+  console.log('Seeding products...')
+  const seller = await prisma.user.findFirst()
+  const sellerId = seller?.id || 1
+
+  const richProducts = [
+    {
+      title: 'Lemon Ginger Pickle',
+      description: 'Fresh lemons blended with ginger and hand-ground spices. This pickle aids digestion and adds a tangy, spicy flavor to your meals.',
+      category: 'pickles',
+      price: 140,
+      stock: 50,
+      village: 'Adampur',
+      image: 'https://images.unsplash.com/photo-1589621316382-008455b857cd?w=400&h=400&fit=crop&q=80'
+    },
+    {
+      title: 'Handmade Jute Basket',
+      description: 'Natural jute storage basket handcrafted by women artisans. Ideal for home organization and decor.',
+      category: 'crafts',
+      price: 450,
+      stock: 20,
+      village: 'Ranipur',
+      image: 'https://images.unsplash.com/photo-1622260614153-03223fb72052?w=400&h=400&fit=crop&q=80'
+    },
+    {
+      title: 'Spicy Mango Pickle',
+      description: 'Homemade traditional mango pickle prepared using sun-dried raw mangoes, cold-pressed mustard oil, and authentic spices.',
+      category: 'pickles',
+      price: 150,
+      stock: 100,
+      village: 'Sultanganj',
+      image: 'https://images.unsplash.com/photo-1599909533650-d0dbde68a7b4?w=400&h=400&fit=crop&q=80'
+    },
+    {
+      title: 'Embroidered Tote Bag',
+      description: 'Eco-friendly cotton tote bag with intricate hand embroidery. Durable, stylish, and perfect for daily use.',
+      category: 'textiles',
+      price: 350,
+      stock: 30,
+      village: 'Bilaspur',
+      image: 'https://images.unsplash.com/photo-1590891626587-94e43cc2c6ba?w=400&h=400&fit=crop&q=80'
+    },
+    {
+      title: 'Terracotta Diya Set',
+      description: 'Set of 6 beautifully painted terracotta diyas for festivals and home decoration. Eco-friendly and handmade.',
+      category: 'diya',
+      price: 200,
+      stock: 200,
+      village: 'Kishanpur',
+      image: 'https://images.unsplash.com/photo-1605815797511-d87b62d4c7eb?w=400&h=400&fit=crop&q=80'
+    },
+    {
+      title: 'Homemade Red Chilli Powder',
+      description: 'Sun-dried red chillies ground hygienically at home. Adds rich color and authentic spice to your dishes.',
+      category: 'food',
+      price: 130,
+      stock: 80,
+      village: 'Adampur',
+      image: 'https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=400&h=400&fit=crop&q=80'
+    }
+  ]
+
+  for (const product of richProducts) {
+    await prisma.product.create({
+      data: {
+        title: product.title,
+        description: product.description,
+        category: product.category,
+        images: [product.image],
+        price: product.price,
+        stock: product.stock,
+        sellerId: sellerId,
+        village: product.village,
+      },
+    })
+  }
 
   // Seed Schemes
   console.log('Seeding government schemes...')
