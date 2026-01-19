@@ -7,7 +7,7 @@ import Link from 'next/link'
 
 export default function NewWorkshopPage() {
     return (
-        <ProtectedRoute requireRole={true} requiredRole="admin">
+        <ProtectedRoute requireRole={true} allowedRoles={['admin']}>
             <div className="min-h-screen py-20 bg-gray-50 dark:bg-gray-900">
                 <div className="container mx-auto px-4 max-w-4xl">
                     <div className="mb-8">
