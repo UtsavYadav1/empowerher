@@ -66,25 +66,25 @@ const teamMembers = [
   {
     name: 'Bhoomi Sharma',
     role: 'Founder & CEO',
-    image: '/images/team.jpg',
+    image: '/images/team/bhoomi.png',
     description: 'Passionate about women empowerment with 15+ years of experience in social impact.',
   },
   {
     name: 'Utsav Yadav',
     role: 'Education Director',
-    image: '/images/hero.jpg',
+    image: '/images/team/utsav.png',
     description: 'Expert in curriculum development and mentorship programs for young girls.',
   },
   {
     name: 'Mansi Singh',
     role: 'Business Development',
-    image: '/images/workshop.jpg',
+    image: '/images/team/mansi.png',
     description: 'Dedicated to helping women entrepreneurs build and grow their businesses.',
   },
   {
     name: 'Sameer Singh',
     role: 'Community Outreach',
-    image: '/images/community.jpg',
+    image: '/images/team/sameer.png',
     description: 'Connecting with rural communities and organizing impactful workshops.',
   },
 ]

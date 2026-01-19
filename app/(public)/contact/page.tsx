@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaCheckCircle, FaTimesCircle, FaWhatsapp, FaClock, FaQuestionCircle } from 'react-icons/fa'
+import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaCheckCircle, FaTimesCircle, FaWhatsapp, FaClock, FaQuestionCircle, FaYoutube } from 'react-icons/fa'
 import { FaMessage } from 'react-icons/fa6'
 
 interface FAQItem {
@@ -58,57 +58,57 @@ export default function ContactPage() {
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
-    
+
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required'
     }
-    
+
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required'
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Invalid email format'
     }
-    
+
     if (!formData.phone.trim()) {
       newErrors.phone = 'Phone number is required'
     } else if (!/^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,9}$/.test(formData.phone)) {
       newErrors.phone = 'Invalid phone number format'
     }
-    
+
     if (!formData.subject.trim()) {
       newErrors.subject = 'Subject is required'
     }
-    
+
     if (!formData.message.trim()) {
       newErrors.message = 'Message is required'
     } else if (formData.message.trim().length < 10) {
       newErrors.message = 'Message must be at least 10 characters'
     }
-    
+
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!validateForm()) {
       return
     }
-    
+
     setLoading(true)
-    
+
     // Simulate API call
     try {
       await new Promise(resolve => setTimeout(resolve, 1500))
-      
+
       // In a real app, this would POST to /api/contact
       console.log('Contact form submitted:', formData)
-      
+
       setSubmitted(true)
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' })
       setErrors({})
-      
+
       setTimeout(() => {
         setSubmitted(false)
       }, 5000)
@@ -123,7 +123,7 @@ export default function ContactPage() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => {
@@ -233,7 +233,7 @@ export default function ContactPage() {
           <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
             <FaMessage className="text-primary-600" /> Send Us a Message
           </h2>
-          
+
           <AnimatePresence>
             {submitted && (
               <motion.div
@@ -274,9 +274,8 @@ export default function ContactPage() {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 text-lg border-2 rounded-lg focus:ring-4 focus:ring-primary-500/50 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all ${
-                  errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-                }`}
+                className={`w-full px-4 py-3 text-lg border-2 rounded-lg focus:ring-4 focus:ring-primary-500/50 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all ${errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                  }`}
                 required
                 aria-required="true"
                 aria-invalid={!!errors.name}
@@ -300,9 +299,8 @@ export default function ContactPage() {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 text-lg border-2 rounded-lg focus:ring-4 focus:ring-primary-500/50 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all ${
-                    errors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-                  }`}
+                  className={`w-full px-4 py-3 text-lg border-2 rounded-lg focus:ring-4 focus:ring-primary-500/50 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all ${errors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                    }`}
                   required
                   aria-required="true"
                   aria-invalid={!!errors.email}
@@ -324,9 +322,8 @@ export default function ContactPage() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 text-lg border-2 rounded-lg focus:ring-4 focus:ring-primary-500/50 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all ${
-                    errors.phone ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-                  }`}
+                  className={`w-full px-4 py-3 text-lg border-2 rounded-lg focus:ring-4 focus:ring-primary-500/50 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all ${errors.phone ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                    }`}
                   required
                   aria-required="true"
                   aria-invalid={!!errors.phone}
@@ -348,9 +345,8 @@ export default function ContactPage() {
                 name="subject"
                 value={formData.subject}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 text-lg border-2 rounded-lg focus:ring-4 focus:ring-primary-500/50 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all ${
-                  errors.subject ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-                }`}
+                className={`w-full px-4 py-3 text-lg border-2 rounded-lg focus:ring-4 focus:ring-primary-500/50 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all ${errors.subject ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                  }`}
                 required
                 aria-required="true"
               >
@@ -380,9 +376,8 @@ export default function ContactPage() {
                 value={formData.message}
                 onChange={handleChange}
                 rows={6}
-                className={`w-full px-4 py-3 text-lg border-2 rounded-lg focus:ring-4 focus:ring-primary-500/50 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none transition-all ${
-                  errors.message ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-                }`}
+                className={`w-full px-4 py-3 text-lg border-2 rounded-lg focus:ring-4 focus:ring-primary-500/50 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none transition-all ${errors.message ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                  }`}
                 required
                 aria-required="true"
                 aria-invalid={!!errors.message}
@@ -468,17 +463,17 @@ export default function ContactPage() {
             <p className="mb-6 opacity-90">Follow us on social media for updates and inspiration!</p>
             <div className="flex flex-wrap gap-4">
               <motion.a
-                href="https://facebook.com/empowerher"
+                href="https://youtube.com/@utsavyaduvanshi_2?si=c_AeOvWGKNgVa2KW"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1, y: -5 }}
-                className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-2xl hover:bg-white/30 transition-all"
-                aria-label="Facebook"
+                className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-2xl hover:bg-white/30 transition-all text-red-100" // Added lighter text style for visibility
+                aria-label="YouTube"
               >
-                <FaFacebook />
+                <FaYoutube />
               </motion.a>
               <motion.a
-                href="https://twitter.com/empowerher"
+                href="https://x.com/UtsavyadavX"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1, y: -5 }}
@@ -488,7 +483,7 @@ export default function ContactPage() {
                 <FaTwitter />
               </motion.a>
               <motion.a
-                href="https://instagram.com/empowerher"
+                href="https://www.instagram.com/utsav.img/"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1, y: -5 }}
@@ -498,7 +493,7 @@ export default function ContactPage() {
                 <FaInstagram />
               </motion.a>
               <motion.a
-                href="https://linkedin.com/company/empowerher"
+                href="https://www.linkedin.com/in/utsav-yadav01"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1, y: -5 }}
