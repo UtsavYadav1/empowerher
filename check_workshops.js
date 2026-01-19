@@ -4,8 +4,8 @@ const prisma = new PrismaClient()
 async function main() {
     const count = await prisma.workshop.count()
     console.log(`Workshop count: ${count}`)
-    const allWorkshops = await prisma.workshop.findMany()
-    console.log(JSON.stringify(allWorkshops, null, 2))
+    const first = await prisma.workshop.findFirst()
+    console.log('First workshop sample:', JSON.stringify(first, null, 2))
 }
 
 main()

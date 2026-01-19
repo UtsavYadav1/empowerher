@@ -165,37 +165,67 @@ async function main() {
       title: 'Digital Literacy for Girls',
       village: 'Adampur',
       date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // +7 days
-      description: 'Learn how to use computers, smartphones, and the internet safely.'
+      description: 'Learn how to use computers, smartphones, and the internet safely.',
+      instructor: 'Dr. Anita Sharma',
+      category: 'Technology',
+      capacity: 30,
+      fee: 0,
+      status: 'upcoming'
     },
     {
       title: 'Women Entrepreneurship Bootcamp',
       village: 'Ranipur',
       date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // +14 days
-      description: 'Start your own business with guidance from successful mentors.'
+      description: 'Start your own business with guidance from successful mentors.',
+      instructor: 'Ms. Priya Singh',
+      category: 'Business',
+      capacity: 50,
+      fee: 500,
+      status: 'upcoming'
     },
     {
       title: 'Menstrual Health & Hygiene Awareness',
       village: 'Sultanganj',
       date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // +3 days
-      description: 'Expert-led session on health, hygiene, and breaking taboos.'
+      description: 'Expert-led session on health, hygiene, and breaking taboos.',
+      instructor: 'Dr. Ritu Verma',
+      category: 'Health',
+      capacity: 100,
+      fee: 0,
+      status: 'upcoming'
     },
     {
       title: 'Financial Literacy for Homemakers',
       village: 'Bilaspur',
       date: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000), // +21 days
-      description: 'Learn budgeting, saving, and basics of banking and investment.'
+      description: 'Learn budgeting, saving, and basics of banking and investment.',
+      instructor: 'Mr. Rajesh Kumar',
+      category: 'Finance',
+      capacity: 40,
+      fee: 100,
+      status: 'upcoming'
     },
     {
       title: 'Self-Defense Training Camp',
       village: 'Adampur',
       date: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000), // +10 days
-      description: 'Practical self-defense techniques for safety and confidence.'
+      description: 'Practical self-defense techniques for safety and confidence.',
+      instructor: 'Coach Suman',
+      category: 'Skill Development',
+      capacity: 25,
+      fee: 200,
+      status: 'upcoming'
     },
     {
       title: 'Organic Farming Techniques',
       village: 'Kishanpur',
       date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // +30 days
-      description: 'Modern organic farming methods to increase crop yield and income.'
+      description: 'Modern organic farming methods to increase crop yield and income.',
+      instructor: 'Agri-Expert Ramesh',
+      category: 'Agriculture',
+      capacity: 60,
+      fee: 150,
+      status: 'upcoming'
     }
   ]
   for (const workshop of workshopData) {
@@ -205,6 +235,11 @@ async function main() {
         village: workshop.village,
         date: workshop.date,
         description: workshop.description,
+        instructor: workshop.instructor,
+        category: workshop.category,
+        capacity: workshop.capacity,
+        fee: workshop.fee,
+        status: workshop.status
       },
     })
   }
