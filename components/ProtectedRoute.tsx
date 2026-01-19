@@ -20,16 +20,16 @@ export default function ProtectedRoute({ children, requireRole = false, allowedR
   useEffect(() => {
     const checkAuth = () => {
       const authenticated = isAuthenticated()
-      
+
       if (!authenticated) {
-        router.push('/login')
+        router.replace('/login')
         return
       }
 
       if (requireRole) {
         const userHasRole = hasRole()
         if (!userHasRole) {
-          router.push('/role-select')
+          router.replace('/role-select')
           return
         }
 
@@ -37,33 +37,33 @@ export default function ProtectedRoute({ children, requireRole = false, allowedR
         const user = getCurrentUser()
         if (user?.role) {
           const userRole = user.role.toLowerCase()
-          
+
           // If allowedRoles is specified, check against it
           if (allowedRoles && allowedRoles.length > 0) {
             if (!allowedRoles.includes(userRole)) {
-              router.push(getDashboardPath(userRole))
+              router.replace(getDashboardPath(userRole))
               return
             }
           } else {
             // Otherwise, check role-based route access by pathname
             if (pathname.startsWith('/girls') && userRole !== 'girl') {
-              router.push(getDashboardPath(userRole))
+              router.replace(getDashboardPath(userRole))
               return
             }
             if (pathname.startsWith('/women') && userRole !== 'woman') {
-              router.push(getDashboardPath(userRole))
+              router.replace(getDashboardPath(userRole))
               return
             }
             if (pathname.startsWith('/customer') && userRole !== 'customer') {
-              router.push(getDashboardPath(userRole))
+              router.replace(getDashboardPath(userRole))
               return
             }
             if (pathname.startsWith('/admin') && userRole !== 'admin') {
-              router.push(getDashboardPath(userRole))
+              router.replace(getDashboardPath(userRole))
               return
             }
             if (pathname.startsWith('/fieldagent') && userRole !== 'fieldagent') {
-              router.push(getDashboardPath(userRole))
+              router.replace(getDashboardPath(userRole))
               return
             }
           }
