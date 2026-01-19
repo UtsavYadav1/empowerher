@@ -19,6 +19,7 @@ interface Workshop {
   registered: number
   fee: number
   status: string
+  village: string // Added to fix build error
   createdAt: string
 }
 
