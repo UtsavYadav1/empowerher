@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
         password, // In production, hash this password with bcrypt
         village: village || null,
         role: role || null,
-        verified: email ? false : false, // Will be true after email verification
+        verified: true, // Auto-verified as per user request (removed dummy verification)
       },
       select: {
         id: true,

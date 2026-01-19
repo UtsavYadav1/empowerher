@@ -15,27 +15,13 @@ export default function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [village, setVillage] = useState('')
   const [role, setRole] = useState<'girl' | 'woman' | 'customer' | 'admin' | 'fieldagent' | ''>('')
-  const [emailOTP, setEmailOTP] = useState('')
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [passwordStrength, setPasswordStrength] = useState(0)
-  const [otpSent, setOtpSent] = useState(false)
-  const [verificationTimer, setVerificationTimer] = useState(60)
-  const [emailVerified, setEmailVerified] = useState(false)
   const router = useRouter()
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout
-    if (otpSent && verificationTimer > 0) {
-      interval = setInterval(() => {
-        setVerificationTimer(prev => prev - 1)
-      }, 1000)
-    }
-    return () => clearInterval(interval)
-  }, [otpSent, verificationTimer])
 
   useEffect(() => {
     calculatePasswordStrength(password)
@@ -64,49 +50,56 @@ export default function RegisterPage() {
     return 'Strong'
   }
 
-  const handleSendOTP = async () => {
-    if (!email) {
-      setError('Please enter your email')
-      return
-    }
+  const handlePrevStep = () => {
+    setError('')
+    setStep(prev => prev - 1)
+  }
 
-    setLoading(true)
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
     setError('')
 
+    if (!validateStep3()) return
+
+    setLoading(true)
+
     try {
-      // Simulate OTP sending (in real app, call backend API)
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      const mockOTP = Math.floor(100000 + Math.random() * 900000).toString()
-      console.log('Mock OTP:', mockOTP)
-      localStorage.setItem('mockOTP', mockOTP)
-      
-      setOtpSent(true)
-      setVerificationTimer(60)
-      setSuccess(`✅ OTP sent! For testing, your OTP is: ${mockOTP}`)
-      setTimeout(() => setSuccess(''), 30000) // Show for 30 seconds
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          password,
+          village: village || undefined,
+          role,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok || !data.success) {
+        setError(data.error || 'Registration failed')
+        setLoading(false)
+        return
+      }
+
+      setSuccess('Registration successful! Redirecting to login...')
+
+      setTimeout(() => {
+        router.push('/login')
+      }, 1500)
     } catch (err) {
-      setError('Failed to send OTP. Please try again.')
-    } finally {
+      console.error('Registration error:', err)
+      setError('An error occurred. Please try again.')
       setLoading(false)
     }
   }
 
-  const handleVerifyOTP = () => {
-    const storedOTP = localStorage.getItem('mockOTP')
-    
-    if (emailOTP === storedOTP) {
-      setEmailVerified(true)
-      setSuccess('Email verified successfully!')
-      setTimeout(() => {
-        setSuccess('')
-        setStep(2)
-      }, 1000)
-      localStorage.removeItem('mockOTP')
-    } else {
-      setError('Invalid OTP. Please try again.')
-    }
-  }
-
+  // Simplified Validation
   const validateStep1 = () => {
     if (!name.trim()) {
       setError('Please enter your full name')
@@ -114,10 +107,6 @@ export default function RegisterPage() {
     }
     if (!email.trim() || !/\S+@\S+\.\S+/.test(email)) {
       setError('Please enter a valid email address')
-      return false
-    }
-    if (!emailVerified) {
-      setError('Please verify your email first')
       return false
     }
     if (!phone.trim() || phone.length < 10) {
@@ -153,60 +142,11 @@ export default function RegisterPage() {
 
   const handleNextStep = () => {
     setError('')
-    
+
     if (step === 1 && validateStep1()) {
       setStep(2)
     } else if (step === 2 && validateStep2()) {
       setStep(3)
-    }
-  }
-
-  const handlePrevStep = () => {
-    setError('')
-    setStep(prev => prev - 1)
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    
-    if (!validateStep3()) return
-
-    setLoading(true)
-
-    try {
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          phone,
-          password,
-          village: village || undefined,
-          role,
-        }),
-      })
-
-      const data = await response.json()
-
-      if (!response.ok || !data.success) {
-        setError(data.error || 'Registration failed')
-        setLoading(false)
-        return
-      }
-
-      setSuccess('Registration successful! Redirecting to login...')
-      
-      setTimeout(() => {
-        router.push('/login')
-      }, 1500)
-    } catch (err) {
-      console.error('Registration error:', err)
-      setError('An error occurred. Please try again.')
-      setLoading(false)
     }
   }
 
@@ -284,74 +224,22 @@ export default function RegisterPage() {
                     />
                   </div>
 
-                  {/* Email with Verification */}
+                  {/* Email without Verification */}
                   <div>
                     <label htmlFor="email" className="block text-sm font-semibold mb-2 text-gray-900 dark:text-white flex items-center gap-2">
                       <FaEnvelope className="text-primary-600" /> Email Address *
                     </label>
-                    <div className="flex gap-2">
-                      <input
-                        type="email"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="flex-1 px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-4 focus:ring-primary-500/50 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                        placeholder="your.email@example.com"
-                        required
-                        disabled={loading || emailVerified}
-                      />
-                      {!emailVerified && (
-                        <button
-                          type="button"
-                          onClick={handleSendOTP}
-                          disabled={loading || otpSent}
-                          className="px-4 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap text-sm font-semibold"
-                        >
-                          {otpSent ? `Resend (${verificationTimer}s)` : 'Send OTP'}
-                        </button>
-                      )}
-                      {emailVerified && (
-                        <div className="px-4 py-3 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg flex items-center gap-2">
-                          <FaCheckCircle /> Verified
-                        </div>
-                      )}
-                    </div>
+                    <input
+                      type="email"
+                      id="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-4 focus:ring-primary-500/50 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      placeholder="your.email@example.com"
+                      required
+                      disabled={loading}
+                    />
                   </div>
-
-                  {/* OTP Input */}
-                  {otpSent && !emailVerified && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                    >
-                      <label htmlFor="emailOTP" className="block text-sm font-semibold mb-2 text-gray-900 dark:text-white flex items-center gap-2">
-                        <FaShieldAlt className="text-primary-600" /> Enter OTP
-                      </label>
-                      <div className="flex gap-2">
-                        <input
-                          type="text"
-                          id="emailOTP"
-                          value={emailOTP}
-                          onChange={(e) => setEmailOTP(e.target.value)}
-                          className="flex-1 px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-4 focus:ring-primary-500/50 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-center text-2xl tracking-widest"
-                          placeholder="000000"
-                          maxLength={6}
-                          required
-                        />
-                        <button
-                          type="button"
-                          onClick={handleVerifyOTP}
-                          className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold"
-                        >
-                          Verify
-                        </button>
-                      </div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                        💡 <strong>Development Mode:</strong> OTP will be displayed above after clicking "Send OTP". OTP expires in {verificationTimer}s.
-                      </p>
-                    </motion.div>
-                  )}
 
                   {/* Phone Number */}
                   <div>
@@ -510,7 +398,7 @@ export default function RegisterPage() {
                     <label className="block text-sm font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
                       <FaUserShield className="text-primary-600" /> Select Your Role *
                     </label>
-                    
+
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                       {/* Girl Option */}
                       <motion.button
@@ -518,18 +406,16 @@ export default function RegisterPage() {
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.97 }}
                         onClick={() => setRole('girl')}
-                        className={`p-6 rounded-xl border-3 transition-all ${
-                          role === 'girl'
-                            ? 'border-pink-600 bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20 shadow-lg'
-                            : 'border-gray-300 dark:border-gray-600 hover:border-pink-400'
-                        }`}
+                        className={`p-6 rounded-xl border-3 transition-all ${role === 'girl'
+                          ? 'border-pink-600 bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20 shadow-lg'
+                          : 'border-gray-300 dark:border-gray-600 hover:border-pink-400'
+                          }`}
                       >
                         <div className="flex flex-col items-center text-center">
-                          <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 ${
-                            role === 'girl'
-                              ? 'bg-gradient-to-br from-pink-500 to-rose-500 text-white'
-                              : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
-                          }`}>
+                          <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 ${role === 'girl'
+                            ? 'bg-gradient-to-br from-pink-500 to-rose-500 text-white'
+                            : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                            }`}>
                             <FaUser className="text-2xl" />
                           </div>
                           <h3 className="text-lg font-bold mb-1 text-gray-900 dark:text-white">Girl</h3>
@@ -548,18 +434,16 @@ export default function RegisterPage() {
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.97 }}
                         onClick={() => setRole('woman')}
-                        className={`p-6 rounded-xl border-3 transition-all ${
-                          role === 'woman'
-                            ? 'border-purple-600 bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 shadow-lg'
-                            : 'border-gray-300 dark:border-gray-600 hover:border-purple-400'
-                        }`}
+                        className={`p-6 rounded-xl border-3 transition-all ${role === 'woman'
+                          ? 'border-purple-600 bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 shadow-lg'
+                          : 'border-gray-300 dark:border-gray-600 hover:border-purple-400'
+                          }`}
                       >
                         <div className="flex flex-col items-center text-center">
-                          <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 ${
-                            role === 'woman'
-                              ? 'bg-gradient-to-br from-purple-500 to-indigo-500 text-white'
-                              : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
-                          }`}>
+                          <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 ${role === 'woman'
+                            ? 'bg-gradient-to-br from-purple-500 to-indigo-500 text-white'
+                            : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                            }`}>
                             <FaUserTie className="text-2xl" />
                           </div>
                           <h3 className="text-lg font-bold mb-1 text-gray-900 dark:text-white">Woman</h3>
@@ -578,18 +462,16 @@ export default function RegisterPage() {
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.97 }}
                         onClick={() => setRole('customer')}
-                        className={`p-6 rounded-xl border-3 transition-all ${
-                          role === 'customer'
-                            ? 'border-green-600 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 shadow-lg'
-                            : 'border-gray-300 dark:border-gray-600 hover:border-green-400'
-                        }`}
+                        className={`p-6 rounded-xl border-3 transition-all ${role === 'customer'
+                          ? 'border-green-600 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 shadow-lg'
+                          : 'border-gray-300 dark:border-gray-600 hover:border-green-400'
+                          }`}
                       >
                         <div className="flex flex-col items-center text-center">
-                          <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 ${
-                            role === 'customer'
-                              ? 'bg-gradient-to-br from-green-500 to-emerald-500 text-white'
-                              : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
-                          }`}>
+                          <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 ${role === 'customer'
+                            ? 'bg-gradient-to-br from-green-500 to-emerald-500 text-white'
+                            : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                            }`}>
                             <FaShoppingCart className="text-2xl" />
                           </div>
                           <h3 className="text-lg font-bold mb-1 text-gray-900 dark:text-white">Customer</h3>
@@ -608,18 +490,16 @@ export default function RegisterPage() {
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.97 }}
                         onClick={() => setRole('admin')}
-                        className={`p-6 rounded-xl border-3 transition-all ${
-                          role === 'admin'
-                            ? 'border-gray-700 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700/20 dark:to-gray-800/20 shadow-lg'
-                            : 'border-gray-300 dark:border-gray-600 hover:border-gray-500'
-                        }`}
+                        className={`p-6 rounded-xl border-3 transition-all ${role === 'admin'
+                          ? 'border-gray-700 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700/20 dark:to-gray-800/20 shadow-lg'
+                          : 'border-gray-300 dark:border-gray-600 hover:border-gray-500'
+                          }`}
                       >
                         <div className="flex flex-col items-center text-center">
-                          <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 ${
-                            role === 'admin'
-                              ? 'bg-gradient-to-br from-gray-600 to-gray-800 text-white'
-                              : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
-                          }`}>
+                          <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 ${role === 'admin'
+                            ? 'bg-gradient-to-br from-gray-600 to-gray-800 text-white'
+                            : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                            }`}>
                             <FaUserShield className="text-2xl" />
                           </div>
                           <h3 className="text-lg font-bold mb-1 text-gray-900 dark:text-white">Admin</h3>
@@ -638,18 +518,16 @@ export default function RegisterPage() {
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.97 }}
                         onClick={() => setRole('fieldagent')}
-                        className={`p-6 rounded-xl border-3 transition-all ${
-                          role === 'fieldagent'
-                            ? 'border-blue-600 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 shadow-lg'
-                            : 'border-gray-300 dark:border-gray-600 hover:border-blue-400'
-                        }`}
+                        className={`p-6 rounded-xl border-3 transition-all ${role === 'fieldagent'
+                          ? 'border-blue-600 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 shadow-lg'
+                          : 'border-gray-300 dark:border-gray-600 hover:border-blue-400'
+                          }`}
                       >
                         <div className="flex flex-col items-center text-center">
-                          <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 ${
-                            role === 'fieldagent'
-                              ? 'bg-gradient-to-br from-blue-500 to-cyan-500 text-white'
-                              : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
-                          }`}>
+                          <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 ${role === 'fieldagent'
+                            ? 'bg-gradient-to-br from-blue-500 to-cyan-500 text-white'
+                            : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                            }`}>
                             <FaUserCheck className="text-2xl" />
                           </div>
                           <h3 className="text-lg font-bold mb-1 text-gray-900 dark:text-white">Field Agent</h3>
