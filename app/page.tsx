@@ -225,42 +225,42 @@ export default function Home() {
       </section>
 
       {/* Impact Stats Section - Floating Cards */}
-      <section className="relative py-20 bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 text-white">
-        <div className="container mx-auto px-4">
+      <section className="relative py-24 bg-slate-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4 z-10 relative">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="absolute -top-16 left-0 right-0 z-20 px-4"
+            className="absolute -top-20 left-0 right-0 z-20 px-4"
           >
-            <div className="max-w-6xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl shadow-xl flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300 group">
-                <div className="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center text-orange-400 mb-3 text-2xl group-hover:bg-orange-500 group-hover:text-white transition-colors">
+            <div className="max-w-6xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300 group ring-1 ring-gray-100 dark:ring-gray-700">
+                <div className="w-16 h-16 bg-orange-50 dark:bg-orange-900/20 rounded-2xl flex items-center justify-center text-orange-500 mb-4 text-3xl group-hover:scale-110 transition-transform duration-300">
                   <FaUsers />
                 </div>
-                <h3 className="text-3xl font-bold text-white mb-1"><CountUp end={stats.womenEmpowered} duration={2} />+</h3>
-                <p className="text-sm text-gray-300 font-medium">Women Empowered</p>
+                <h3 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-2"><CountUp end={stats.womenEmpowered} duration={2} />+</h3>
+                <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Women Empowered</p>
               </div>
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl shadow-xl flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300 group">
-                <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center text-blue-400 mb-3 text-2xl group-hover:bg-blue-500 group-hover:text-white transition-colors">
+              <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300 group ring-1 ring-gray-100 dark:ring-gray-700">
+                <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-2xl flex items-center justify-center text-blue-500 mb-4 text-3xl group-hover:scale-110 transition-transform duration-300">
                   <FaGraduationCap />
                 </div>
-                <h3 className="text-3xl font-bold text-white mb-1"><CountUp end={stats.girlsEducated} duration={2} />+</h3>
-                <p className="text-sm text-gray-300 font-medium">Girls Educated</p>
+                <h3 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-2"><CountUp end={stats.girlsEducated} duration={2} />+</h3>
+                <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Girls Educated</p>
               </div>
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl shadow-xl flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300 group">
-                <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center text-green-400 mb-3 text-2xl group-hover:bg-green-500 group-hover:text-white transition-colors">
+              <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300 group ring-1 ring-gray-100 dark:ring-gray-700">
+                <div className="w-16 h-16 bg-green-50 dark:bg-green-900/20 rounded-2xl flex items-center justify-center text-green-500 mb-4 text-3xl group-hover:scale-110 transition-transform duration-300">
                   <FaRocket />
                 </div>
-                <h3 className="text-3xl font-bold text-white mb-1"><CountUp end={stats.workshops} duration={2} />+</h3>
-                <p className="text-sm text-gray-300 font-medium">Workshops Conducted</p>
+                <h3 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-2"><CountUp end={stats.workshops} duration={2} />+</h3>
+                <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Workshops Held</p>
               </div>
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl shadow-xl flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300 group">
-                <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-400 mb-3 text-2xl group-hover:bg-purple-500 group-hover:text-white transition-colors">
+              <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300 group ring-1 ring-gray-100 dark:ring-gray-700">
+                <div className="w-16 h-16 bg-purple-50 dark:bg-purple-900/20 rounded-2xl flex items-center justify-center text-purple-500 mb-4 text-3xl group-hover:scale-110 transition-transform duration-300">
                   <FaHandHoldingHeart />
                 </div>
-                <h3 className="text-3xl font-bold text-white mb-1"><CountUp end={stats.communities} duration={2} />+</h3>
-                <p className="text-sm text-gray-300 font-medium">Communities Connected</p>
+                <h3 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-2"><CountUp end={stats.communities} duration={2} />+</h3>
+                <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Communities</p>
               </div>
             </div>
           </motion.div>
