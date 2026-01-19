@@ -11,7 +11,7 @@ import { FaSearch, FaFilter, FaShoppingCart, FaSortAmountDown } from 'react-icon
 // Helper function to get product-specific images based on category and name
 const getProductImage = (category: string, productName: string, productId: number) => {
   const name = productName.toLowerCase()
-  
+
   // Match specific product names first
   if (name.includes('mango') || name.includes('aam')) {
     return 'https://images.unsplash.com/photo-1553279768-865429fa0078?w=400&h=400&fit=crop&q=80' // Mango
@@ -28,7 +28,7 @@ const getProductImage = (category: string, productName: string, productId: numbe
   if (name.includes('garlic') || name.includes('lahsun')) {
     return 'https://images.unsplash.com/photo-1580797542185-90ce4a22e7c4?w=400&h=400&fit=crop&q=80' // Garlic
   }
-  
+
   // Category-specific diverse images
   const categoryImages: { [key: string]: string[] } = {
     pickles: [
@@ -94,7 +94,7 @@ const getProductImage = (category: string, productName: string, productId: numbe
     'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop&q=80',
     'https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=400&h=400&fit=crop&q=80',
   ]
-  
+
   return images[productId % images.length]
 }
 
@@ -178,8 +178,8 @@ export default function ProductsPage() {
                   Discover amazing products from women entrepreneurs
                 </p>
               </div>
-              <Link 
-                href="/customer/cart" 
+              <Link
+                href="/customer/cart"
                 className="btn-primary flex items-center gap-2 px-6 py-3"
               >
                 <FaShoppingCart /> View Cart
@@ -208,11 +208,10 @@ export default function ProductsPage() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setFilter(category.id)}
-                    className={`px-4 py-2 rounded-full font-semibold transition-all ${
-                      filter === category.id
+                    className={`px-4 py-2 rounded-full font-semibold transition-all ${filter === category.id
                         ? 'bg-gradient-to-r from-primary-500 to-pink-500 text-white shadow-lg'
                         : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-2 border-gray-300 dark:border-gray-600 hover:border-primary-500'
-                    }`}
+                      }`}
                   >
                     {category.name}
                   </motion.button>
@@ -257,13 +256,16 @@ export default function ProductsPage() {
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {products.map((product, index) => {
-                // Get image URL with proper fallback - use product-specific images
-                let imageUrl = getProductImage(product.category || 'handmade', product.title || '', product.id)
-                
-                // Only override if product has actual custom images
-                if (Array.isArray(product.images) && product.images.length > 0 && product.images[0] && 
-                    typeof product.images[0] === 'string' && product.images[0].startsWith('http')) {
+                // Prioritize user-uploaded images if available
+                let imageUrl = ''
+
+                if (Array.isArray(product.images) && product.images.length > 0 &&
+                  product.images[0] && typeof product.images[0] === 'string' &&
+                  product.images[0].trim().length > 0) {
                   imageUrl = product.images[0]
+                } else {
+                  // Fallback to generated image
+                  imageUrl = getProductImage(product.category || 'handmade', product.title || '', product.id)
                 }
 
                 return (
