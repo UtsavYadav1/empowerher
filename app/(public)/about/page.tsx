@@ -51,7 +51,7 @@ const teamMembers = [
 
 const timeline = [
   { year: '2023', title: 'The Beginning', desc: 'Started with 2 villages, understanding the core problems.', icon: FaHandHoldingHeart },
-  { year: '2024', title: 'Expansion Phase', desc: 'Scaled to 50+ villages, launched pilot mentorship programs.', icon: FaUsers },
+  { year: '2024', title: 'Expansion Phase', desc: 'Scaled to 15+ villages, launched pilot mentorship programs.', icon: FaUsers },
   { year: '2025', title: 'Digital Revolution', desc: 'Launched EmpowerHer platform to bridge the digital divide.', icon: FaRocket },
 ]
 
@@ -131,15 +131,15 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
-              className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg border border-white/20 dark:border-gray-700 p-6 rounded-2xl shadow-xl text-center hover:-translate-y-2 transition-transform duration-300"
+              className="bg-white/10 backdrop-blur-xl border border-white/20 p-6 rounded-2xl shadow-2xl text-center hover:-translate-y-2 transition-all duration-300 group"
             >
-              <div className="w-12 h-12 mx-auto bg-gradient-to-br from-orange-500 to-pink-500 rounded-full flex items-center justify-center text-white text-xl mb-4 shadow-lg">
+              <div className="w-12 h-12 mx-auto bg-gradient-to-br from-orange-400 to-pink-500 rounded-full flex items-center justify-center text-white text-xl mb-4 shadow-lg group-hover:scale-110 transition-transform">
                 <stat.icon />
               </div>
-              <h3 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-1">
+              <h3 className="text-3xl md:text-4xl font-bold text-white mb-1 drop-shadow-sm">
                 <CountUp end={stat.value} duration={2.5} separator="," />{stat.suffix}
               </h3>
-              <p className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{stat.label}</p>
+              <p className="text-sm font-medium text-gray-200 uppercase tracking-wider">{stat.label}</p>
             </motion.div>
           ))}
         </div>
@@ -249,21 +249,20 @@ export default function AboutPage() {
               whileHover={{ y: -10 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
-              className="group relative rounded-3xl overflow-hidden shadow-2xl bg-gray-900"
+              className="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
             >
-              <div className="relative h-96 w-full">
+              <div className="relative h-64 w-full">
                 <Image
                   src={member.image}
                   alt={member.name}
                   fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110 opacity-90 group-hover:opacity-100"
+                  className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-80" />
               </div>
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <h3 className="text-2xl font-bold text-white mb-1">{member.name}</h3>
-                <p className="text-orange-400 font-medium mb-2">{member.role}</p>
-                <p className="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
+              <div className="p-6 text-center">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{member.name}</h3>
+                <p className="text-orange-500 font-medium mb-3">{member.role}</p>
+                <p className="text-gray-600 dark:text-gray-400 text-sm">
                   {member.description}
                 </p>
               </div>
