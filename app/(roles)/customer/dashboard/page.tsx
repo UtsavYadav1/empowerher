@@ -368,6 +368,9 @@ function CustomerDashboardContent() {
               {products
                 .filter(p => p && p.id && p.title && typeof p.price === 'number')
                 .map((product, index) => {
+                  // Get image URL
+                  let imageUrl = ''
+
                   // Only override if product has actual custom images
                   if (Array.isArray(product.images) && product.images.length > 0 &&
                     product.images[0] && typeof product.images[0] === 'string' &&
