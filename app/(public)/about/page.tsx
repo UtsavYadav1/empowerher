@@ -64,26 +64,26 @@ const timeline = [
 
 const teamMembers = [
   {
-    name: 'Bhoomi Sharma',
-    role: 'Founder & CEO',
-    image: '/images/team/bhoomi.png',
-    description: 'Passionate about women empowerment with 15+ years of experience in social impact.',
-  },
-  {
     name: 'Utsav Yadav',
-    role: 'Education Director',
+    role: 'Education Director & Developer',
     image: '/images/team/utsav.png',
     description: 'Expert in curriculum development and mentorship programs for young girls.',
   },
   {
+    name: 'Bhoomi Sharma',
+    role: 'Founder, CEO & Developer',
+    image: '/images/team/bhoomi.png',
+    description: 'Passionate about women empowerment with 15+ years of experience in social impact.',
+  },
+  {
     name: 'Mansi Singh',
-    role: 'Business Development',
+    role: 'Business Development & Developer',
     image: '/images/team/mansi.png',
     description: 'Dedicated to helping women entrepreneurs build and grow their businesses.',
   },
   {
     name: 'Sameer Singh',
-    role: 'Community Outreach',
+    role: 'Community Outreach & Developer',
     image: '/images/team/sameer.png',
     description: 'Connecting with rural communities and organizing impactful workshops.',
   },

@@ -2,11 +2,11 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa'
+import { FaTwitter, FaInstagram, FaLinkedin, FaYoutube } from 'react-icons/fa'
 
 export default function Footer() {
   return (
-    <footer 
+    <footer
       className="bg-gray-900 dark:bg-black text-white py-12 mt-20 transition-colors"
       role="contentinfo"
     >
@@ -58,29 +58,37 @@ export default function Footer() {
           >
             <h4 className="text-lg font-semibold mb-4">Follow Us</h4>
             <div className="flex space-x-4" role="list">
-              <a 
-                href="#" 
+              <a
+                href="https://youtube.com/@utsavyaduvanshi_2?si=c_AeOvWGKNgVa2KW"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors p-2 hover:scale-110 transform"
-                aria-label="Follow us on Facebook"
+                aria-label="Follow us on YouTube"
               >
-                <FaFacebook size={24} />
+                <FaYoutube size={24} />
               </a>
-              <a 
-                href="#" 
+              <a
+                href="https://x.com/UtsavyadavX"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors p-2 hover:scale-110 transform"
                 aria-label="Follow us on Twitter"
               >
                 <FaTwitter size={24} />
               </a>
-              <a 
-                href="#" 
+              <a
+                href="https://www.instagram.com/utsav.img/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors p-2 hover:scale-110 transform"
                 aria-label="Follow us on Instagram"
               >
                 <FaInstagram size={24} />
               </a>
-              <a 
-                href="#" 
+              <a
+                href="https://www.linkedin.com/in/utsav-yadav01"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors p-2 hover:scale-110 transform"
                 aria-label="Follow us on LinkedIn"
               >
