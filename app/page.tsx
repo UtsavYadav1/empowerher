@@ -285,43 +285,42 @@ export default function Home() {
             We provide a comprehensive ecosystem for women and girls to thrive. From education and mentorship to business funding and digital marketplaces.
           </motion.p>
         </div>
-    </div>
-      </section >
+      </section>
 
-    {/* Modern Features Grid */ }
-    < section className = "py-20 bg-white dark:bg-gray-900" >
-      <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, index) => {
-            const Icon = feature.icon
-            return (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="group p-8 rounded-3xl bg-gray-50 dark:bg-gray-800 hover:bg-orange-50 dark:hover:bg-gray-700/50 transition-colors duration-300 border border-transparent hover:border-orange-100 dark:hover:border-gray-600"
-              >
-                <div className="w-14 h-14 bg-white dark:bg-gray-700 rounded-2xl flex items-center justify-center text-orange-500 dark:text-orange-400 text-2xl shadow-sm mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <Icon />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">{feature.title}</h3>
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
-                  {feature.description}
-                </p>
-                <Link href="/about" className="inline-flex items-center text-orange-600 dark:text-orange-400 font-semibold group-hover:gap-2 transition-all">
-                  Learn more <FaArrowRight className="ml-1 text-sm" />
-                </Link>
-              </motion.div>
-            )
-          })}
+      {/* Modern Features Grid */}
+      <section className="py-20 bg-white dark:bg-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature, index) => {
+              const Icon = feature.icon
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="group p-8 rounded-3xl bg-gray-50 dark:bg-gray-800 hover:bg-orange-50 dark:hover:bg-gray-700/50 transition-colors duration-300 border border-transparent hover:border-orange-100 dark:hover:border-gray-600"
+                >
+                  <div className="w-14 h-14 bg-white dark:bg-gray-700 rounded-2xl flex items-center justify-center text-orange-500 dark:text-orange-400 text-2xl shadow-sm mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <Icon />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">{feature.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
+                    {feature.description}
+                  </p>
+                  <Link href="/about" className="inline-flex items-center text-orange-600 dark:text-orange-400 font-semibold group-hover:gap-2 transition-all">
+                    Learn more <FaArrowRight className="ml-1 text-sm" />
+                  </Link>
+                </motion.div>
+              )
+            })}
+          </div>
         </div>
-      </div>
-      </section >
+      </section>
 
-    {/* Sections for Different User Roles */ }
-    < section className = "py-20 bg-gray-900 text-white relative overflow-hidden" >
+      {/* Sections for Different User Roles */}
+      <section className="py-20 bg-gray-900 text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[url('/images/hero.jpg')] bg-cover bg-center fixed" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
@@ -373,10 +372,10 @@ export default function Home() {
             </motion.div>
           </div>
         </div>
-      </section >
+      </section>
 
-    {/* Quote/CTA with Parallax Feel */ }
-    < section className = "py-24 bg-gradient-to-r from-orange-500 to-red-500 text-white text-center relative overflow-hidden" >
+      {/* Quote/CTA with Parallax Feel */}
+      <section className="py-24 bg-gradient-to-r from-orange-500 to-red-500 text-white text-center relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full opacity-10">
           <svg className="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
             <path d="M0 100 C 20 0 50 0 100 100 Z" fill="white" />
@@ -385,7 +384,7 @@ export default function Home() {
         <div className="container mx-auto px-4 relative z-10">
           <FaUsers className="text-6xl mx-auto mb-6 opacity-80" />
           <h2 className="text-4xl md:text-6xl font-black mb-8 leading-tight">
-            "When women support each other,<br />incredible things happen."
+            &quot;When women support each other,<br />incredible things happen.&quot;
           </h2>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -396,7 +395,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-      </section >
-    </div >
+      </section>
+    </div>
   )
 }
