@@ -225,108 +225,103 @@ export default function Home() {
       </section>
 
       {/* Impact Stats Section - Floating Cards */}
-      <section className="relative py-24 bg-slate-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4 z-10 relative">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="absolute -top-20 left-0 right-0 z-20 px-4"
-          >
-            <div className="max-w-6xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300 group ring-1 ring-gray-100 dark:ring-gray-700">
-                <div className="w-16 h-16 bg-orange-50 dark:bg-orange-900/20 rounded-2xl flex items-center justify-center text-orange-500 mb-4 text-3xl group-hover:scale-110 transition-transform duration-300">
-                  <FaUsers />
-                </div>
-                <h3 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-2"><CountUp end={stats.womenEmpowered} duration={2} />+</h3>
-                <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Women Empowered</p>
+      <section className="relative bg-slate-50 dark:bg-gray-900 pt-0 pb-24">
+        {/* Floating Grid Container - Uses negative margin to pull up into Hero, keeping flow intact */}
+        <div className="container mx-auto px-4 relative z-20 -mt-20 md:-mt-32">
+          <div className="max-w-6xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border border-white/20 dark:border-gray-700/50 p-8 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300 group">
+              <div className="w-16 h-16 bg-orange-50 dark:bg-orange-900/20 rounded-2xl flex items-center justify-center text-orange-500 mb-4 text-3xl group-hover:scale-110 transition-transform duration-300">
+                <FaUsers />
               </div>
-              <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300 group ring-1 ring-gray-100 dark:ring-gray-700">
-                <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-2xl flex items-center justify-center text-blue-500 mb-4 text-3xl group-hover:scale-110 transition-transform duration-300">
-                  <FaGraduationCap />
-                </div>
-                <h3 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-2"><CountUp end={stats.girlsEducated} duration={2} />+</h3>
-                <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Girls Educated</p>
-              </div>
-              <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300 group ring-1 ring-gray-100 dark:ring-gray-700">
-                <div className="w-16 h-16 bg-green-50 dark:bg-green-900/20 rounded-2xl flex items-center justify-center text-green-500 mb-4 text-3xl group-hover:scale-110 transition-transform duration-300">
-                  <FaRocket />
-                </div>
-                <h3 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-2"><CountUp end={stats.workshops} duration={2} />+</h3>
-                <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Workshops Held</p>
-              </div>
-              <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300 group ring-1 ring-gray-100 dark:ring-gray-700">
-                <div className="w-16 h-16 bg-purple-50 dark:bg-purple-900/20 rounded-2xl flex items-center justify-center text-purple-500 mb-4 text-3xl group-hover:scale-110 transition-transform duration-300">
-                  <FaHandHoldingHeart />
-                </div>
-                <h3 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-2"><CountUp end={stats.communities} duration={2} />+</h3>
-                <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Communities</p>
-              </div>
+              <h3 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-2"><CountUp end={stats.womenEmpowered} duration={2} />+</h3>
+              <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Women Empowered</p>
             </div>
-          </motion.div>
-
-          <div className="mt-24 text-center max-w-3xl mx-auto">
-            <motion.span
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              className="text-orange-500 font-bold tracking-wider uppercase text-sm"
-            >
-              Why Choose Us
-            </motion.span>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mt-2 mb-6"
-            >
-              Building a Future of Equal Opportunity
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed"
-            >
-              We provide a comprehensive ecosystem for women and girls to thrive. From education and mentorship to business funding and digital marketplaces.
-            </motion.p>
+            <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border border-white/20 dark:border-gray-700/50 p-8 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300 group">
+              <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-2xl flex items-center justify-center text-blue-500 mb-4 text-3xl group-hover:scale-110 transition-transform duration-300">
+                <FaGraduationCap />
+              </div>
+              <h3 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-2"><CountUp end={stats.girlsEducated} duration={2} />+</h3>
+              <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Girls Educated</p>
+            </div>
+            <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border border-white/20 dark:border-gray-700/50 p-8 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300 group">
+              <div className="w-16 h-16 bg-green-50 dark:bg-green-900/20 rounded-2xl flex items-center justify-center text-green-500 mb-4 text-3xl group-hover:scale-110 transition-transform duration-300">
+                <FaRocket />
+              </div>
+              <h3 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-2"><CountUp end={stats.workshops} duration={2} />+</h3>
+              <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Workshops Held</p>
+            </div>
+            <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border border-white/20 dark:border-gray-700/50 p-8 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex flex-col items-center text-center hover:-translate-y-2 transition-transform duration-300 group">
+              <div className="w-16 h-16 bg-purple-50 dark:bg-purple-900/20 rounded-2xl flex items-center justify-center text-purple-500 mb-4 text-3xl group-hover:scale-110 transition-transform duration-300">
+                <FaHandHoldingHeart />
+              </div>
+              <h3 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-2"><CountUp end={stats.communities} duration={2} />+</h3>
+              <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Communities</p>
+            </div>
           </div>
         </div>
-      </section>
 
-      {/* Modern Features Grid */}
-      <section className="py-20 bg-white dark:bg-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => {
-              const Icon = feature.icon
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="group p-8 rounded-3xl bg-gray-50 dark:bg-gray-800 hover:bg-orange-50 dark:hover:bg-gray-700/50 transition-colors duration-300 border border-transparent hover:border-orange-100 dark:hover:border-gray-600"
-                >
-                  <div className="w-14 h-14 bg-white dark:bg-gray-700 rounded-2xl flex items-center justify-center text-orange-500 dark:text-orange-400 text-2xl shadow-sm mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <Icon />
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">{feature.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
-                    {feature.description}
-                  </p>
-                  <Link href="/about" className="inline-flex items-center text-orange-600 dark:text-orange-400 font-semibold group-hover:gap-2 transition-all">
-                    Learn more <FaArrowRight className="ml-1 text-sm" />
-                  </Link>
-                </motion.div>
-              )
-            })}
-          </div>
+        <div className="container mx-auto px-4 mt-16 md:mt-24">
+          <motion.span
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="text-orange-500 font-bold tracking-wider uppercase text-sm"
+          >
+            Why Choose Us
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mt-2 mb-6"
+          >
+            Building a Future of Equal Opportunity
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed"
+          >
+            We provide a comprehensive ecosystem for women and girls to thrive. From education and mentorship to business funding and digital marketplaces.
+          </motion.p>
         </div>
-      </section>
+    </div>
+      </section >
 
-      {/* Sections for Different User Roles */}
-      <section className="py-20 bg-gray-900 text-white relative overflow-hidden">
+    {/* Modern Features Grid */ }
+    < section className = "py-20 bg-white dark:bg-gray-900" >
+      <div className="container mx-auto px-4">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {features.map((feature, index) => {
+            const Icon = feature.icon
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="group p-8 rounded-3xl bg-gray-50 dark:bg-gray-800 hover:bg-orange-50 dark:hover:bg-gray-700/50 transition-colors duration-300 border border-transparent hover:border-orange-100 dark:hover:border-gray-600"
+              >
+                <div className="w-14 h-14 bg-white dark:bg-gray-700 rounded-2xl flex items-center justify-center text-orange-500 dark:text-orange-400 text-2xl shadow-sm mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <Icon />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">{feature.title}</h3>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
+                  {feature.description}
+                </p>
+                <Link href="/about" className="inline-flex items-center text-orange-600 dark:text-orange-400 font-semibold group-hover:gap-2 transition-all">
+                  Learn more <FaArrowRight className="ml-1 text-sm" />
+                </Link>
+              </motion.div>
+            )
+          })}
+        </div>
+      </div>
+      </section >
+
+    {/* Sections for Different User Roles */ }
+    < section className = "py-20 bg-gray-900 text-white relative overflow-hidden" >
         <div className="absolute inset-0 opacity-10 bg-[url('/images/hero.jpg')] bg-cover bg-center fixed" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
@@ -378,10 +373,10 @@ export default function Home() {
             </motion.div>
           </div>
         </div>
-      </section>
+      </section >
 
-      {/* Quote/CTA with Parallax Feel */}
-      <section className="py-24 bg-gradient-to-r from-orange-500 to-red-500 text-white text-center relative overflow-hidden">
+    {/* Quote/CTA with Parallax Feel */ }
+    < section className = "py-24 bg-gradient-to-r from-orange-500 to-red-500 text-white text-center relative overflow-hidden" >
         <div className="absolute top-0 left-0 w-full h-full opacity-10">
           <svg className="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
             <path d="M0 100 C 20 0 50 0 100 100 Z" fill="white" />
@@ -401,7 +396,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-      </section>
-    </div>
+      </section >
+    </div >
   )
 }
