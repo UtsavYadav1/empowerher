@@ -6,7 +6,7 @@ import Link from 'next/link'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import { getCurrentUser } from '@/utils/auth'
 import { generateCertificate } from '@/utils/certificate'
-import { FaGraduationCap, FaBriefcase, FaBook, FaUserFriends, FaChartLine, FaComments, FaCalendar, FaCertificate, FaTrophy, FaRocket, FaAward, FaSync, FaPlay, FaCheckCircle, FaClock, FaStar, FaDownload, FaLightbulb } from 'react-icons/fa'
+import { FaGraduationCap, FaBriefcase, FaBook, FaUserFriends, FaChartLine, FaComments, FaCalendar, FaCertificate, FaTrophy, FaRocket, FaAward, FaSync, FaPlay, FaCheckCircle, FaClock, FaStar, FaDownload, FaLightbulb, FaSearch } from 'react-icons/fa'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
 interface Course {
