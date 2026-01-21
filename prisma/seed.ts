@@ -452,146 +452,83 @@ async function main() {
   // Seed Tutorials
   console.log('Seeding tutorials...')
   const tutorials = [
-    // Business & Entrepreneurship
+    // Business (Hindi)
     {
-      title: 'How to Start a Small Business - Complete Guide',
-      description: 'Learn the complete process of starting your own small business from scratch.',
-      youtubeId: 'Ibb5KE3GcVI',
-      duration: '18:25',
+      title: 'Business Planning 101 for Small Business (Hindi)',
+      description: 'Learn how to plan your business effectively in Hindi. Covers basics of entrepreneurship.',
       category: 'Business',
+      youtubeId: 'sI3x_4S74sU', // "How to Plan Your Business in Hindi"
+      duration: '15 min',
+      instructor: 'Bada Business',
     },
     {
-      title: 'Business Planning 101 for Small Business',
-      description: 'Create a solid business plan to secure funding and guide your growth.',
-      youtubeId: 'Fqch5OrUPvA', // Real placeholder ID (Business Plan)
-      duration: '15:10',
+      title: 'Shop Business Plan Strategy (Hindi)',
+      description: 'Complete guide to starting and managing a shop business in India.',
       category: 'Business',
-    },
-    {
-      title: 'Funding Your Small Business',
-      description: 'Explore different ways to raise capital for your startup or small business.',
-      youtubeId: 'i_Jd4PqWb5c',
-      duration: '12:45',
-      category: 'Business',
+      youtubeId: 'F_fKq25n67w', // "Business Plan in Hindi | Dukaan"
+      duration: '20 min',
+      instructor: 'Startup Hindi',
     },
 
-    // Marketing & Digital Skills
+    // Technology / Computer (Hindi)
     {
-      title: 'Social Media Marketing Basics',
-      description: 'Complete guide to marketing your business on social media platforms.',
-      youtubeId: 'qGpI1X5xJxo',
-      duration: '22:15',
-      category: 'Communication', // Mapping to 'Communication' or 'Technology'
-    },
-    {
-      title: 'Digital Marketing Course for Beginners',
-      description: 'Learn SEO, Email Marketing, and Social Media strategies.',
-      youtubeId: 'bIXR_C-lq60',
-      duration: '45:00',
+      title: 'Basic Computer Course for Beginners (Hindi)',
+      description: 'A complete guide to understanding computer basics, from hardware to software.',
       category: 'Technology',
+      youtubeId: '9_iM8d04U8w', // "Basic Computer Course in Hindi"
+      duration: '45 min',
+      instructor: 'Gyanyagya',
     },
     {
-      title: 'Canva for Beginners - Graphic Design',
-      description: 'Create beautiful graphics for your business using Canva.',
-      youtubeId: 'un50Bs4rqGc',
-      duration: '25:30',
+      title: 'Learn Office Automation (Hindi)',
+      description: 'Master essential office tools like Word and Excel in Hindi.',
+      category: 'Technology',
+      youtubeId: '0h62pT_3_3M', // "Basic computer course in Hindi"
+      duration: '50 min',
+      instructor: 'Learn More',
+    },
+
+    // Arts / Creative (Hindi)
+    {
+      title: 'Tailoring Guide: Salwar Cutting (Hindi)',
+      description: 'Step-by-step tutorial on cutting and stitching a Salwar suit.',
       category: 'Arts',
+      youtubeId: 'vKjQ6hdEGSc', // "Salwar cutting and stitching tutorial"
+      duration: '25 min',
+      instructor: 'Creative Fashion',
+    },
+    {
+      title: 'Beauty Parlor Course: Facial Theory (Hindi)',
+      description: 'Professional beauty parlor course covering facial techniques and theory.',
+      category: 'Arts',
+      youtubeId: 'v_R2XbB9898', // "Facial Theory Step By Step In Hindi"
+      duration: '30 min',
+      instructor: 'Beauty Experts',
     },
 
-    // Finance & Money Management
+    // Communication / Soft Skills (English - High Quality)
     {
-      title: 'Basic Accounting for Small Business',
-      description: 'Learn fundamental accounting principles and bookkeeping.',
-      youtubeId: 'aw2okpWUu30',
-      duration: '20:35',
-      category: 'Business',
-    },
-    {
-      title: 'Personal Finance 101',
-      description: 'Budgeting, saving, and investing for financial independence.',
-      youtubeId: 'PHe0bXAIuk0', // Placeholder
-      duration: '18:50',
-      category: 'Life Skills',
-    },
-    {
-      title: 'Understanding Government Loans & Schemes',
-      description: 'How to apply for MUDRA and other government business loans.',
-      youtubeId: 'X7d9c6YXgVw', // Placeholder
-      duration: '14:20',
-      category: 'Life Skills',
-    },
-
-    // Technology & Coding
-    {
-      title: 'Introduction to Computer Basics',
-      description: 'Learn the parts of a computer and how to use them effectively.',
-      youtubeId: '8j2p4qZ9M4o', // Placeholder
-      duration: '30:00',
-      category: 'Technology',
-    },
-    {
-      title: 'Python Programming for Beginners',
-      description: 'Start your coding journey with the most popular programming language.',
-      youtubeId: '_uQrJ0TkZlc',
-      duration: '1:00:00',
-      category: 'Technology',
-    },
-    {
-      title: 'Web Development Full Course - HTML, CSS, JS',
-      description: 'Build your own websites from scratch with this comprehensive guide.',
-      youtubeId: 'PlxWf493en4', // Placeholder
-      duration: '2:30:00',
-      category: 'Technology',
-    },
-
-    // Health & Wellness
-    {
-      title: 'Yoga for Beginners - 20 Minute Workout',
-      description: 'Simple yoga routine to stay fit and healthy at home.',
-      youtubeId: 'v7AYKMP6rOE',
-      duration: '20:00',
-      category: 'Health & Wellness',
-    },
-    {
-      title: 'Mental Health Awareness',
-      description: 'Understanding anxiety and stress management techniques.',
-      youtubeId: 'rkZl2gsLUp4',
-      duration: '15:45',
-      category: 'Health & Wellness',
-    },
-    {
-      title: 'Nutrition and Healthy Eating Habits',
-      description: 'Learn the basics of a balanced diet for a healthy lifestyle.',
-      youtubeId: 'Gmh_xMMJ2Pw',
-      duration: '12:30',
-      category: 'Health & Wellness',
-    },
-
-    // Communication & Soft Skills
-    {
-      title: 'Public Speaking Confidence',
-      description: 'How to speak confidently in public and present your ideas.',
-      youtubeId: 'i5mYphUoC8', // Placeholder
-      duration: '10:15',
+      title: 'Secrets of Great Public Speaking',
+      description: 'Learn the 7 secrets of the greatest speakers in history.',
       category: 'Communication',
+      youtubeId: '6gG_0_jS9W8', // "The 7 secrets of the greatest speakers in history"
+      duration: '18 min',
+      instructor: 'Richard Greene',
     },
     {
-      title: 'Effective Communication Skills',
-      description: 'Improve your listening and speaking skills for better relationships.',
-      youtubeId: 'HAnw168huqA',
-      duration: '16:40',
+      title: 'Mastering Confidence & Stage Presence',
+      description: 'Techniques to overcome stage fright and speak with confidence.',
       category: 'Communication',
-    },
-    {
-      title: 'Interview Preparation Guide',
-      description: 'Top tips to crack your next job interview.',
-      youtubeId: '1mHjMNZZvFo',
-      duration: '25:00',
-      category: 'Life Skills',
+      youtubeId: 'JQbHnUa82a0', // "We can help you master public speaking"
+      duration: '12 min',
+      instructor: 'Chris Anderson',
     }
   ]
+
   for (const tutorial of tutorials) {
-    await prisma.tutorial.create({ data: tutorial })
+    await prisma.tutorial.create({
+      data: tutorial,
+    })
   }
 
   // Seed Forum
