@@ -205,28 +205,28 @@ export default function Home() {
         {/* Floating Grid Container - Uses negative margin to pull up into Hero, keeping flow intact */}
         <div className="container mx-auto px-4 relative z-20 -mt-20 md:-mt-32">
           <div className="max-w-6xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.12)] hover:bg-orange-50/60 dark:hover:bg-gray-800 border border-gray-100 dark:border-gray-700/50 flex flex-col items-center text-center hover:-translate-y-2 transition-all duration-300 group">
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.12)] hover:bg-orange-100/40 dark:hover:bg-gray-800 border border-gray-100 dark:border-gray-700/50 flex flex-col items-center text-center hover:-translate-y-2 transition-all duration-300 group">
               <div className="w-16 h-16 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-900/40 rounded-2xl flex items-center justify-center text-orange-600 dark:text-orange-500 mb-6 text-3xl shadow-inner group-hover:scale-110 transition-transform duration-300">
                 <FaUsers />
               </div>
               <h3 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-2"><CountUp end={stats.womenEmpowered} duration={2} />+</h3>
               <p className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Women Empowered</p>
             </div>
-            <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.12)] hover:bg-blue-50/60 dark:hover:bg-gray-800 border border-gray-100 dark:border-gray-700/50 flex flex-col items-center text-center hover:-translate-y-2 transition-all duration-300 group">
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.12)] hover:bg-blue-100/40 dark:hover:bg-gray-800 border border-gray-100 dark:border-gray-700/50 flex flex-col items-center text-center hover:-translate-y-2 transition-all duration-300 group">
               <div className="w-16 h-16 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-900/40 rounded-2xl flex items-center justify-center text-blue-600 dark:text-blue-500 mb-6 text-3xl shadow-inner group-hover:scale-110 transition-transform duration-300">
                 <FaGraduationCap />
               </div>
               <h3 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-2"><CountUp end={stats.girlsEducated} duration={2} />+</h3>
               <p className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Girls Educated</p>
             </div>
-            <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.12)] hover:bg-green-50/60 dark:hover:bg-gray-800 border border-gray-100 dark:border-gray-700/50 flex flex-col items-center text-center hover:-translate-y-2 transition-all duration-300 group">
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.12)] hover:bg-green-100/40 dark:hover:bg-gray-800 border border-gray-100 dark:border-gray-700/50 flex flex-col items-center text-center hover:-translate-y-2 transition-all duration-300 group">
               <div className="w-16 h-16 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-900/40 rounded-2xl flex items-center justify-center text-green-600 dark:text-green-500 mb-6 text-3xl shadow-inner group-hover:scale-110 transition-transform duration-300">
                 <FaRocket />
               </div>
               <h3 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-2"><CountUp end={stats.workshops} duration={2} />+</h3>
               <p className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Workshops Held</p>
             </div>
-            <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.12)] hover:bg-purple-50/60 dark:hover:bg-gray-800 border border-gray-100 dark:border-gray-700/50 flex flex-col items-center text-center hover:-translate-y-2 transition-all duration-300 group">
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.12)] hover:bg-purple-100/40 dark:hover:bg-gray-800 border border-gray-100 dark:border-gray-700/50 flex flex-col items-center text-center hover:-translate-y-2 transition-all duration-300 group">
               <div className="w-16 h-16 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-900/40 rounded-2xl flex items-center justify-center text-purple-600 dark:text-purple-500 mb-6 text-3xl shadow-inner group-hover:scale-110 transition-transform duration-300">
                 <FaHandHoldingHeart />
               </div>
@@ -276,7 +276,7 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="group p-8 rounded-3xl bg-white dark:bg-gray-800 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-4px_rgba(0,0,0,0.1)] hover:-translate-y-2 hover:bg-orange-50/50 dark:hover:bg-gray-800 transition-all duration-300 border border-gray-100 hover:border-orange-100 dark:border-gray-700 dark:hover:border-gray-600"
+                  className="group p-8 rounded-3xl bg-white dark:bg-gray-800 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-4px_rgba(0,0,0,0.1)] hover:-translate-y-2 hover:bg-orange-100/40 dark:hover:bg-gray-800 transition-all duration-300 border border-gray-100 hover:border-orange-100 dark:border-gray-700 dark:hover:border-gray-600"
                 >
                   <div className="w-14 h-14 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600 rounded-2xl flex items-center justify-center text-orange-600 dark:text-orange-400 text-2xl shadow-inner mb-6 group-hover:scale-110 transition-transform duration-300">
                     <Icon />
