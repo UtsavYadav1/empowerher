@@ -42,7 +42,12 @@ export default function ForumPage() {
       const response = await fetch('/api/forum')
       const data = await response.json()
       if (data.success) {
-        const postsWithLikes = data.data.map((p: ForumPost) => ({ ...p, likes: Math.floor(Math.random() * 50) }))
+        // Deterministic likes based on Post ID
+        const postsWithLikes = data.data.map((p: ForumPost) => {
+          const seed = p.id * 789;
+          const deterministicLikes = Math.floor((Math.sin(seed) + 1) * 25); // 0 to 50
+          return { ...p, likes: deterministicLikes }
+        })
         setPosts(postsWithLikes)
       }
     } catch (error) {
@@ -98,7 +103,7 @@ export default function ForumPage() {
   }
 
   const handleLike = (postId: number) => {
-    setPosts(posts.map(p => 
+    setPosts(posts.map(p =>
       p.id === postId ? { ...p, likes: (p.likes || 0) + 1 } : p
     ))
   }
@@ -247,7 +252,7 @@ export default function ForumPage() {
                         </div>
                       </div>
                       <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed text-lg">{post.content}</p>
-                      
+
                       {/* Actions */}
                       <div className="flex items-center gap-4 mb-4">
                         <button

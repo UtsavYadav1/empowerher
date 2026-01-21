@@ -229,8 +229,8 @@ function GirlsSchemesContent() {
 
                     {/* Apply Button */}
                     {appliedSchemes.includes(scheme.id) ? (
-                      <button disabled className="btn-secondary w-full flex items-center justify-center gap-2 opacity-75">
-                        <FaCheckCircle /> Applied - Check Email for Updates
+                      <button disabled className="w-full py-2 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg flex items-center justify-center gap-2 font-bold border border-green-200 dark:border-green-800 cursor-default">
+                        <FaCheckCircle className="text-xl" /> Application Tracked
                       </button>
                     ) : (
                       <button

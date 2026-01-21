@@ -34,18 +34,31 @@ function FreeLearningCoursesContent() {
 
   const fetchCourses = async () => {
     try {
-      const response = await fetch('/api/courses')
+      // Use the real tutorials endpoint
+      const response = await fetch('/api/tutorials')
       const result = await response.json()
-      
+
       if (result.success) {
-        // Add additional course metadata
-        const enrichedCourses = result.data.map((course: any) => ({
-          ...course,
-          duration: `${Math.floor(Math.random() * 8) + 2} weeks`,
-          level: ['Beginner', 'Intermediate', 'Advanced'][Math.floor(Math.random() * 3)],
-          students: Math.floor(Math.random() * 500) + 50,
-          rating: (Math.random() * 1.5 + 3.5).toFixed(1),
-        }))
+        // Enrich with deterministic data based on ID
+        const enrichedCourses = result.data.map((course: any) => {
+          // Simple deterministic pseudo-random based on ID
+          const seed = course.id * 12345;
+          const random1 = (Math.sin(seed) * 10000 % 1);
+          const random2 = (Math.cos(seed) * 10000 % 1);
+
+          return {
+            ...course,
+            // Use DB duration or fallback
+            duration: course.duration || `${2 + Math.floor(random1 * 8)} weeks`,
+            level: ['Beginner', 'Intermediate', 'Advanced'][Math.floor(random2 * 3)],
+            // Deterministic student count (e.g. 50-550)
+            students: 50 + Math.floor(random1 * 500),
+            // Deterministic rating (3.5 - 5.0)
+            rating: (3.5 + (random2 * 1.5)).toFixed(1),
+            // Use YouTube thumbnail if available
+            thumbnail: course.youtubeId ? `https://img.youtube.com/vi/${course.youtubeId}/maxresdefault.jpg` : undefined
+          }
+        })
         setCourses(enrichedCourses)
       }
     } catch (error) {
@@ -59,7 +72,7 @@ function FreeLearningCoursesContent() {
     const matchesCategory = selectedCategory === 'All' || course.category === selectedCategory
     const matchesLevel = selectedLevel === 'All' || course.level === selectedLevel
     const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         course.description?.toLowerCase().includes(searchQuery.toLowerCase())
+      course.description?.toLowerCase().includes(searchQuery.toLowerCase())
     return matchesCategory && matchesLevel && matchesSearch
   })
 
@@ -228,7 +241,7 @@ function FreeLearningCoursesContent() {
                           {course.category}
                         </span>
                       </div>
-                      
+
                       <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                         {course.title}
                       </h3>
