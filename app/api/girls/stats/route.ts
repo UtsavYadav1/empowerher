@@ -8,27 +8,6 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
     const userIdQuery = searchParams.get('userId')
 
-    // In a real app we'd get this from session, but for now we rely on the query param
-    // or return default 0s if not provided, to avoid "random" data.
-    // However, the frontend currently calls this without args. 
-    // We will assume "0" for now if no userId is present to keep it clean.
-    // Ideally we should refactor auth to be server-side or pass userId.
-
-    // TEMPORARY FIX: Return 0s if no userId, OR if we want to mock "demo" data we could.
-    // The user specifically asked to fix "random" data, so 0 is better than random.
-    // But let's try to be helpful. If the user calls this from the dashboard, 
-    // maybe we can infer something? No.
-    // Let's just return 0s if no userId.
-
-    // To support the dashboard showing REAL data for the logged-in user,
-    // we need the userId. 
-    // Since we don't have easy session access here without headers/cookies setup, 
-    // and the client doesn't pass it yet, we will just return mock 0s for now 
-    // coupled with the `UserProfile` change which will display 0s.
-
-    // WAIT, I should try to support passed userId if I update the client to pass it.
-    // But `UserProfile` uses `getCurrentUser()` which is client side.
-
     let stats = {
       enrolled: 0,
       completed: 0,
@@ -39,10 +18,19 @@ export async function GET(request: NextRequest) {
     }
 
     let recentCourses: any[] = []
+    let chartData: any[] = [
+      { month: 'Aug', progress: 0 },
+      { month: 'Sep', progress: 0 },
+      { month: 'Oct', progress: 0 },
+      { month: 'Nov', progress: 0 },
+      { month: 'Dec', progress: 0 },
+      { month: 'Jan', progress: 0 },
+    ]
 
     if (userIdQuery) {
       const userId = parseInt(userIdQuery)
 
+      // Fetch Stats
       const completedCourses = await prisma.tutorialProgress.count({
         where: { userId, watched: true }
       })
@@ -51,7 +39,10 @@ export async function GET(request: NextRequest) {
         where: { userId, watched: false }
       })
 
-      // Certificates = Completed Courses (Proxy)
+      const schemesApplied = await prisma.userScheme.count({
+        where: { userId }
+      })
+
       const certificates = completedCourses
 
       stats = {
@@ -59,7 +50,7 @@ export async function GET(request: NextRequest) {
         completed: completedCourses,
         inProgress: inProgressCourses,
         notStarted: 0,
-        schemesApplied: 0, // Handled by localStorage on client
+        schemesApplied: schemesApplied,
         certificates: certificates,
       }
 
@@ -77,24 +68,57 @@ export async function GET(request: NextRequest) {
         id: p.tutorial.id,
         title: p.tutorial.title,
         category: p.tutorial.category,
-        progress: p.watched ? 100 : 50, // Simplified progress: 100 if watched, 50 if started
+        progress: p.watched ? 100 : 50,
         lastAccessed: p.updatedAt,
         image: p.tutorial.youtubeId ? `https://img.youtube.com/vi/${p.tutorial.youtubeId}/mqdefault.jpg` : null
       }))
+
+      // Calculate Chart Data dynamically
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      const currentMonth = new Date().getMonth()
+
+      const chartDataMap = new Map<string, number>()
+      // Initialize last 6 months
+      for (let i = 5; i >= 0; i--) {
+        const d = new Date()
+        d.setMonth(currentMonth - i)
+        // Handle negative months logic if needed, but JS Date handles setMonth(-1) correctly
+        const monthIndex = d.getMonth()
+        const monthName = months[monthIndex]
+        chartDataMap.set(monthName, 0)
+      }
+
+      // Aggregate progress
+      recentProgress.forEach((p: any) => {
+        const date = new Date(p.updatedAt)
+        const monthName = months[date.getMonth()]
+        if (chartDataMap.has(monthName)) {
+          const currentVal = chartDataMap.get(monthName) || 0
+          chartDataMap.set(monthName, currentVal + (p.watched ? 20 : 10))
+        }
+      })
+
+      // Aggregate schemes
+      const recentSchemes = await prisma.userScheme.findMany({
+        where: { userId },
+        orderBy: { appliedAt: 'desc' },
+        take: 20
+      })
+
+      recentSchemes.forEach((s: any) => {
+        const date = new Date(s.appliedAt)
+        const monthName = months[date.getMonth()]
+        if (chartDataMap.has(monthName)) {
+          const currentVal = chartDataMap.get(monthName) || 0
+          chartDataMap.set(monthName, currentVal + 30)
+        }
+      })
+
+      chartData = Array.from(chartDataMap.entries()).map(([month, progress]) => ({
+        month,
+        progress: Math.min(progress, 100)
+      }))
     }
-
-    // Generate chart data based on simplified logic
-    // If user has no activity, show flat line. If they have activity, show a simple progression.
-    const hasActivity = stats.enrolled > 0 || stats.completed > 0;
-
-    const chartData = [
-      { month: 'Aug', progress: 0 },
-      { month: 'Sep', progress: 0 },
-      { month: 'Oct', progress: 0 },
-      { month: 'Nov', progress: 0 },
-      { month: 'Dec', progress: hasActivity ? 30 : 0 },
-      { month: 'Jan', progress: hasActivity ? 60 : 0 }, // Simple jump if active
-    ]
 
     return NextResponse.json({
       success: true,

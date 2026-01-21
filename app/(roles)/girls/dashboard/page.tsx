@@ -52,7 +52,10 @@ function GirlsDashboardContent() {
   const fetchDashboardData = async () => {
     try {
       setRefreshing(true)
-      const response = await fetch('/api/girls/stats')
+      const user = JSON.parse(localStorage.getItem('user') || '{}')
+      const userId = user.id || 1 // Fallback to 1 for demo
+
+      const response = await fetch(`/api/girls/stats?userId=${userId}`)
       const result = await response.json()
 
       if (result.success) {

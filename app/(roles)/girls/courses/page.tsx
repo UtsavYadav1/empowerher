@@ -75,6 +75,28 @@ function FreeLearningCoursesContent() {
     return matchesCategory && matchesLevel && matchesSearch
   })
 
+  const handleVideoClick = async (course: Course) => {
+    if (course.youtubeId) {
+      setSelectedVideo(course.youtubeId)
+
+      // Track enrollment/progress
+      try {
+        const user = JSON.parse(localStorage.getItem('user') || '{}')
+        const userId = user.id || 1
+
+        await fetch('/api/tutorials/enroll', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tutorialId: course.id, userId })
+        })
+      } catch (err) {
+        console.error('Failed to track progress', err)
+      }
+    } else {
+      alert('Video coming soon!')
+    }
+  }
+
   // Dynamic Stats Calculation
   const totalStudents = courses.reduce((acc, curr) => acc + curr.students, 0)
   const totalCertificates = Math.floor(totalStudents * 0.6) // Assume 60% completion
@@ -230,7 +252,7 @@ function FreeLearningCoursesContent() {
                   >
                     {/* Course Thumbnail */}
                     <div className={`h-48 bg-gradient-to-br ${getCategoryColor(course.category)} relative group cursor-pointer`}
-                      onClick={() => course.youtubeId && setSelectedVideo(course.youtubeId)}>
+                      onClick={() => handleVideoClick(course)}>
                       {course.thumbnail ? (
                         <img
                           src={course.thumbnail}
@@ -287,7 +309,7 @@ function FreeLearningCoursesContent() {
 
                       {/* Watch Button */}
                       <button
-                        onClick={() => course.youtubeId ? setSelectedVideo(course.youtubeId) : alert('Video coming soon!')}
+                        onClick={() => handleVideoClick(course)}
                         className="btn-primary w-full flex items-center justify-center gap-2 mt-auto"
                       >
                         <FaPlay /> Start Learning

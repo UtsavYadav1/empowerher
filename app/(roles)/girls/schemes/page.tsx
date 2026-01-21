@@ -52,25 +52,40 @@ function GirlsSchemesContent() {
     }
   }
 
-  const handleApply = (schemeId: number, applyUrl?: string) => {
+  const handleApply = async (schemeId: number, applyUrl?: string) => {
     if (!appliedSchemes.includes(schemeId)) {
-      // Add to applied schemes
-      setAppliedSchemes([...appliedSchemes, schemeId])
+      try {
+        const user = JSON.parse(localStorage.getItem('user') || '{}')
+        const userId = user.id || 1 // Fallback to 1 for demo if no auth
 
-      // Save to localStorage for persistence
-      const applied = JSON.parse(localStorage.getItem('appliedSchemes') || '[]')
-      applied.push(schemeId)
-      localStorage.setItem('appliedSchemes', JSON.stringify(applied))
+        // Call API to register application
+        await fetch('/api/schemes/apply', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ schemeId, userId })
+        })
 
-      // Open official application website if URL exists
-      if (applyUrl) {
-        window.open(applyUrl, '_blank', 'noopener,noreferrer')
-      } else {
-        // Default government scheme portal
-        window.open('https://www.india.gov.in/scheme-women', '_blank', 'noopener,noreferrer')
+        // Add to applied schemes (optimistic update)
+        setAppliedSchemes([...appliedSchemes, schemeId])
+
+        // Save to localStorage for persistence (fallback)
+        const applied = JSON.parse(localStorage.getItem('appliedSchemes') || '[]')
+        applied.push(schemeId)
+        localStorage.setItem('appliedSchemes', JSON.stringify(applied))
+
+        // Open official application website if URL exists
+        if (applyUrl) {
+          window.open(applyUrl, '_blank', 'noopener,noreferrer')
+        } else {
+          // Default government scheme portal
+          window.open('https://www.india.gov.in/scheme-women', '_blank', 'noopener,noreferrer')
+        }
+
+        alert('Application registered! You can track it on your dashboard.')
+      } catch (error) {
+        console.error('Failed to apply', error)
+        alert('Something went wrong. Please try again.')
       }
-
-      alert('Redirecting to official application portal. Your application status will be tracked here.')
     }
   }
 
