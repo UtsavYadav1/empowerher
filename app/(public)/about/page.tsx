@@ -132,15 +132,15 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
-              className="bg-white dark:bg-gray-800 border-b-4 border-orange-500 p-6 rounded-2xl shadow-2xl text-center hover:-translate-y-2 transition-all duration-300 group z-30 relative"
+              className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 p-8 rounded-3xl shadow-[0_10px_30px_-5px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_40px_-5px_rgba(0,0,0,0.1)] text-center hover:-translate-y-2 transition-all duration-300 group z-30 relative"
             >
-              <div className="w-12 h-12 mx-auto bg-orange-100 dark:bg-orange-900/50 rounded-full flex items-center justify-center text-orange-600 dark:text-orange-400 text-xl mb-4 group-hover:scale-110 transition-transform">
+              <div className="w-14 h-14 mx-auto bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/40 dark:to-orange-900/60 rounded-full flex items-center justify-center text-orange-600 dark:text-orange-400 text-xl mb-4 group-hover:scale-110 shadow-inner transition-transform">
                 <stat.icon />
               </div>
-              <h3 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-1">
+              <h3 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-2">
                 <CountUp end={stat.value} duration={2.5} separator="," />{stat.suffix}
               </h3>
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider">{stat.label}</p>
+              <p className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{stat.label}</p>
             </motion.div>
           ))}
         </div>
@@ -211,10 +211,10 @@ export default function AboutPage() {
                 className={`flex flex-col md:flex-row items-center justify-between mb-12 ${idx % 2 === 0 ? '' : 'md:flex-row-reverse'}`}
               >
                 <div className="w-full md:w-5/12 mb-6 md:mb-0">
-                  <div className={`p-6 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-shadow ${idx % 2 === 0 ? 'text-right' : 'text-left'}`}>
-                    <span className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-orange-500 to-pink-500 mb-2 block">{item.year}</span>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{item.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-400">{item.desc}</p>
+                  <div className={`p-8 rounded-3xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)] hover:shadow-xl transition-all hover:-translate-y-1 ${idx % 2 === 0 ? 'text-right' : 'text-left'}`}>
+                    <span className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-br from-orange-500 to-pink-500 mb-2 block">{item.year}</span>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{item.title}</h3>
+                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
 
@@ -260,10 +260,10 @@ export default function AboutPage() {
                   className="object-cover"
                 />
               </div>
-              <div className="p-6 text-center">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{member.name}</h3>
-                <p className="text-orange-500 font-medium mb-3">{member.role}</p>
-                <p className="text-gray-600 dark:text-gray-400 text-sm">
+              <div className="p-8 text-center border-t border-gray-50 dark:border-gray-700">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1 group-hover:text-orange-500 transition-colors">{member.name}</h3>
+                <p className="text-orange-500 font-semibold mb-4 text-sm tracking-wide uppercase">{member.role}</p>
+                <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
                   {member.description}
                 </p>
               </div>
