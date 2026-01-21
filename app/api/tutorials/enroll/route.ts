@@ -6,7 +6,7 @@ const prisma = new PrismaClient()
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json()
-        const { tutorialId, userId } = body
+        const { tutorialId, userId, watched } = body
 
         if (!tutorialId || !userId) {
             return NextResponse.json(
@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // Upsert to ensure record exists. Use watched: false if creating.
+        // Upsert to ensure record exists. Update watched if provided.
         const progress = await prisma.tutorialProgress.upsert({
             where: {
                 tutorialId_userId: {
@@ -24,12 +24,13 @@ export async function POST(request: NextRequest) {
                 }
             },
             update: {
-                updatedAt: new Date() // Update timestamp to show as "recent"
+                updatedAt: new Date(),
+                watched: watched !== undefined ? watched : undefined
             },
             create: {
                 tutorialId: parseInt(tutorialId),
                 userId: parseInt(userId),
-                watched: false
+                watched: watched || false
             }
         })
 

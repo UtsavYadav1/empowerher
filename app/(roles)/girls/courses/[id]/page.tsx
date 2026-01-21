@@ -58,13 +58,31 @@ function CourseDetailContent() {
     }
   }
 
-  const handleModuleComplete = (moduleId: number) => {
+  const handleModuleComplete = async (moduleId: number) => {
     if (!completedModules.includes(moduleId)) {
       const newCompleted = [...completedModules, moduleId]
       setCompletedModules(newCompleted)
 
       const newProgress = Math.round((newCompleted.length / 3) * 100)
       setCurrentProgress(newProgress)
+
+      // Update in DB
+      try {
+        const user = JSON.parse(localStorage.getItem('user') || '{}')
+        const userId = user.id || 1
+
+        await fetch('/api/tutorials/enroll', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            tutorialId: courseId,
+            userId,
+            watched: newProgress === 100
+          })
+        })
+      } catch (err) {
+        console.error("Failed to update progress", err)
+      }
 
       if (moduleId === 1) {
         setPlayingVideo(true)
@@ -85,9 +103,17 @@ function CourseDetailContent() {
   }
 
   const handleGetCertificate = () => {
-    const user = JSON.parse(localStorage.getItem('user') || '{}')
-    generateCertificate(user.name || 'Student', course.title)
-    setShowCertificateModal(false)
+    try {
+      const user = JSON.parse(localStorage.getItem('user') || '{}')
+      // Use user.name, fall back to 'Valued Student' only if absolutely necessary.
+      // Also title case the name for better appearance if it's lowercase
+      const userName = user.name || 'Valued Student';
+      generateCertificate(userName, course.title)
+      setShowCertificateModal(false)
+    } catch (e) {
+      console.error("Error generating certificate", e)
+      generateCertificate('Student', course.title)
+    }
   }
 
   if (loading) return <div className="p-20 text-center">Loading course...</div>
@@ -207,8 +233,8 @@ function CourseDetailContent() {
                     <div
                       key={module.id}
                       className={`p-4 rounded-lg border-2 transition-all ${completedModules.includes(module.id)
-                          ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
-                          : 'border-gray-200 dark:border-gray-700 hover:border-primary-300'
+                        ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
+                        : 'border-gray-200 dark:border-gray-700 hover:border-primary-300'
                         }`}
                     >
                       <div className="flex items-center justify-between">

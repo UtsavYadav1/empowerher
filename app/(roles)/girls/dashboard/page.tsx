@@ -313,9 +313,14 @@ function GirlsDashboardContent() {
             animate={{ opacity: 1, x: 0 }}
             className="card bg-white dark:bg-gray-800"
           >
-            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2 text-gray-900 dark:text-white">
-              <FaBook className="text-primary-600" /> Recent Courses
-            </h2>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold flex items-center gap-2 text-gray-900 dark:text-white">
+                <FaBook className="text-primary-600" /> Recent Courses
+              </h2>
+              <Link href="/girls/courses" className="text-sm font-semibold text-primary-600 hover:text-primary-700 dark:text-primary-400">
+                View All Courses →
+              </Link>
+            </div>
             <div className="space-y-4 max-h-[400px] overflow-y-auto custom-scrollbar">
               {loading ? (
                 <div className="text-center py-12 text-gray-500">Loading courses...</div>
