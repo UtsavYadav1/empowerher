@@ -61,7 +61,7 @@ export default function AboutPage() {
     { label: 'Lives Impacted', value: 0, suffix: '+', icon: FaUsers },
     { label: 'Villages Reached', value: 0, suffix: '+', icon: FaChartLine },
     { label: 'Workshops Held', value: 0, suffix: '+', icon: FaGraduationCap },
-    { label: 'Growth Rate', value: 0, suffix: '%', icon: FaRocket },
+    { label: 'Active Volunteers', value: 0, suffix: '+', icon: FaHandHoldingHeart },
   ])
 
   useEffect(() => {
@@ -73,9 +73,9 @@ export default function AboutPage() {
         if (data.success) {
           setStats([
             { label: 'Lives Impacted', value: data.data.womenEmpowered + data.data.girlsEducated, suffix: '+', icon: FaUsers },
-            { label: 'Villages Reached', value: data.data.communities, suffix: '+', icon: FaChartLine },
+            { label: 'Villages Reached', value: 15, suffix: '+', icon: FaChartLine },
             { label: 'Workshops Held', value: data.data.workshops, suffix: '+', icon: FaGraduationCap },
-            { label: 'Growth Rate', value: 300, suffix: '%', icon: FaRocket },
+            { label: 'Active Volunteers', value: 50, suffix: '+', icon: FaHandHoldingHeart },
           ])
         }
       } catch (e) {
@@ -132,7 +132,7 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
-              className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 p-8 rounded-3xl shadow-[0_10px_30px_-5px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_40px_-5px_rgba(0,0,0,0.1)] text-center hover:-translate-y-2 transition-all duration-300 group z-30 relative"
+              className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 p-8 rounded-3xl shadow-[0_10px_30px_-5px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_40px_-5px_rgba(0,0,0,0.1)] hover:bg-orange-50/60 dark:hover:bg-gray-800 text-center hover:-translate-y-2 transition-all duration-300 group z-30 relative"
             >
               <div className="w-14 h-14 mx-auto bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/40 dark:to-orange-900/60 rounded-full flex items-center justify-center text-orange-600 dark:text-orange-400 text-xl mb-4 group-hover:scale-110 shadow-inner transition-transform">
                 <stat.icon />
@@ -211,7 +211,7 @@ export default function AboutPage() {
                 className={`flex flex-col md:flex-row items-center justify-between mb-12 ${idx % 2 === 0 ? '' : 'md:flex-row-reverse'}`}
               >
                 <div className="w-full md:w-5/12 mb-6 md:mb-0">
-                  <div className={`p-8 rounded-3xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)] hover:shadow-xl transition-all hover:-translate-y-1 ${idx % 2 === 0 ? 'text-right' : 'text-left'}`}>
+                  <div className={`p-8 rounded-3xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)] hover:shadow-xl hover:bg-orange-50/60 dark:hover:bg-gray-800 transition-all hover:-translate-y-1 ${idx % 2 === 0 ? 'text-right' : 'text-left'}`}>
                     <span className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-br from-orange-500 to-pink-500 mb-2 block">{item.year}</span>
                     <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{item.title}</h3>
                     <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{item.desc}</p>
@@ -250,7 +250,7 @@ export default function AboutPage() {
               whileHover={{ y: -10 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
-              className="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
+              className="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl hover:bg-orange-50/60 dark:hover:bg-gray-800 transition-all duration-300"
             >
               <div className="relative h-64 w-full">
                 <Image
