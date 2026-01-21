@@ -66,6 +66,7 @@ function CareerGuidanceContent() {
   const [searchQuery, setSearchQuery] = useState('')
 
   // Career Paths Data
+  // Career Paths Data (Keep existing static data as it's informational)
   const careerPaths: CareerPath[] = [
     {
       id: 1,
@@ -79,6 +80,7 @@ function CareerGuidanceContent() {
       jobOpenings: 'High',
       trending: true,
     },
+    // ... (Keep other paths or add more if needed)
     {
       id: 2,
       title: 'Data Scientist',
@@ -142,99 +144,69 @@ function CareerGuidanceContent() {
   ]
 
   // Mentors Data
-  const mentors: Mentor[] = [
-    {
-      id: 1,
-      name: 'Priya Sharma',
-      role: 'Senior Software Engineer',
-      company: 'Google',
-      expertise: ['Software Development', 'Career Growth', 'Interview Prep'],
-      experience: '8 years',
-      rating: 4.9,
-      sessions: 156,
-      available: true,
-      image: '/avatars/mentor1.jpg',
-    },
-    {
-      id: 2,
-      name: 'Anjali Verma',
-      role: 'Product Manager',
-      company: 'Microsoft',
-      expertise: ['Product Management', 'Leadership', 'Strategy'],
-      experience: '10 years',
-      rating: 4.8,
-      sessions: 203,
-      available: true,
-      image: '/avatars/mentor2.jpg',
-    },
-    {
-      id: 3,
-      name: 'Neha Kapoor',
-      role: 'Data Scientist',
-      company: 'Amazon',
-      expertise: ['Data Science', 'Machine Learning', 'Analytics'],
-      experience: '6 years',
-      rating: 4.9,
-      sessions: 124,
-      available: false,
-      image: '/avatars/mentor3.jpg',
-    },
-    {
-      id: 4,
-      name: 'Kavita Singh',
-      role: 'UX Design Lead',
-      company: 'Adobe',
-      expertise: ['UX Design', 'User Research', 'Portfolio Building'],
-      experience: '7 years',
-      rating: 4.7,
-      sessions: 89,
-      available: true,
-      image: '/avatars/mentor4.jpg',
-    },
-  ]
+  // Fetch sessions for Mentorship instead of static mentors
+  const [sessions, setSessions] = useState<any[]>([])
+
+  useEffect(() => {
+    fetchSessions()
+  }, [])
+
+  const fetchSessions = async () => {
+    try {
+      // Fetch events with type=session
+      const res = await fetch('/api/events?type=session')
+      const data = await res.json()
+      if (data.success) {
+        setSessions(data.data)
+      }
+    } catch (e) {
+      console.error('Error fetching mentorship sessions', e)
+    }
+  }
 
   // Resources Data
+  // Resources Data - Real Links
   const resources: Resource[] = [
     {
       id: 1,
-      title: 'Career Aptitude Assessment',
-      description: 'Discover your strengths and ideal career paths through our AI-powered assessment',
-      link: '#',
-      category: 'Assessment',
+      title: 'National Career Service',
+      description: 'Career counselling, job matching, and skill assessments by Govt of India',
+      link: 'https://www.ncs.gov.in/',
+      category: 'Government',
       icon: 'clipboard',
       popular: true,
     },
     {
       id: 2,
-      title: 'Resume Builder Pro',
-      description: 'Create professional ATS-friendly resumes with our advanced builder tool',
-      link: '#',
+      title: 'Resume Builder (Canva)',
+      description: 'Create professional resumes for free with beautiful templates',
+      link: 'https://www.canva.com/resumes/templates/',
       category: 'Tools',
       icon: 'file',
       popular: true,
     },
     {
       id: 3,
-      title: 'Mock Interview Simulator',
-      description: 'Practice interviews with AI and get real-time feedback on your performance',
-      link: '#',
+      title: 'Interview Preparation (Pramp)',
+      description: 'Free mock interviews with peers and experts',
+      link: 'https://www.pramp.com/',
       category: 'Practice',
       icon: 'microphone',
       popular: true,
     },
     {
       id: 4,
-      title: 'Skill Gap Analysis',
-      description: 'Identify missing skills for your dream job and get personalized learning paths',
-      link: '#',
-      category: 'Assessment',
+      title: 'Skill India Digital',
+      description: 'Discover courses and certifications to boost your employability',
+      link: 'https://www.skillindiadigital.gov.in/',
+      category: 'Learning',
       icon: 'chart',
       popular: false,
     },
     {
       id: 5,
-      title: 'Government Scholarships Portal',
-      description: 'Access 500+ scholarships and financial aid programs for women',
+      title: 'Government Scholarships',
+      description: 'Access 500+ scholarships and financial aid programs',
       link: 'https://scholarships.gov.in/',
       category: 'Scholarships',
       icon: 'graduation',
@@ -242,8 +214,8 @@ function CareerGuidanceContent() {
     },
     {
       id: 6,
-      title: 'Free Coding Bootcamp',
-      description: 'Learn programming from scratch with interactive lessons and projects',
+      title: 'freeCodeCamp',
+      description: 'Learn to code for free - Web Design, JS, Python & more',
       link: 'https://www.freecodecamp.org/',
       category: 'Learning',
       icon: 'code',
@@ -251,55 +223,84 @@ function CareerGuidanceContent() {
     },
     {
       id: 7,
-      title: 'Industry Expert Webinars',
-      description: 'Join live sessions with industry leaders sharing career insights',
-      link: '#',
+      title: 'LinkedIn Learning',
+      description: 'Expert-led courses for every step of your career',
+      link: 'https://www.linkedin.com/learning/',
       category: 'Learning',
       icon: 'video',
       popular: false,
     },
     {
       id: 8,
-      title: 'Job Market Trends 2025',
-      description: 'Stay updated with latest hiring trends and in-demand skills',
-      link: '#',
+      title: 'Naukri FastForward',
+      description: 'Resume writing services and career booster tools',
+      link: 'https://resume.naukri.com/',
       category: 'Resources',
       icon: 'trending',
       popular: false,
     },
   ]
 
-  const handleBookSession = (mentorName: string) => {
-    alert(`Booking request sent to ${mentorName}! They will contact you shortly via email.`)
+  const handleJoinSession = (url?: string) => {
+    if (url) window.open(url, '_blank')
+    else alert('Session details will be sent to your email.')
   }
 
   // Assessments
-  const assessments: Assessment[] = [
+  // Quiz State
+  const [currentQuestion, setCurrentQuestion] = useState(0)
+  const [quizScore, setQuizScore] = useState<Record<string, number>>({})
+  const [quizResult, setQuizResult] = useState<CareerPath | null>(null)
+
+  const quizQuestions = [
     {
-      id: 1,
-      title: 'Career Personality Assessment',
-      description: 'Discover your work personality type and matching careers',
-      duration: '15 min',
-      questions: 50,
-      completed: false,
+      q: "What do you enjoy doing most in your free time?", options: [
+        { text: "Solving puzzles or coding", type: "Technology" },
+        { text: "Drawing, painting, or designing", type: "Design" },
+        { text: "Writing stories or blogs", type: "Creative" },
+        { text: "Analyzing trends or managing money", type: "Business" }
+      ]
     },
     {
-      id: 2,
-      title: 'Skills Proficiency Test',
-      description: 'Evaluate your current skill levels across different domains',
-      duration: '20 min',
-      questions: 40,
-      completed: true,
+      q: "Which subject did you like most in school?", options: [
+        { text: "Computer Science / Math", type: "Technology" },
+        { text: "Art / Geography", type: "Design" },
+        { text: "English / Literature", type: "Creative" },
+        { text: "Economics / Business Studies", type: "Business" }
+      ]
     },
     {
-      id: 3,
-      title: 'Interest Inventory',
-      description: 'Find careers aligned with your interests and passions',
-      duration: '10 min',
-      questions: 30,
-      completed: false,
-    },
+      q: "What kind of work environment do you prefer?", options: [
+        { text: "Quiet, focused technical work", type: "Technology" },
+        { text: "Creative studio or collaborative space", type: "Design" },
+        { text: "Media house or publishing", type: "Creative" },
+        { text: "Corporate office or meeting rooms", type: "Business" }
+      ]
+    }
   ]
+
+  const handleQuizAnswer = (type: string) => {
+    setQuizScore(prev => ({ ...prev, [type]: (prev[type] || 0) + 1 }))
+    if (currentQuestion < quizQuestions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1)
+    } else {
+      finishQuiz()
+    }
+  }
+
+  const finishQuiz = () => {
+    // Find highest score type
+    const topType = Object.entries(quizScore).sort((a, b) => b[1] - a[1])[0]?.[0] || 'Technology'
+    const recommended = careerPaths.find(p => p.category === topType) || careerPaths[0]
+    setQuizResult(recommended)
+  }
+
+  const resetQuiz = () => {
+    setCurrentQuestion(0)
+    setQuizScore({})
+    setQuizResult(null)
+    setShowAssessmentModal(false)
+  }
 
   useEffect(() => {
     // Simulate loading
@@ -717,207 +718,243 @@ function CareerGuidanceContent() {
                         </div>
                       </div>
 
-                      <button
-                        disabled={!mentor.available}
-                        onClick={() => handleBookSession(mentor.name)}
-                        className={`w-full flex items-center justify-center gap-2 ${mentor.available
-                          ? 'btn-primary'
-                          : 'btn-secondary opacity-50 cursor-not-allowed'
-                          }`}
-                      >
-                        <FaCalendarAlt /> {mentor.available ? 'Book Session' : 'Not Available'}
-                      </button>
+                      <FaCalendarAlt /> {mentor.available ? 'Book Session' : 'Not Available'}
+                    </button>
                     </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-            )}
+            ))}
 
-            {selectedTab === 'resources' && (
+            {sessions.map((session, idx) => (
               <motion.div
-                key="resources"
+                key={session.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
+                transition={{ delay: idx * 0.1 }}
+                className="card bg-white dark:bg-gray-800 hover:shadow-xl"
               >
-                <div className="mb-6">
-                  <h2 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">Career Development Resources</h2>
-                  <p className="text-gray-600 dark:text-gray-400">Tools, courses, and materials to accelerate your career growth</p>
-                </div>
-
-                <div className="grid md:grid-cols-3 gap-6">
-                  {resources.map((resource, idx) => {
-                    const IconComponent = resource.icon === 'clipboard' ? FaFileAlt :
-                      resource.icon === 'file' ? FaFileAlt :
-                        resource.icon === 'microphone' ? FaMicrophone :
-                          resource.icon === 'chart' ? FaChartLine :
-                            resource.icon === 'graduation' ? FaGraduationCap :
-                              resource.icon === 'code' ? FaBook :
-                                resource.icon === 'video' ? FaVideo :
-                                  FaLightbulb
-
-                    return (
-                      <motion.div
-                        key={resource.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: idx * 0.05 }}
-                        whileHover={{ scale: 1.05 }}
-                        className="card bg-white dark:bg-gray-800 hover:shadow-2xl relative"
-                      >
-                        {resource.popular && (
-                          <span className="absolute top-4 right-4 text-xs px-2 py-1 bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300 rounded-full font-semibold flex items-center gap-1">
-                            <FaStar /> Popular
-                          </span>
-                        )}
-
-                        <div className="mb-4">
-                          <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-4">
-                            <IconComponent className="text-3xl text-white" />
-                          </div>
-                          <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">{resource.title}</h3>
-                          <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">{resource.description}</p>
-                          <span className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded">
-                            {resource.category}
-                          </span>
-                        </div>
-
-                        <a
-                          href={resource.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn-primary w-full flex items-center justify-center gap-2"
-                          onClick={(e) => {
-                            if (resource.link === '#') {
-                              e.preventDefault()
-                              alert('This feature is coming soon!')
-                            }
-                          }}
-                        >
-                          <FaExternalLinkAlt /> Access Now
-                        </a>
-                      </motion.div>
-                    )
-                  })}
-                </div>
-              </motion.div>
-            )}
-
-            {selectedTab === 'assessments' && (
-              <motion.div
-                key="assessments"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="mb-6">
-                  <h2 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">Career Assessments</h2>
-                  <p className="text-gray-600 dark:text-gray-400">Discover your strengths and find the perfect career match</p>
-                </div>
-
-                <div className="grid md:grid-cols-3 gap-6">
-                  {assessments.map((assessment, idx) => (
-                    <motion.div
-                      key={assessment.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: idx * 0.1 }}
-                      whileHover={{ scale: 1.02 }}
-                      className="card bg-white dark:bg-gray-800 hover:shadow-2xl"
-                    >
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
-                          <FaFileAlt className="text-2xl text-white" />
-                        </div>
-                        {assessment.completed && (
-                          <span className="text-xs px-2 py-1 bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300 rounded-full flex items-center gap-1">
-                            <FaCheckCircle /> Completed
-                          </span>
-                        )}
-                      </div>
-
-                      <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">{assessment.title}</h3>
-                      <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">{assessment.description}</p>
-
-                      <div className="flex items-center gap-4 mb-4 text-sm text-gray-600 dark:text-gray-400">
-                        <div className="flex items-center gap-1">
-                          <FaClock />
-                          <span>{assessment.duration}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <FaFileAlt />
-                          <span>{assessment.questions} questions</span>
-                        </div>
-                      </div>
-
-                      <button
-                        onClick={() => startAssessment(assessment)}
-                        className={assessment.completed ? 'btn-secondary w-full' : 'btn-primary w-full flex items-center justify-center gap-2'}
-                      >
-                        {assessment.completed ? (
-                          <>View Results</>
-                        ) : (
-                          <>
-                            <FaPlay /> Start Assessment
-                          </>
-                        )}
-                      </button>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Assessment Modal */}
-          {showAssessmentModal && selectedAssessment && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="card max-w-lg w-full bg-white dark:bg-gray-800"
-              >
-                <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">{selectedAssessment.title}</h2>
-                <p className="text-gray-600 dark:text-gray-400 mb-6">{selectedAssessment.description}</p>
-
-                <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-4 rounded-lg mb-6">
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div>
-                      <span className="text-gray-500 dark:text-gray-400">Duration:</span>
-                      <p className="font-bold text-gray-900 dark:text-white">{selectedAssessment.duration}</p>
-                    </div>
-                    <div>
-                      <span className="text-gray-500 dark:text-gray-400">Questions:</span>
-                      <p className="font-bold text-gray-900 dark:text-white">{selectedAssessment.questions}</p>
-                    </div>
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-300 text-2xl">
+                    <FaVideo />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">{session.title}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{session.organizer}</p>
+                    <span className="text-xs px-2 py-1 bg-blue-50 text-blue-700 rounded-full">
+                      Upcoming Session
+                    </span>
                   </div>
                 </div>
-
-                <div className="flex gap-4">
-                  <button
-                    onClick={() => {
-                      setShowAssessmentModal(false)
-                      alert('Assessment started! This is a demo - full assessment coming soon.')
-                    }}
-                    className="btn-primary flex-1 flex items-center justify-center gap-2"
-                  >
-                    <FaPlay /> Begin Assessment
-                  </button>
-                  <button
-                    onClick={() => setShowAssessmentModal(false)}
-                    className="btn-secondary flex-1"
-                  >
-                    Cancel
-                  </button>
+                <p className="text-gray-700 dark:text-gray-300 mb-4 text-sm">{session.description}</p>
+                <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
+                  <span className="flex items-center gap-1"><FaCalendarAlt /> {new Date(session.date).toLocaleDateString()}</span>
+                  <span className="flex items-center gap-1"><FaUserTie /> {session.category}</span>
                 </div>
+                <button
+                  onClick={() => handleJoinSession(session.applyUrl)}
+                  className="btn-primary w-full flex items-center justify-center gap-2"
+                >
+                  <FaExternalLinkAlt /> Join Session
+                </button>
               </motion.div>
-            </div>
-          )}
+            ))}
+
+            {sessions.length === 0 && (
+              <div className="col-span-full text-center py-12 bg-white dark:bg-gray-800 rounded-xl">
+                <FaUserTie className="text-5xl text-gray-300 mx-auto mb-4" />
+                <p className="text-lg text-gray-600 mb-4">No specific mentor sessions scheduled right now.</p>
+                <button onClick={() => alert('Request sent! An admin will contact you.')} className="btn-secondary">
+                  Request Specific Guidance
+                </button>
+              </div>
+            )}
+          </div>
         </motion.div>
-      </div>
-    </div>
+            )}
+
+        {selectedTab === 'resources' && (
+          <motion.div
+            key="resources"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="mb-6">
+              <h2 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">Career Development Resources</h2>
+              <p className="text-gray-600 dark:text-gray-400">Tools, courses, and materials to accelerate your career growth</p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {resources.map((resource, idx) => {
+                const IconComponent = resource.icon === 'clipboard' ? FaFileAlt :
+                  resource.icon === 'file' ? FaFileAlt :
+                    resource.icon === 'microphone' ? FaMicrophone :
+                      resource.icon === 'chart' ? FaChartLine :
+                        resource.icon === 'graduation' ? FaGraduationCap :
+                          resource.icon === 'code' ? FaBook :
+                            resource.icon === 'video' ? FaVideo :
+                              FaLightbulb
+
+                return (
+                  <motion.div
+                    key={resource.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.05 }}
+                    whileHover={{ scale: 1.05 }}
+                    className="card bg-white dark:bg-gray-800 hover:shadow-2xl relative"
+                  >
+                    {resource.popular && (
+                      <span className="absolute top-4 right-4 text-xs px-2 py-1 bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300 rounded-full font-semibold flex items-center gap-1">
+                        <FaStar /> Popular
+                      </span>
+                    )}
+
+                    <div className="mb-4">
+                      <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-4">
+                        <IconComponent className="text-3xl text-white" />
+                      </div>
+                      <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">{resource.title}</h3>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">{resource.description}</p>
+                      <span className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded">
+                        {resource.category}
+                      </span>
+                    </div>
+
+                    <a
+                      href={resource.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-primary w-full flex items-center justify-center gap-2"
+                      onClick={(e) => {
+                        if (resource.link === '#') {
+                          e.preventDefault()
+                          alert('This feature is coming soon!')
+                        }
+                      }}
+                    >
+                      <FaExternalLinkAlt /> Access Now
+                    </a>
+                  </motion.div>
+                )
+              })}
+            </div>
+          </motion.div>
+        )}
+
+        {selectedTab === 'assessments' && (
+          <motion.div
+            key="assessments"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="mb-6">
+              <h2 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">Career Assessments</h2>
+              <p className="text-gray-600 dark:text-gray-400">Discover your strengths and find the perfect career match</p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {assessments.map((assessment, idx) => (
+                <motion.div
+                  key={assessment.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.1 }}
+                  whileHover={{ scale: 1.02 }}
+                  className="card bg-white dark:bg-gray-800 hover:shadow-2xl"
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                      <FaFileAlt className="text-2xl text-white" />
+                    </div>
+                    {assessment.completed && (
+                      <span className="text-xs px-2 py-1 bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300 rounded-full flex items-center gap-1">
+                        <FaCheckCircle /> Completed
+                      </span>
+                    )}
+                  </div>
+
+                  <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">{assessment.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">{assessment.description}</p>
+
+                  <div className="flex items-center gap-4 mb-4 text-sm text-gray-600 dark:text-gray-400">
+                    <div className="flex items-center gap-1">
+                      <FaClock />
+                      <span>{assessment.duration}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <FaFileAlt />
+                      <span>{assessment.questions} questions</span>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => startAssessment(assessment)}
+                    className={assessment.completed ? 'btn-secondary w-full' : 'btn-primary w-full flex items-center justify-center gap-2'}
+                  >
+                    {assessment.completed ? (
+                      <>View Results</>
+                    ) : (
+                      <>
+                        <FaPlay /> Start Assessment
+                      </>
+                    )}
+                  </button>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Assessment Modal */}
+      {showAssessmentModal && selectedAssessment && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="card max-w-lg w-full bg-white dark:bg-gray-800"
+          >
+            <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">{selectedAssessment.title}</h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">{selectedAssessment.description}</p>
+
+            <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-4 rounded-lg mb-6">
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="text-gray-500 dark:text-gray-400">Duration:</span>
+                  <p className="font-bold text-gray-900 dark:text-white">{selectedAssessment.duration}</p>
+                </div>
+                <div>
+                  <span className="text-gray-500 dark:text-gray-400">Questions:</span>
+                  <p className="font-bold text-gray-900 dark:text-white">{selectedAssessment.questions}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <button
+                onClick={() => {
+                  setShowAssessmentModal(false)
+                  alert('Assessment started! This is a demo - full assessment coming soon.')
+                }}
+                className="btn-primary flex-1 flex items-center justify-center gap-2"
+              >
+                <FaPlay /> Begin Assessment
+              </button>
+              <button
+                onClick={() => setShowAssessmentModal(false)}
+                className="btn-secondary flex-1"
+              >
+                Cancel
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </motion.div>
+      </div >
+    </div >
   )
 }
 

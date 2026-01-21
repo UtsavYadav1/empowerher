@@ -75,7 +75,24 @@ export async function GET(request: NextRequest) {
       { month: 'Jan', progress: hasActivity ? 60 : 0 }, // Simple jump if active
     ]
 
-    const recentCourses: any[] = []
+    // Fetch recent courses (progress)
+    const recentProgress = await prisma.tutorialProgress.findMany({
+      where: { userId },
+      take: 4,
+      orderBy: { updatedAt: 'desc' },
+      include: {
+        tutorial: true
+      }
+    })
+
+    const recentCourses = recentProgress.map((p: any) => ({
+      id: p.tutorial.id,
+      title: p.tutorial.title,
+      category: p.tutorial.category,
+      progress: p.watched ? 100 : 50, // Simplified progress: 100 if watched, 50 if started
+      lastAccessed: p.updatedAt,
+      image: p.tutorial.youtubeId ? `https://img.youtube.com/vi/${p.tutorial.youtubeId}/mqdefault.jpg` : null
+    }))
 
     return NextResponse.json({
       success: true,
