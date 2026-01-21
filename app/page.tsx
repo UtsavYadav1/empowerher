@@ -125,10 +125,10 @@ export default function Home() {
               src={slides[currentSlide].image}
               alt="Hero Background"
               fill
-              className="object-cover opacity-60"
+              className="object-cover opacity-90"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent mix-blend-multiply" />
           </motion.div>
         </AnimatePresence>
 

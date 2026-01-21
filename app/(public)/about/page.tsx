@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { FaUsers, FaGraduationCap, FaHandHoldingHeart, FaChartLine, FaRocket, FaLightbulb, FaHeart, FaArrowRight } from 'react-icons/fa'
@@ -93,10 +94,10 @@ export default function AboutPage() {
             src="/images/hero.jpg"
             alt="About EmpowerHer"
             fill
-            className="object-cover opacity-60"
+            className="object-cover opacity-90"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-gray-900/70 via-gray-900/50 to-gray-50 dark:to-gray-900" />
+          <div className="absolute inset-0 bg-gradient-to-b from-gray-900/80 via-gray-900/40 to-transparent" />
         </div>
 
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
@@ -287,9 +288,9 @@ export default function AboutPage() {
             transition={{ delay: 0.2 }}
             className="flex justify-center gap-4"
           >
-            <button className="bg-white text-orange-600 px-8 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all">
+            <Link href="/register" className="bg-white text-orange-600 px-8 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all">
               Join Our Mission
-            </button>
+            </Link>
           </motion.div>
         </div>
       </section>
