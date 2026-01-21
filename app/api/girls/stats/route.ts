@@ -62,13 +62,17 @@ export async function GET(request: NextRequest) {
       }
     }
 
+    // Generate chart data based on simplified logic
+    // If user has no activity, show flat line. If they have activity, show a simple progression.
+    const hasActivity = stats.enrolled > 0 || stats.completed > 0;
+
     const chartData = [
-      { month: 'Aug', progress: 10 },
-      { month: 'Sep', progress: 25 },
-      { month: 'Oct', progress: 40 },
-      { month: 'Nov', progress: 35 },
-      { month: 'Dec', progress: 55 },
-      { month: 'Jan', progress: stats.enrolled > 0 ? 70 : 0 },
+      { month: 'Aug', progress: 0 },
+      { month: 'Sep', progress: 0 },
+      { month: 'Oct', progress: 0 },
+      { month: 'Nov', progress: 0 },
+      { month: 'Dec', progress: hasActivity ? 30 : 0 },
+      { month: 'Jan', progress: hasActivity ? 60 : 0 }, // Simple jump if active
     ]
 
     const recentCourses: any[] = []

@@ -101,12 +101,12 @@ function GirlsDashboardContent() {
 
   const getFilteredCourses = () => {
     if (!statsModalType) return []
-    
+
     if (statsModalType === 'enrolled') return courses
     if (statsModalType === 'completed') return courses.filter(c => c.isCompleted)
     if (statsModalType === 'inProgress') return courses.filter(c => !c.isCompleted && c.progress > 0)
     if (statsModalType === 'certificates') return courses.filter(c => c.isCompleted)
-    
+
     return []
   }
 
@@ -164,7 +164,7 @@ function GirlsDashboardContent() {
             </div>
           </motion.div>
         </div>
-        
+
         {/* Quick Links */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <Link href="/girls/forum" className="card hover:shadow-2xl transition-all hover:scale-105 bg-white dark:bg-gray-800 text-center group">
@@ -284,17 +284,17 @@ function GirlsDashboardContent() {
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                   <XAxis dataKey="month" stroke="#6b7280" />
                   <YAxis stroke="#6b7280" />
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: '#ffffff', 
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: '#ffffff',
                       border: '1px solid #e5e7eb',
                       borderRadius: '8px'
-                    }} 
+                    }}
                   />
-                  <Line 
-                    type="monotone" 
-                    dataKey="progress" 
-                    stroke="#e91e63" 
+                  <Line
+                    type="monotone"
+                    dataKey="progress"
+                    stroke="#e91e63"
                     strokeWidth={3}
                     dot={{ fill: '#e91e63', r: 5 }}
                     activeDot={{ r: 7 }}
@@ -317,9 +317,15 @@ function GirlsDashboardContent() {
               {loading ? (
                 <div className="text-center py-12 text-gray-500">Loading courses...</div>
               ) : courses.length === 0 ? (
-                <div className="text-center py-12 text-gray-500">
-                  <FaBook className="text-5xl mx-auto mb-4 opacity-50" />
-                  <p>No courses enrolled yet</p>
+                <div className="text-center py-12 text-gray-500 flex flex-col items-center">
+                  <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-4">
+                    <FaBook className="text-3xl text-gray-400" />
+                  </div>
+                  <p className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">No courses enrolled yet</p>
+                  <p className="text-sm text-gray-500 mb-6 max-w-xs mx-auto">Start your learning journey today by exploring our wide range of courses.</p>
+                  <Link href="/girls/courses" className="btn-primary flex items-center gap-2 px-6 py-2">
+                    <FaSearch /> Explore Courses
+                  </Link>
                 </div>
               ) : (
                 courses.map((course, index) => (
@@ -386,7 +392,7 @@ function GirlsDashboardContent() {
                         )}
                       </div>
                     )}
-                    
+
                     {/* Progress Bar */}
                     <div className="mb-4">
                       <div className="flex items-center justify-between mb-2">

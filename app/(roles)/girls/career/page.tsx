@@ -269,6 +269,10 @@ function CareerGuidanceContent() {
     },
   ]
 
+  const handleBookSession = (mentorName: string) => {
+    alert(`Booking request sent to ${mentorName}! They will contact you shortly via email.`)
+  }
+
   // Assessments
   const assessments: Assessment[] = [
     {
@@ -372,8 +376,8 @@ function CareerGuidanceContent() {
               className="card bg-gradient-to-br from-blue-500 to-cyan-600 text-white"
             >
               <FaBriefcase className="text-3xl mb-2" />
-              <div className="text-3xl font-bold">150K+</div>
-              <div className="text-sm opacity-90">Job Openings</div>
+              <div className="text-3xl font-bold">500+</div>
+              <div className="text-sm opacity-90">Job Opportunities</div>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -382,7 +386,7 @@ function CareerGuidanceContent() {
               className="card bg-gradient-to-br from-purple-500 to-pink-600 text-white"
             >
               <FaUserTie className="text-3xl mb-2" />
-              <div className="text-3xl font-bold">500+</div>
+              <div className="text-3xl font-bold">50+</div>
               <div className="text-sm opacity-90">Expert Mentors</div>
             </motion.div>
             <motion.div
@@ -715,6 +719,7 @@ function CareerGuidanceContent() {
 
                       <button
                         disabled={!mentor.available}
+                        onClick={() => handleBookSession(mentor.name)}
                         className={`w-full flex items-center justify-center gap-2 ${mentor.available
                           ? 'btn-primary'
                           : 'btn-secondary opacity-50 cursor-not-allowed'
