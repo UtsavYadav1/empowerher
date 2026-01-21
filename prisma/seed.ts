@@ -452,26 +452,142 @@ async function main() {
   // Seed Tutorials
   console.log('Seeding tutorials...')
   const tutorials = [
+    // Business & Entrepreneurship
     {
       title: 'How to Start a Small Business - Complete Guide',
       description: 'Learn the complete process of starting your own small business from scratch.',
       youtubeId: 'Ibb5KE3GcVI',
       duration: '18:25',
-      category: 'business',
+      category: 'Business',
     },
+    {
+      title: 'Business Planning 101 for Small Business',
+      description: 'Create a solid business plan to secure funding and guide your growth.',
+      youtubeId: 'Fqch5OrUPvA', // Real placeholder ID (Business Plan)
+      duration: '15:10',
+      category: 'Business',
+    },
+    {
+      title: 'Funding Your Small Business',
+      description: 'Explore different ways to raise capital for your startup or small business.',
+      youtubeId: 'i_Jd4PqWb5c',
+      duration: '12:45',
+      category: 'Business',
+    },
+
+    // Marketing & Digital Skills
     {
       title: 'Social Media Marketing Basics',
-      description: 'Complete guide to marketing your business on social media.',
+      description: 'Complete guide to marketing your business on social media platforms.',
       youtubeId: 'qGpI1X5xJxo',
       duration: '22:15',
-      category: 'marketing',
+      category: 'Communication', // Mapping to 'Communication' or 'Technology'
     },
     {
+      title: 'Digital Marketing Course for Beginners',
+      description: 'Learn SEO, Email Marketing, and Social Media strategies.',
+      youtubeId: 'bIXR_C-lq60',
+      duration: '45:00',
+      category: 'Technology',
+    },
+    {
+      title: 'Canva for Beginners - Graphic Design',
+      description: 'Create beautiful graphics for your business using Canva.',
+      youtubeId: 'un50Bs4rqGc',
+      duration: '25:30',
+      category: 'Arts',
+    },
+
+    // Finance & Money Management
+    {
       title: 'Basic Accounting for Small Business',
-      description: 'Learn fundamental accounting principles.',
+      description: 'Learn fundamental accounting principles and bookkeeping.',
       youtubeId: 'aw2okpWUu30',
       duration: '20:35',
-      category: 'finance',
+      category: 'Business',
+    },
+    {
+      title: 'Personal Finance 101',
+      description: 'Budgeting, saving, and investing for financial independence.',
+      youtubeId: 'PHe0bXAIuk0', // Placeholder
+      duration: '18:50',
+      category: 'Life Skills',
+    },
+    {
+      title: 'Understanding Government Loans & Schemes',
+      description: 'How to apply for MUDRA and other government business loans.',
+      youtubeId: 'X7d9c6YXgVw', // Placeholder
+      duration: '14:20',
+      category: 'Life Skills',
+    },
+
+    // Technology & Coding
+    {
+      title: 'Introduction to Computer Basics',
+      description: 'Learn the parts of a computer and how to use them effectively.',
+      youtubeId: '8j2p4qZ9M4o', // Placeholder
+      duration: '30:00',
+      category: 'Technology',
+    },
+    {
+      title: 'Python Programming for Beginners',
+      description: 'Start your coding journey with the most popular programming language.',
+      youtubeId: '_uQrJ0TkZlc',
+      duration: '1:00:00',
+      category: 'Technology',
+    },
+    {
+      title: 'Web Development Full Course - HTML, CSS, JS',
+      description: 'Build your own websites from scratch with this comprehensive guide.',
+      youtubeId: 'PlxWf493en4', // Placeholder
+      duration: '2:30:00',
+      category: 'Technology',
+    },
+
+    // Health & Wellness
+    {
+      title: 'Yoga for Beginners - 20 Minute Workout',
+      description: 'Simple yoga routine to stay fit and healthy at home.',
+      youtubeId: 'v7AYKMP6rOE',
+      duration: '20:00',
+      category: 'Health & Wellness',
+    },
+    {
+      title: 'Mental Health Awareness',
+      description: 'Understanding anxiety and stress management techniques.',
+      youtubeId: 'rkZl2gsLUp4',
+      duration: '15:45',
+      category: 'Health & Wellness',
+    },
+    {
+      title: 'Nutrition and Healthy Eating Habits',
+      description: 'Learn the basics of a balanced diet for a healthy lifestyle.',
+      youtubeId: 'Gmh_xMMJ2Pw',
+      duration: '12:30',
+      category: 'Health & Wellness',
+    },
+
+    // Communication & Soft Skills
+    {
+      title: 'Public Speaking Confidence',
+      description: 'How to speak confidently in public and present your ideas.',
+      youtubeId: 'i5mYphUoC8', // Placeholder
+      duration: '10:15',
+      category: 'Communication',
+    },
+    {
+      title: 'Effective Communication Skills',
+      description: 'Improve your listening and speaking skills for better relationships.',
+      youtubeId: 'HAnw168huqA',
+      duration: '16:40',
+      category: 'Communication',
+    },
+    {
+      title: 'Interview Preparation Guide',
+      description: 'Top tips to crack your next job interview.',
+      youtubeId: '1mHjMNZZvFo',
+      duration: '25:00',
+      category: 'Life Skills',
     }
   ]
   for (const tutorial of tutorials) {
