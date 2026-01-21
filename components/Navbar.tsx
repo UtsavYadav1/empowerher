@@ -35,7 +35,7 @@ export default function Navbar() {
 
     checkAuth()
     const interval = setInterval(checkAuth, 1000)
-    
+
     // Check for dark mode preference
     const isDark = localStorage.getItem('darkMode') === 'true'
     setDarkMode(isDark)
@@ -103,7 +103,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav 
+      <nav
         className="bg-white dark:bg-gray-900 shadow-md sticky top-0 z-50 transition-colors duration-200"
         role="navigation"
         aria-label="Main navigation"
@@ -114,11 +114,11 @@ export default function Navbar() {
           style={{ scaleX }}
           aria-hidden="true"
         />
-        
+
         <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center h-16">
-            <Link 
-              href="/" 
+          <div className="flex justify-between items-center h-14">
+            <Link
+              href="/"
               className="flex items-center gap-2 group"
               aria-label="EmpowerHer Home"
             >
@@ -130,39 +130,39 @@ export default function Navbar() {
                 EmpowerHer
               </span>
             </Link>
-            
+
             {/* Desktop Menu */}
             <div className="hidden md:flex space-x-6 items-center">
-              <Link 
-                href="/" 
+              <Link
+                href="/"
                 className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors text-lg"
                 aria-label={t.home}
               >
                 {t.home}
               </Link>
-              <Link 
-                href="/about" 
+              <Link
+                href="/about"
                 className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors text-lg"
                 aria-label={t.about}
               >
                 {t.about}
               </Link>
-              <Link 
-                href="/gallery" 
+              <Link
+                href="/gallery"
                 className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors text-lg"
                 aria-label={t.gallery}
               >
                 {t.gallery}
               </Link>
-              <Link 
-                href="/workshops" 
+              <Link
+                href="/workshops"
                 className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors text-lg"
                 aria-label={t.workshops}
               >
                 {t.workshops}
               </Link>
-              <Link 
-                href="/contact" 
+              <Link
+                href="/contact"
                 className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors text-lg"
                 aria-label={t.contact}
               >
@@ -206,8 +206,8 @@ export default function Navbar() {
               {isLoggedIn ? (
                 <UserProfile />
               ) : (
-                <Link 
-                  href="/login" 
+                <Link
+                  href="/login"
                   className="btn-primary text-sm px-4 py-2"
                   aria-label={t.login}
                 >
@@ -235,36 +235,36 @@ export default function Navbar() {
               exit={{ opacity: 0, height: 0 }}
               className="md:hidden py-4 space-y-3"
             >
-              <Link 
-                href="/" 
+              <Link
+                href="/"
                 className="block text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 text-lg"
                 onClick={() => setIsOpen(false)}
               >
                 {t.home}
               </Link>
-              <Link 
-                href="/about" 
+              <Link
+                href="/about"
                 className="block text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 text-lg"
                 onClick={() => setIsOpen(false)}
               >
                 {t.about}
               </Link>
-              <Link 
-                href="/gallery" 
+              <Link
+                href="/gallery"
                 className="block text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 text-lg"
                 onClick={() => setIsOpen(false)}
               >
                 {t.gallery}
               </Link>
-              <Link 
-                href="/workshops" 
+              <Link
+                href="/workshops"
                 className="block text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 text-lg"
                 onClick={() => setIsOpen(false)}
               >
                 {t.workshops}
               </Link>
-              <Link 
-                href="/contact" 
+              <Link
+                href="/contact"
                 className="block text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 text-lg"
                 onClick={() => setIsOpen(false)}
               >
@@ -295,8 +295,8 @@ export default function Navbar() {
               {isLoggedIn ? (
                 <>
                   {dashboardLink && (
-                    <Link 
-                      href={dashboardLink} 
+                    <Link
+                      href={dashboardLink}
                       className="block text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 text-lg"
                       onClick={() => setIsOpen(false)}
                     >
@@ -314,8 +314,8 @@ export default function Navbar() {
                   </button>
                 </>
               ) : (
-                <Link 
-                  href="/login" 
+                <Link
+                  href="/login"
                   className="block btn-primary text-center"
                   onClick={() => setIsOpen(false)}
                 >
