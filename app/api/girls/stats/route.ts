@@ -38,6 +38,8 @@ export async function GET(request: NextRequest) {
       certificates: 0,
     }
 
+    let recentCourses: any[] = []
+
     if (userIdQuery) {
       const userId = parseInt(userIdQuery)
 
@@ -60,6 +62,25 @@ export async function GET(request: NextRequest) {
         schemesApplied: 0, // Handled by localStorage on client
         certificates: certificates,
       }
+
+      // Fetch recent courses (progress)
+      const recentProgress = await prisma.tutorialProgress.findMany({
+        where: { userId },
+        take: 4,
+        orderBy: { updatedAt: 'desc' },
+        include: {
+          tutorial: true
+        }
+      })
+
+      recentCourses = recentProgress.map((p: any) => ({
+        id: p.tutorial.id,
+        title: p.tutorial.title,
+        category: p.tutorial.category,
+        progress: p.watched ? 100 : 50, // Simplified progress: 100 if watched, 50 if started
+        lastAccessed: p.updatedAt,
+        image: p.tutorial.youtubeId ? `https://img.youtube.com/vi/${p.tutorial.youtubeId}/mqdefault.jpg` : null
+      }))
     }
 
     // Generate chart data based on simplified logic
@@ -74,25 +95,6 @@ export async function GET(request: NextRequest) {
       { month: 'Dec', progress: hasActivity ? 30 : 0 },
       { month: 'Jan', progress: hasActivity ? 60 : 0 }, // Simple jump if active
     ]
-
-    // Fetch recent courses (progress)
-    const recentProgress = await prisma.tutorialProgress.findMany({
-      where: { userId },
-      take: 4,
-      orderBy: { updatedAt: 'desc' },
-      include: {
-        tutorial: true
-      }
-    })
-
-    const recentCourses = recentProgress.map((p: any) => ({
-      id: p.tutorial.id,
-      title: p.tutorial.title,
-      category: p.tutorial.category,
-      progress: p.watched ? 100 : 50, // Simplified progress: 100 if watched, 50 if started
-      lastAccessed: p.updatedAt,
-      image: p.tutorial.youtubeId ? `https://img.youtube.com/vi/${p.tutorial.youtubeId}/mqdefault.jpg` : null
-    }))
 
     return NextResponse.json({
       success: true,
@@ -110,4 +112,3 @@ export async function GET(request: NextRequest) {
     )
   }
 }
-

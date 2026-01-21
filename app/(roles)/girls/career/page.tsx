@@ -8,7 +8,7 @@ import {
   FaFileAlt, FaMicrophone, FaLightbulb, FaGraduationCap, FaTrophy,
   FaUsers, FaClock, FaMapMarkerAlt, FaRupeeSign, FaStar, FaBook,
   FaVideo, FaCalendarAlt, FaCheckCircle, FaArrowRight, FaSearch,
-  FaFilter, FaHeart, FaBookmark, FaShare, FaPlay
+  FaFilter, FaHeart, FaBookmark, FaShare, FaPlay, FaList
 } from 'react-icons/fa'
 
 interface CareerPath {
@@ -24,19 +24,6 @@ interface CareerPath {
   trending: boolean
 }
 
-interface Mentor {
-  id: number
-  name: string
-  role: string
-  company: string
-  expertise: string[]
-  experience: string
-  rating: number
-  sessions: number
-  available: boolean
-  image: string
-}
-
 interface Resource {
   id: number
   title: string
@@ -47,25 +34,14 @@ interface Resource {
   popular: boolean
 }
 
-interface Assessment {
-  id: number
-  title: string
-  description: string
-  duration: string
-  questions: number
-  completed: boolean
-}
-
 function CareerGuidanceContent() {
   const [loading, setLoading] = useState(true)
   const [selectedTab, setSelectedTab] = useState('overview')
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [showAssessmentModal, setShowAssessmentModal] = useState(false)
-  const [selectedAssessment, setSelectedAssessment] = useState<Assessment | null>(null)
   const [bookmarkedPaths, setBookmarkedPaths] = useState<number[]>([])
   const [searchQuery, setSearchQuery] = useState('')
 
-  // Career Paths Data
   // Career Paths Data (Keep existing static data as it's informational)
   const careerPaths: CareerPath[] = [
     {
@@ -80,7 +56,6 @@ function CareerGuidanceContent() {
       jobOpenings: 'High',
       trending: true,
     },
-    // ... (Keep other paths or add more if needed)
     {
       id: 2,
       title: 'Data Scientist',
@@ -143,7 +118,6 @@ function CareerGuidanceContent() {
     },
   ]
 
-  // Mentors Data
   // Fetch sessions for Mentorship instead of static mentors
   const [sessions, setSessions] = useState<any[]>([])
 
@@ -164,7 +138,6 @@ function CareerGuidanceContent() {
     }
   }
 
-  // Resources Data
   // Resources Data - Real Links
   const resources: Resource[] = [
     {
@@ -246,7 +219,6 @@ function CareerGuidanceContent() {
     else alert('Session details will be sent to your email.')
   }
 
-  // Assessments
   // Quiz State
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [quizScore, setQuizScore] = useState<Record<string, number>>({})
@@ -317,11 +289,6 @@ function CareerGuidanceContent() {
       : [...bookmarkedPaths, pathId]
     setBookmarkedPaths(updated)
     localStorage.setItem('bookmarkedCareerPaths', JSON.stringify(updated))
-  }
-
-  const startAssessment = (assessment: Assessment) => {
-    setSelectedAssessment(assessment)
-    setShowAssessmentModal(true)
   }
 
   const getDemandColor = (demand: string) => {
@@ -667,294 +634,254 @@ function CareerGuidanceContent() {
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">
-                  {mentors.map((mentor, idx) => (
-                    <motion.div
-                      key={mentor.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: idx * 0.1 }}
-                      whileHover={{ scale: 1.02 }}
-                      className="card bg-white dark:bg-gray-800 hover:shadow-2xl"
-                    >
-                      <div className="flex items-start gap-4 mb-4">
-                        <div className="w-20 h-20 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-white text-2xl font-bold">
-                          {mentor.name.split(' ').map(n => n[0]).join('')}
+                  {sessions.length > 0 ? (
+                    sessions.map((session, idx) => (
+                      <motion.div
+                        key={session.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: idx * 0.1 }}
+                        className="card bg-white dark:bg-gray-800 hover:shadow-xl"
+                      >
+                        <div className="flex items-start gap-4 mb-4">
+                          <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-300 text-2xl">
+                            <FaVideo />
+                          </div>
+                          <div>
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white">{session.title}</h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{session.organizer}</p>
+                            <span className="text-xs px-2 py-1 bg-blue-50 text-blue-700 rounded-full">
+                              Upcoming Session
+                            </span>
+                          </div>
                         </div>
-                        <div className="flex-1">
-                          <h3 className="text-xl font-bold text-gray-900 dark:text-white">{mentor.name}</h3>
-                          <p className="text-purple-600 dark:text-purple-400 font-semibold">{mentor.role}</p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">{mentor.company}</p>
+                        <p className="text-gray-700 dark:text-gray-300 mb-4 text-sm">{session.description}</p>
+                        <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
+                          <span className="flex items-center gap-1"><FaCalendarAlt /> {new Date(session.date).toLocaleDateString()}</span>
+                          <span className="flex items-center gap-1"><FaUserTie /> {session.category}</span>
                         </div>
-                        {mentor.available && (
-                          <span className="text-xs px-2 py-1 bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300 rounded-full">
-                            Available
+                        <button
+                          onClick={() => handleJoinSession(session.applyUrl)}
+                          className="btn-primary w-full flex items-center justify-center gap-2"
+                        >
+                          <FaExternalLinkAlt /> Join Session
+                        </button>
+                      </motion.div>
+                    ))
+                  ) : (
+                    <div className="col-span-full text-center py-12 bg-white dark:bg-gray-800 rounded-xl">
+                      <FaUserTie className="text-5xl text-gray-300 mx-auto mb-4" />
+                      <p className="text-lg text-gray-600 mb-4">No specific mentor sessions scheduled right now.</p>
+                      <button onClick={() => alert('Request sent! An admin will contact you.')} className="btn-secondary">
+                        Request Specific Guidance
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            )}
+
+            {selectedTab === 'resources' && (
+              <motion.div
+                key="resources"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="mb-6">
+                  <h2 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">Career Development Resources</h2>
+                  <p className="text-gray-600 dark:text-gray-400">Tools, courses, and materials to accelerate your career growth</p>
+                </div>
+
+                <div className="grid md:grid-cols-3 gap-6">
+                  {resources.map((resource, idx) => {
+                    const IconComponent = resource.icon === 'clipboard' ? FaFileAlt :
+                      resource.icon === 'file' ? FaFileAlt :
+                        resource.icon === 'microphone' ? FaMicrophone :
+                          resource.icon === 'chart' ? FaChartLine :
+                            resource.icon === 'graduation' ? FaGraduationCap :
+                              resource.icon === 'code' ? FaBook :
+                                resource.icon === 'video' ? FaVideo :
+                                  FaLightbulb
+
+                    return (
+                      <motion.div
+                        key={resource.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: idx * 0.05 }}
+                        whileHover={{ scale: 1.05 }}
+                        className="card bg-white dark:bg-gray-800 hover:shadow-2xl relative"
+                      >
+                        {resource.popular && (
+                          <span className="absolute top-4 right-4 text-xs px-2 py-1 bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300 rounded-full font-semibold flex items-center gap-1">
+                            <FaStar /> Popular
                           </span>
                         )}
-                      </div>
 
-                      <div className="flex items-center gap-4 mb-4 text-sm">
-                        <div className="flex items-center gap-1">
-                          <FaStar className="text-yellow-500" />
-                          <span className="font-bold">{mentor.rating}</span>
+                        <div className="mb-4">
+                          <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-4">
+                            <IconComponent className="text-3xl text-white" />
+                          </div>
+                          <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">{resource.title}</h3>
+                          <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">{resource.description}</p>
+                          <span className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded">
+                            {resource.category}
+                          </span>
                         </div>
-                        <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400">
-                          <FaUsers />
-                          <span>{mentor.sessions} sessions</span>
+
+                        <a
+                          href={resource.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn-primary w-full flex items-center justify-center gap-2"
+                          onClick={(e) => {
+                            if (resource.link === '#') {
+                              e.preventDefault()
+                              alert('This feature is coming soon!')
+                            }
+                          }}
+                        >
+                          <FaExternalLinkAlt /> Access Now
+                        </a>
+                      </motion.div>
+                    )
+                  })}
+                </div>
+              </motion.div>
+            )}
+
+            {selectedTab === 'assessments' && (
+              <motion.div
+                key="assessments"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="mb-6">
+                  <h2 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">Career Assessments</h2>
+                  <p className="text-gray-600 dark:text-gray-400">Discover your strengths and find the perfect career match</p>
+                </div>
+
+                <div className={`card max-w-2xl mx-auto bg-white dark:bg-gray-800 ${quizResult ? 'border-2 border-green-500' : ''}`}>
+                  {!showAssessmentModal ? (
+                    <div className="text-center py-8">
+                      <div className="w-20 h-20 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <FaList className="text-4xl text-purple-600" />
+                      </div>
+                      <h3 className="text-2xl font-bold mb-4">Ready to find your path?</h3>
+                      <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
+                        Take our quick AI-powered personality check to get matched with the best career options for you.
+                      </p>
+                      <button onClick={() => setShowAssessmentModal(true)} className="btn-primary px-8 py-3 text-lg flex items-center gap-2 mx-auto">
+                        <FaPlay /> Start Career Quiz
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="p-4">
+                      {/* Inline Quiz / Modal content is now shown via Modal overlay for better UX, but adding inline fallback trigger */}
+                      <p>Assessment in progress...</p>
+                      <button onClick={() => setShowAssessmentModal(true)}>Open Assessment</button>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Assessment Modal */}
+          <AnimatePresence>
+            {showAssessmentModal && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+                <motion.div
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.9, opacity: 0 }}
+                  className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden"
+                >
+                  <div className="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {quizResult ? 'Your Career Match' : 'Career Personality Assessment'}
+                    </h3>
+                    <button onClick={resetQuiz} className="text-gray-500 hover:text-gray-700">✕</button>
+                  </div>
+
+                  <div className="p-8">
+                    {quizResult ? (
+                      <div className="text-center">
+                        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                          <FaTrophy className="text-4xl text-green-600" />
+                        </motion.div>
+                        <h4 className="text-3xl font-bold text-purple-600 mb-2">{quizResult.title}</h4>
+                        <p className="text-gray-600 dark:text-gray-300 text-lg mb-6 max-w-md mx-auto">
+                          Based on your answers, this career path matches your interests in <strong>{quizResult.category}</strong>.
+                        </p>
+
+                        <div className="bg-gray-50 dark:bg-gray-700/50 p-6 rounded-xl text-left mb-6">
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <p className="text-xs text-gray-500 uppercase font-bold">Average Salary</p>
+                              <p className="font-bold text-lg">{quizResult.avgSalary}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-gray-500 uppercase font-bold">Demand</p>
+                              <p className="text-green-600 font-bold">{quizResult.demand}</p>
+                            </div>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400">
-                          <FaClock />
-                          <span>{mentor.experience}</span>
+
+                        <div className="flex gap-3 justify-center">
+                          <button onClick={resetQuiz} className="px-6 py-2 border border-gray-300 rounded-lg font-semibold hover:bg-gray-50">
+                            Retake Quiz
+                          </button>
+                          <button onClick={() => {
+                            resetQuiz()
+                            setSelectedTab('career-paths')
+                            setSearchQuery(quizResult.title)
+                          }} className="btn-primary px-8 py-2">
+                            Explore This Path
+                          </button>
                         </div>
                       </div>
+                    ) : (
+                      <div>
+                        <div className="mb-6 flex justify-between text-sm text-gray-500">
+                          <span>Question {currentQuestion + 1} of {quizQuestions.length}</span>
+                          <span>{Math.round(((currentQuestion) / quizQuestions.length) * 100)}% completed</span>
+                        </div>
 
-                      <div className="mb-4">
-                        <div className="text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">Expertise:</div>
-                        <div className="flex flex-wrap gap-2">
-                          {mentor.expertise.map((exp, i) => (
-                            <span key={i} className="text-xs px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full">
-                              {exp}
-                            </span>
+                        <div className="w-full bg-gray-200 rounded-full h-2 mb-8">
+                          <div className="bg-purple-600 h-2 rounded-full transition-all duration-300" style={{ width: `${((currentQuestion) / quizQuestions.length) * 100}%` }}></div>
+                        </div>
+
+                        <h4 className="text-2xl font-bold mb-8 text-gray-900 dark:text-white leading-relaxed">
+                          {quizQuestions[currentQuestion] && quizQuestions[currentQuestion].q}
+                        </h4>
+
+                        <div className="space-y-3">
+                          {quizQuestions[currentQuestion] && quizQuestions[currentQuestion].options.map((opt, idx) => (
+                            <button
+                              key={idx}
+                              onClick={() => handleQuizAnswer(opt.type)}
+                              className="w-full p-4 md:p-5 text-left rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all font-semibold text-lg flex items-center justify-between group"
+                            >
+                              {opt.text}
+                              <FaArrowRight className="opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-all text-purple-500" />
+                            </button>
                           ))}
                         </div>
                       </div>
-
-                      <FaCalendarAlt /> {mentor.available ? 'Book Session' : 'Not Available'}
-                    </button>
-                    </motion.div>
-            ))}
-
-            {sessions.map((session, idx) => (
-              <motion.div
-                key={session.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 }}
-                className="card bg-white dark:bg-gray-800 hover:shadow-xl"
-              >
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-300 text-2xl">
-                    <FaVideo />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">{session.title}</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{session.organizer}</p>
-                    <span className="text-xs px-2 py-1 bg-blue-50 text-blue-700 rounded-full">
-                      Upcoming Session
-                    </span>
-                  </div>
-                </div>
-                <p className="text-gray-700 dark:text-gray-300 mb-4 text-sm">{session.description}</p>
-                <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
-                  <span className="flex items-center gap-1"><FaCalendarAlt /> {new Date(session.date).toLocaleDateString()}</span>
-                  <span className="flex items-center gap-1"><FaUserTie /> {session.category}</span>
-                </div>
-                <button
-                  onClick={() => handleJoinSession(session.applyUrl)}
-                  className="btn-primary w-full flex items-center justify-center gap-2"
-                >
-                  <FaExternalLinkAlt /> Join Session
-                </button>
-              </motion.div>
-            ))}
-
-            {sessions.length === 0 && (
-              <div className="col-span-full text-center py-12 bg-white dark:bg-gray-800 rounded-xl">
-                <FaUserTie className="text-5xl text-gray-300 mx-auto mb-4" />
-                <p className="text-lg text-gray-600 mb-4">No specific mentor sessions scheduled right now.</p>
-                <button onClick={() => alert('Request sent! An admin will contact you.')} className="btn-secondary">
-                  Request Specific Guidance
-                </button>
-              </div>
-            )}
-          </div>
-        </motion.div>
-            )}
-
-        {selectedTab === 'resources' && (
-          <motion.div
-            key="resources"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="mb-6">
-              <h2 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">Career Development Resources</h2>
-              <p className="text-gray-600 dark:text-gray-400">Tools, courses, and materials to accelerate your career growth</p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              {resources.map((resource, idx) => {
-                const IconComponent = resource.icon === 'clipboard' ? FaFileAlt :
-                  resource.icon === 'file' ? FaFileAlt :
-                    resource.icon === 'microphone' ? FaMicrophone :
-                      resource.icon === 'chart' ? FaChartLine :
-                        resource.icon === 'graduation' ? FaGraduationCap :
-                          resource.icon === 'code' ? FaBook :
-                            resource.icon === 'video' ? FaVideo :
-                              FaLightbulb
-
-                return (
-                  <motion.div
-                    key={resource.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: idx * 0.05 }}
-                    whileHover={{ scale: 1.05 }}
-                    className="card bg-white dark:bg-gray-800 hover:shadow-2xl relative"
-                  >
-                    {resource.popular && (
-                      <span className="absolute top-4 right-4 text-xs px-2 py-1 bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300 rounded-full font-semibold flex items-center gap-1">
-                        <FaStar /> Popular
-                      </span>
-                    )}
-
-                    <div className="mb-4">
-                      <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-4">
-                        <IconComponent className="text-3xl text-white" />
-                      </div>
-                      <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">{resource.title}</h3>
-                      <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">{resource.description}</p>
-                      <span className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded">
-                        {resource.category}
-                      </span>
-                    </div>
-
-                    <a
-                      href={resource.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-primary w-full flex items-center justify-center gap-2"
-                      onClick={(e) => {
-                        if (resource.link === '#') {
-                          e.preventDefault()
-                          alert('This feature is coming soon!')
-                        }
-                      }}
-                    >
-                      <FaExternalLinkAlt /> Access Now
-                    </a>
-                  </motion.div>
-                )
-              })}
-            </div>
-          </motion.div>
-        )}
-
-        {selectedTab === 'assessments' && (
-          <motion.div
-            key="assessments"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="mb-6">
-              <h2 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">Career Assessments</h2>
-              <p className="text-gray-600 dark:text-gray-400">Discover your strengths and find the perfect career match</p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              {assessments.map((assessment, idx) => (
-                <motion.div
-                  key={assessment.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.1 }}
-                  whileHover={{ scale: 1.02 }}
-                  className="card bg-white dark:bg-gray-800 hover:shadow-2xl"
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
-                      <FaFileAlt className="text-2xl text-white" />
-                    </div>
-                    {assessment.completed && (
-                      <span className="text-xs px-2 py-1 bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300 rounded-full flex items-center gap-1">
-                        <FaCheckCircle /> Completed
-                      </span>
                     )}
                   </div>
-
-                  <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">{assessment.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">{assessment.description}</p>
-
-                  <div className="flex items-center gap-4 mb-4 text-sm text-gray-600 dark:text-gray-400">
-                    <div className="flex items-center gap-1">
-                      <FaClock />
-                      <span>{assessment.duration}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <FaFileAlt />
-                      <span>{assessment.questions} questions</span>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={() => startAssessment(assessment)}
-                    className={assessment.completed ? 'btn-secondary w-full' : 'btn-primary w-full flex items-center justify-center gap-2'}
-                  >
-                    {assessment.completed ? (
-                      <>View Results</>
-                    ) : (
-                      <>
-                        <FaPlay /> Start Assessment
-                      </>
-                    )}
-                  </button>
                 </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Assessment Modal */}
-      {showAssessmentModal && selectedAssessment && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="card max-w-lg w-full bg-white dark:bg-gray-800"
-          >
-            <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">{selectedAssessment.title}</h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">{selectedAssessment.description}</p>
-
-            <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-4 rounded-lg mb-6">
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <span className="text-gray-500 dark:text-gray-400">Duration:</span>
-                  <p className="font-bold text-gray-900 dark:text-white">{selectedAssessment.duration}</p>
-                </div>
-                <div>
-                  <span className="text-gray-500 dark:text-gray-400">Questions:</span>
-                  <p className="font-bold text-gray-900 dark:text-white">{selectedAssessment.questions}</p>
-                </div>
               </div>
-            </div>
-
-            <div className="flex gap-4">
-              <button
-                onClick={() => {
-                  setShowAssessmentModal(false)
-                  alert('Assessment started! This is a demo - full assessment coming soon.')
-                }}
-                className="btn-primary flex-1 flex items-center justify-center gap-2"
-              >
-                <FaPlay /> Begin Assessment
-              </button>
-              <button
-                onClick={() => setShowAssessmentModal(false)}
-                className="btn-secondary flex-1"
-              >
-                Cancel
-              </button>
-            </div>
-          </motion.div>
-        </div>
-      )}
-    </motion.div>
-      </div >
-    </div >
+            )}
+          </AnimatePresence>
+        </motion.div>
+      </div>
+    </div>
   )
 }
 
@@ -965,6 +892,3 @@ export default function CareerGuidancePage() {
     </ProtectedRoute>
   )
 }
-
-
-
