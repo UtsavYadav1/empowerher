@@ -14,7 +14,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [village, setVillage] = useState('')
-  const [role, setRole] = useState<'girl' | 'woman' | 'customer' | 'admin' | 'fieldagent' | ''>('')
+  const [role, setRole] = useState<'girl' | 'woman' | 'customer' | ''>('')
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
@@ -484,61 +484,6 @@ export default function RegisterPage() {
                         </div>
                       </motion.button>
 
-                      {/* Admin Option */}
-                      <motion.button
-                        type="button"
-                        whileHover={{ scale: 1.03 }}
-                        whileTap={{ scale: 0.97 }}
-                        onClick={() => setRole('admin')}
-                        className={`p-6 rounded-xl border-3 transition-all ${role === 'admin'
-                          ? 'border-gray-700 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700/20 dark:to-gray-800/20 shadow-lg'
-                          : 'border-gray-300 dark:border-gray-600 hover:border-gray-500'
-                          }`}
-                      >
-                        <div className="flex flex-col items-center text-center">
-                          <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 ${role === 'admin'
-                            ? 'bg-gradient-to-br from-gray-600 to-gray-800 text-white'
-                            : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
-                            }`}>
-                            <FaUserShield className="text-2xl" />
-                          </div>
-                          <h3 className="text-lg font-bold mb-1 text-gray-900 dark:text-white">Admin</h3>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
-                            Platform management and analytics
-                          </p>
-                          {role === 'admin' && (
-                            <FaCheckCircle className="text-gray-700 text-xl mt-3" />
-                          )}
-                        </div>
-                      </motion.button>
-
-                      {/* Field Agent Option */}
-                      <motion.button
-                        type="button"
-                        whileHover={{ scale: 1.03 }}
-                        whileTap={{ scale: 0.97 }}
-                        onClick={() => setRole('fieldagent')}
-                        className={`p-6 rounded-xl border-3 transition-all ${role === 'fieldagent'
-                          ? 'border-blue-600 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 shadow-lg'
-                          : 'border-gray-300 dark:border-gray-600 hover:border-blue-400'
-                          }`}
-                      >
-                        <div className="flex flex-col items-center text-center">
-                          <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 ${role === 'fieldagent'
-                            ? 'bg-gradient-to-br from-blue-500 to-cyan-500 text-white'
-                            : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
-                            }`}>
-                            <FaUserCheck className="text-2xl" />
-                          </div>
-                          <h3 className="text-lg font-bold mb-1 text-gray-900 dark:text-white">Field Agent</h3>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
-                            Field operations and community outreach
-                          </p>
-                          {role === 'fieldagent' && (
-                            <FaCheckCircle className="text-blue-600 text-xl mt-3" />
-                          )}
-                        </div>
-                      </motion.button>
                     </div>
                   </div>
 
