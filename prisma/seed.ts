@@ -458,7 +458,7 @@ async function main() {
       description: 'Learn how to plan your business effectively in Hindi. Covers basics of entrepreneurship.',
       category: 'Business',
       youtubeId: '3soVHA-f1zQ',
-      duration: '17:43 min',
+      duration: '17m:43s',
       instructor: 'Bada Business',
     },
     {
@@ -466,7 +466,7 @@ async function main() {
       description: 'Complete guide to starting and managing a shop business in India.',
       category: 'Business',
       youtubeId: 'USQODi2_wGQ',
-      duration: '13:10min',
+      duration: '13m:10s',
       instructor: 'Startup Hindi',
     },
 
@@ -475,16 +475,16 @@ async function main() {
       title: 'Basic Computer Course for Beginners (Hindi)',
       description: 'A complete guide to understanding computer basics, from hardware to software.',
       category: 'Technology',
-      youtubeId: '9_iM8d04U8w', // "Basic Computer Course in Hindi"
-      duration: '45 min',
+      youtubeId: 'agaLaSafbwc',
+      duration: '1h:15m',
       instructor: 'Gyanyagya',
     },
     {
       title: 'Learn Office Automation (Hindi)',
       description: 'Master essential office tools like Word and Excel in Hindi.',
       category: 'Technology',
-      youtubeId: '0h62pT_3_3M', // "Basic computer course in Hindi"
-      duration: '50 min',
+      youtubeId: 'EYvH_JM-3pI',
+      duration: '12m:40s',
       instructor: 'Learn More',
     },
 
@@ -493,16 +493,16 @@ async function main() {
       title: 'Tailoring Guide: Salwar Cutting (Hindi)',
       description: 'Step-by-step tutorial on cutting and stitching a Salwar suit.',
       category: 'Arts',
-      youtubeId: 'vKjQ6hdEGSc', // "Salwar cutting and stitching tutorial"
-      duration: '25 min',
+      youtubeId: 'qxhXAOiwgvs',
+      duration: '8m:38s',
       instructor: 'Creative Fashion',
     },
     {
       title: 'Beauty Parlor Course: Facial Theory (Hindi)',
       description: 'Professional beauty parlor course covering facial techniques and theory.',
       category: 'Arts',
-      youtubeId: 'v_R2XbB9898', // "Facial Theory Step By Step In Hindi"
-      duration: '30 min',
+      youtubeId: 'WMccJKQPVVg',
+      duration: '13m:42s',
       instructor: 'Beauty Experts',
     },
 
@@ -511,16 +511,16 @@ async function main() {
       title: 'Secrets of Great Public Speaking',
       description: 'Learn the 7 secrets of the greatest speakers in history.',
       category: 'Communication',
-      youtubeId: '6gG_0_jS9W8', // "The 7 secrets of the greatest speakers in history"
-      duration: '18 min',
+      youtubeId: 'svDVfU99igg',
+      duration: '24m:42s',
       instructor: 'Richard Greene',
     },
     {
       title: 'Mastering Confidence & Stage Presence',
       description: 'Techniques to overcome stage fright and speak with confidence.',
       category: 'Communication',
-      youtubeId: 'JQbHnUa82a0', // "We can help you master public speaking"
-      duration: '12 min',
+      youtubeId: 'Q074YSGwRTM',
+      duration: '8m:10s',
       instructor: 'Chris Anderson',
     }
   ]
