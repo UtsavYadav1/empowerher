@@ -9,7 +9,7 @@
 
 > **Empowering women and girls in India with the tools for education, entrepreneurship, and financial independence.**
 
-[**View Live Demo**](https://empowerher-demo.vercel.app/) <!-- REPLACE THIS LINK WITH YOUR VERCEL URL -->
+> **Live Demo:** [https://empowerher-demo.vercel.app/](https://empowerher-demo.vercel.app/) <!-- REPLACE THIS LINK WITH YOUR VERCEL URL -->
 
 ---
 
