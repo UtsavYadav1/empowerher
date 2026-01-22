@@ -457,16 +457,16 @@ async function main() {
       title: 'Business Planning 101 for Small Business (Hindi)',
       description: 'Learn how to plan your business effectively in Hindi. Covers basics of entrepreneurship.',
       category: 'Business',
-      youtubeId: 'sI3x_4S74sU', // "How to Plan Your Business in Hindi"
-      duration: '15 min',
+      youtubeId: '3soVHA-f1zQ',
+      duration: '17:43 min',
       instructor: 'Bada Business',
     },
     {
       title: 'Shop Business Plan Strategy (Hindi)',
       description: 'Complete guide to starting and managing a shop business in India.',
       category: 'Business',
-      youtubeId: 'F_fKq25n67w', // "Business Plan in Hindi | Dukaan"
-      duration: '20 min',
+      youtubeId: 'USQODi2_wGQ',
+      duration: '13:10min',
       instructor: 'Startup Hindi',
     },
 
