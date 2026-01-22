@@ -22,7 +22,7 @@ export default function TutorialsPage() {
   const [tutorials, setTutorials] = useState<Tutorial[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedTutorial, setSelectedTutorial] = useState<Tutorial | null>(null)
-  const [filter, setFilter] = useState<string>('all')
+  const [filter, setFilter] = useState<string>('All')
 
   useEffect(() => {
     fetchTutorials()
@@ -32,7 +32,7 @@ export default function TutorialsPage() {
     try {
       const user = getCurrentUser()
       const userId = user?.id
-      let url = filter !== 'all' ? `/api/tutorials?category=${filter}` : '/api/tutorials'
+      let url = filter !== 'All' ? `/api/tutorials?category=${filter}` : '/api/tutorials'
       if (userId) {
         url += (url.includes('?') ? '&' : '?') + `userId=${userId}`
       }
@@ -81,9 +81,10 @@ export default function TutorialsPage() {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'business': return 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
-      case 'marketing': return 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300'
-      case 'finance': return 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
+      case 'Business': return 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
+      case 'Technology': return 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300'
+      case 'Arts': return 'bg-pink-100 text-pink-700 dark:bg-pink-900 dark:text-pink-300'
+      case 'Communication': return 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
       default: return 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
     }
   }
@@ -136,7 +137,7 @@ export default function TutorialsPage() {
 
           {/* Filters */}
           <div className="flex flex-wrap gap-2 mb-6">
-            {['all', 'business', 'marketing', 'finance'].map((cat) => (
+            {['All', 'Business', 'Technology', 'Arts', 'Communication'].map((cat) => (
               <button
                 key={cat}
                 onClick={() => setFilter(cat)}
@@ -145,7 +146,7 @@ export default function TutorialsPage() {
                   : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`}
               >
-                {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                {cat}
               </button>
             ))}
           </div>
@@ -276,7 +277,7 @@ export default function TutorialsPage() {
                 <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
                   <h4 className="font-semibold mb-3 text-gray-900 dark:text-white">By Category</h4>
                   <div className="space-y-2">
-                    {['business', 'marketing', 'finance'].map((cat) => {
+                    {['Business', 'Technology', 'Arts', 'Communication'].map((cat) => {
                       const catTutorials = tutorials.filter(t => t.category === cat)
                       const catWatched = catTutorials.filter(t => t.watched).length
                       const catProgress = catTutorials.length > 0 ? (catWatched / catTutorials.length) * 100 : 0
