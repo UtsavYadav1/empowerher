@@ -5,12 +5,14 @@ export const dynamic = 'force-dynamic'
 
 const prisma = new PrismaClient()
 
-export async function GET() {
+export async function GET(req: Request) {
     try {
-        // Run counts in parallel for performance
+        // Force dynamic usage (important trick)
+        const { searchParams } = new URL(req.url)
+
         const [
             usersCount,
-            productsCount, // Using products as proxy for value creation
+            productsCount,
             workshopsCount,
             eventsCount,
             postsCount,
@@ -22,17 +24,13 @@ export async function GET() {
             prisma.forumPost.count(),
         ])
 
-        // "Communities" can be approximated by active forum threads + workshops
-        // "Girls Educated" - In a real app this would be specific users. For now, we can use a ratio or just total users as "Empowered".
-        // "Women Empowered" - total users
-
         return NextResponse.json({
             success: true,
             data: {
                 womenEmpowered: await prisma.user.count({ where: { role: 'woman' } }),
                 girlsEducated: await prisma.user.count({ where: { role: 'girl' } }),
                 workshops: workshopsCount + eventsCount,
-                communities: postsCount, // Forum posts only
+                communities: postsCount,
             },
         })
     } catch (error) {
@@ -43,4 +41,3 @@ export async function GET() {
         )
     }
 }
-
